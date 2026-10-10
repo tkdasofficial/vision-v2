@@ -181,7 +181,7 @@ export async function verify(rawCode: unknown): Promise<{ redirect: string }> {
     await d1("UPDATE auth_users SET email_verified = 1 WHERE id = ?", [user.id]);
     await startSession(user.id);
     await audit(d1Store, { type: "enterprise.login", decision: "ALLOW", subject: user.id });
-    return { redirect: m!.onboarded ? "/app/new" : "/enterprise/getting-started" };
+    return { redirect: m!.onboarded ? "/chat" : "/enterprise/getting-started" };
   }
 
   let row: any;
@@ -250,5 +250,5 @@ export async function completeOnboarding(input: OnboardingInput) {
   let md: Record<string, unknown> = {};
   try { md = JSON.parse(meta?.user_metadata || "{}"); } catch { /* ignore */ }
   await d1("UPDATE auth_users SET user_metadata = ? WHERE id = ?", [JSON.stringify({ ...md, org_type: "Enterprise", org_size: input.companySize, role: input.role, onboarded: "true" }), c.user.id]);
-  return { redirect: "/app/new" };
+  return { redirect: "/chat" };
 }

@@ -153,7 +153,7 @@ describe("steps 2–3 — email + OTP", () => {
     state.cookies.clear();
     await verifiedAttempt();
     await E.submitEmail("ceo@acme.com");
-    expect((await E.verify(lastCode())).redirect).toBe("/app/new");
+    expect((await E.verify(lastCode())).redirect).toBe("/chat");
 
     await createUser("dev@acme.com", { password: "password123" });
     state.cookies.clear();

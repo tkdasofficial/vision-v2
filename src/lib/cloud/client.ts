@@ -116,8 +116,8 @@ const auth = {
     return { error: authErr(r.error ?? null) };
   },
   async signInWithOAuth({ provider }: { provider: "google" | "github" }) {
-    window.location.href = `/api/auth/${provider}`;
-    return { data: { provider, url: `/api/auth/${provider}` }, error: null };
+    window.location.href = `/api/oauth/${provider}`;
+    return { data: { provider, url: `/api/oauth/${provider}` }, error: null };
   },
   async signOut() { await signOutFn(); notify("SIGNED_OUT", null); return { error: null }; },
   async getSession() {

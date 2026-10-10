@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/Auth";
+import Page from "@/pages/auth";
 
 export const Route = createFileRoute("/auth/login")({
   head: () => ({

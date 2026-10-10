@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import EnterpriseLogin from "@/views/EnterpriseLogin";
+import EnterpriseLogin from "@/pages/enterprise-login";
 
 export const Route = createFileRoute("/enterprise")({
   head: () => ({ meta: [

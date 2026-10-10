@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/page-header";
 import { useNavigate, useLocation, Outlet } from "@/lib/router-compat";
 import { useAuth } from "@/context/AuthContext";
 import {

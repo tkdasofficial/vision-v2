@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import CreationEmptyState from "@/components/CreationEmptyState";
+import CreationEmptyState from "@/components/creation-empty-state";
 import { referencePrompt } from "@/lib/creation-references";
 afterEach(cleanup);
 describe("Creation references", () => {

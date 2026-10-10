@@ -3,4 +3,4 @@
 export type OAuthProvider = "google" | "github";
 
 export const providerCallbackUrl = (base: string, p: OAuthProvider) =>
-  `${base.replace(/\/+$/, "")}/${p}/callback`;
+  `${base.replace(/\/+$/, "")}/auth/${p}/callback`;
