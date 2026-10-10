@@ -16,6 +16,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/context/AuthContext";
 import { ChatHistoryProvider } from "@/context/ChatHistoryContext";
 import appCss from "../styles.css?url";
+import { CHUNK_ERROR_RE, recoverFromChunkError } from "@/lib/chunk-recovery";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -45,14 +46,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
   useEffect(() => {
     // Old page files after a new version went live: reload once to get the new ones.
-    if (/Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(String((error as any)?.message))) {
-      const last = Number(sessionStorage.getItem("vision_chunk_reload_at") || 0);
-      if (Date.now() - last > 10_000) {
-        sessionStorage.setItem("vision_chunk_reload_at", String(Date.now()));
-        window.location.reload();
-        return;
-      }
-    }
+    if (CHUNK_ERROR_RE.test(String((error as any)?.message)) && recoverFromChunkError()) return;
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
