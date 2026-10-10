@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Crown, Menu, VenetianMask } from "lucide-react";
+import { Crown, Eye, EyeOff, Menu } from "lucide-react";
 import { useNavigate } from "@/lib/router-compat";
 import AnnouncementBanner from "./AnnouncementBanner";
 
