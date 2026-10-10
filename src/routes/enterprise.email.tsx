@@ -10,5 +10,9 @@ export const Route = createFileRoute("/enterprise/email")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  component: () => <EnterpriseLogin page="email" />,
+  component: EnterpriseEmailPage,
 });
+
+function EnterpriseEmailPage() {
+  return <EnterpriseLogin page="email" />;
+}

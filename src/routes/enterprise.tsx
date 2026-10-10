@@ -10,5 +10,9 @@ export const Route = createFileRoute("/enterprise")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  component: () => <EnterpriseLogin page="identity" />,
+  component: EnterpriseIdentityPage,
 });
+
+function EnterpriseIdentityPage() {
+  return <EnterpriseLogin page="identity" />;
+}

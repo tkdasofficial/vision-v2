@@ -11,5 +11,8 @@ export const Route = createFileRoute("/app/incognito")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  component: () => <Protected><Page isIncognito /></Protected>,
+  component: IncognitoPage,
 });
+function IncognitoPage() {
+  return <Protected><Page isIncognito /></Protected>;
+}
