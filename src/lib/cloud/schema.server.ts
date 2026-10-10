@@ -273,6 +273,7 @@ export const TABLES: Record<string, { key: string; cols: Record<string, ColKind>
    "default_tool": "text",
    "id": "text",
    "language": "text",
+   "prefs": "text",
    "notifications_enabled": "bool",
    "theme": "text",
    "updated_at": "text",
