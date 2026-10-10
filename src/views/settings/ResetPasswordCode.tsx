@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils";
 
 type Step = "send" | "code" | "password";
 const STEPS: { id: Step; label: string }[] = [{ id: "send", label: "Email" }, { id: "code", label: "Code" }, { id: "password", label: "Password" }];
-const field = "h-14 w-full rounded-full border border-input bg-transparent px-5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring";
-const primary = "h-14 w-full rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2";
+const field = "h-12 w-full rounded-full border border-input bg-transparent px-5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring";
+const primary = "h-12 w-full rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2";
 
 const mask = (e: string) => { const [u, d] = e.split("@"); return u && d ? `${u.slice(0, 2)}${"•".repeat(Math.max(1, u.length - 2))}@${d}` : e; };
 
@@ -70,7 +70,7 @@ export default function ResetPasswordCode() {
     <div className="relative min-h-[100dvh] bg-background flex flex-col">
       <PageHeader title="" backTo="/app/new" />
 
-      <div className="w-full max-w-sm mx-auto flex-1 flex flex-col justify-center gap-8 px-6 pb-10">
+      <div className="w-full max-w-sm mx-auto flex flex-col gap-7 px-6 pt-4 pb-10">
         <div className="space-y-2">
           <img src={logo} alt="Vision" className="w-12 h-12 rounded-2xl" />
           <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground pt-4">{title}</h1>
@@ -94,7 +94,7 @@ export default function ResetPasswordCode() {
           <>
             {step === "send" && (
               <div className="space-y-3">
-                <div className="flex items-center gap-3 rounded-full border border-border px-5 h-14">
+                <div className="flex items-center gap-3 rounded-full border border-border px-5 h-12">
                   <Mail className="w-4 h-4 text-muted-foreground shrink-0" />
                   <span className="min-w-0 truncate text-sm text-foreground">{email}</span>
                 </div>
@@ -106,7 +106,7 @@ export default function ResetPasswordCode() {
               <form onSubmit={verify} className="space-y-4">
                 <div className="flex justify-center">
                   <InputOTP maxLength={8} value={code} onChange={(v) => setCode(v.replace(/\D/g, ""))} autoFocus>
-                    <InputOTPGroup>{Array.from({ length: 8 }, (_, i) => <InputOTPSlot key={i} index={i} className="w-9 h-12" />)}</InputOTPGroup>
+                    <InputOTPGroup>{Array.from({ length: 8 }, (_, i) => <InputOTPSlot key={i} index={i} className="w-9 h-11" />)}</InputOTPGroup>
                   </InputOTP>
                 </div>
                 <button disabled={busy || code.length !== 8} className={primary}>{busy && <Loader2 className="w-4 h-4 animate-spin" />}{busy ? "Checking…" : "Confirm code"}</button>
