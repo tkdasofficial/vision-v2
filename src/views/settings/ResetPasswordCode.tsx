@@ -67,8 +67,8 @@ export default function ResetPasswordCode() {
 
   return (
     <div className="relative min-h-[100dvh] bg-background flex flex-col px-6 py-6">
-      <button onClick={() => navigate("/app/settings/security")} aria-label="Go back"
-        className="w-11 h-11 rounded-full bg-secondary text-foreground flex items-center justify-center hover:opacity-80"><ArrowLeft className="w-5 h-5" /></button>
+      <button onClick={() => navigate("/app/new")}
+        className="self-start flex items-center gap-2 h-11 pl-3 pr-5 rounded-full bg-secondary text-sm font-medium text-foreground hover:opacity-80"><ArrowLeft className="w-5 h-5" />Back to chat</button>
 
       <div className="w-full max-w-sm mx-auto flex-1 flex flex-col justify-center gap-8 py-8">
         <div className="space-y-2">
@@ -147,10 +147,6 @@ export default function ResetPasswordCode() {
             The code expires in 10 minutes and works once. After the change, you stay signed in here and your other devices are signed out.
           </p>
         </div>
-
-        <button onClick={() => navigate("/app/new")} className="mx-auto flex items-center gap-1 text-sm font-medium text-foreground hover:underline underline-offset-4">
-          <ArrowLeft className="w-4 h-4" />Back to chat
-        </button>
       </div>
     </div>
   );
