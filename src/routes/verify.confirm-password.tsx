@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/ResetPassword";
+import Page from "@/pages/reset-password";
 
 export const Route = createFileRoute("/verify/confirm-password")({
   head: () => ({

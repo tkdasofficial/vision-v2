@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/settings/AiPreferences";
-import { Protected } from "@/components/Protected";
+import Page from "@/pages/settings/ai";
+import { Protected } from "@/components/protected";
 
 export const Route = createFileRoute("/app/settings/ai-preferences")({
   head: () => ({

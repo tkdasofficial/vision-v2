@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/Index";
-import { Protected } from "@/components/Protected";
+import Page from "@/pages/chat";
+import { Protected } from "@/components/protected";
 
 export const Route = createFileRoute("/app/incognito")({
   head: () => ({ meta: [

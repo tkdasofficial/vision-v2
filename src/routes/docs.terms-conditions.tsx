@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/Terms";
+import Page from "@/pages/terms";
 
 export const Route = createFileRoute("/docs/terms-conditions")({
   head: () => ({

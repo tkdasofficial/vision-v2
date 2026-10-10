@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/settings/Language";
-import { Protected } from "@/components/Protected";
+import Page from "@/pages/settings/language";
+import { Protected } from "@/components/protected";
 
 export const Route = createFileRoute("/app/settings/language")({
   head: () => ({

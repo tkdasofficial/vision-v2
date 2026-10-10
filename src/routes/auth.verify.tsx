@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import VerifyEmail from "@/views/VerifyEmail";
+import VerifyEmail from "@/pages/verify";
 
 export const Route = createFileRoute("/auth/verify")({
   head: () => ({

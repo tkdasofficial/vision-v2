@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/Library";
-import { Protected } from "@/components/Protected";
+import Page from "@/pages/library";
+import { Protected } from "@/components/protected";
 export const Route = createFileRoute("/app/library")({
   head: () => ({ meta: [
     { title: "Library — Vision" },

@@ -14,7 +14,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/context/AuthContext";
-import { RouteGuard } from "@/components/RouteGuard";
+import { RouteGuard } from "@/components/route-guard";
 import { ChatHistoryProvider } from "@/context/ChatHistoryContext";
 import appCss from "../styles.css?url";
 import { CHUNK_ERROR_RE, recoverFromChunkError } from "@/lib/chunk-recovery";

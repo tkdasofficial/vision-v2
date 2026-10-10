@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Search from "@/views/Search";
-import { Protected } from "@/components/Protected";
+import Search from "@/pages/search";
+import { Protected } from "@/components/protected";
 
 export const Route = createFileRoute("/app/search")({
   head: () => ({ meta: [

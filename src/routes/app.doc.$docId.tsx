@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/DocumentPreview";
+import Page from "@/pages/documents";
 
 // Not wrapped in <Protected>: the view itself asks visitors to sign in and the server enforces ownership.
 export const Route = createFileRoute("/app/doc/$docId")({

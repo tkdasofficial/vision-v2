@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/settings/ResetPasswordCode";
-import { Protected } from "@/components/Protected";
+import Page from "@/pages/settings/security-password";
+import { Protected } from "@/components/protected";
 
 export const Route = createFileRoute("/app/settings/reset-password")({
   head: () => ({

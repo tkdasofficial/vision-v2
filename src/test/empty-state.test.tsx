@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import EmptyState from "@/components/EmptyState";
+import EmptyState from "@/components/empty-state";
 
 describe("Empty chat suggestions", () => {
   it("shows exactly three questions and sends the selected question", () => {
