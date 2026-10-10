@@ -12,7 +12,12 @@ const GUEST = ["/auth/login", "/auth/register", "/auth/forgot-password"];
 /** Recovery flows keyed by their own short-lived ticket, open with or without a session. */
 const RECOVERY = ["/auth/reset-password"];
 /** Signed-in-only areas (prefix match). */
-const PROTECTED = ["/app", "/admin", "/getting-started", "/enterprise/getting-started"];
+const PROTECTED = [
+  "/chat", "/studio", "/library", "/projects", "/integrations", "/search", "/inbox", "/account",
+  "/prospecting", "/documents", "/billing", "/support", "/settings",
+  "/admin", "/getting-started", "/enterprise/getting-started",
+  "/app", // legacy addresses; they redirect to the paths above
+];
 
 const norm = (p: string) => (p.length > 1 ? p.replace(/\/+$/, "") : p) || "/";
 const under = (p: string, base: string) => p === base || p.startsWith(base + "/");
