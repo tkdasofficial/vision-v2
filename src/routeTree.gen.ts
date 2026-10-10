@@ -18,6 +18,7 @@ import { Route as GettingStartedRouteImport } from './routes/getting-started'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as VerifyRouteImport } from './routes/verify'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as AdminAnnouncementsRouteImport } from './routes/admin.announcements'
@@ -49,6 +50,9 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppSupportRouteImport } from './routes/app.support'
 import { Route as AppUpgradeRouteImport } from './routes/app.upgrade'
 import { Route as AppVideosRouteImport } from './routes/app.videos'
+import { Route as AuthForgetPasswordRouteImport } from './routes/auth.forget-password'
+import { Route as AuthLoginRouteImport } from './routes/auth.login'
+import { Route as AuthSignupRouteImport } from './routes/auth.signup'
 import { Route as AuthVerifyRouteImport } from './routes/auth.verify'
 import { Route as DocsPrivacyPolicyRouteImport } from './routes/docs.privacy-policy'
 import { Route as DocsTermsConditionsRouteImport } from './routes/docs.terms-conditions'
@@ -57,6 +61,7 @@ import { Route as EnterpriseGettingStartedRouteImport } from './routes/enterpris
 import { Route as EnterpriseVerifyRouteImport } from './routes/enterprise.verify'
 import { Route as GithubCallbackRouteImport } from './routes/github.callback'
 import { Route as GoogleCallbackRouteImport } from './routes/google.callback'
+import { Route as VerifyConfirmPasswordRouteImport } from './routes/verify.confirm-password'
 import { Route as ApiAuthProviderRouteImport } from './routes/api/auth.$provider'
 import { Route as AppChatChatIdRouteImport } from './routes/app.chat.$chatId'
 
@@ -103,6 +108,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyRoute = VerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -260,6 +270,21 @@ const AppVideosRoute = AppVideosRouteImport.update({
   path: '/app/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthForgetPasswordRoute = AuthForgetPasswordRouteImport.update({
+  id: '/forget-password',
+  path: '/forget-password',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthVerifyRoute = AuthVerifyRouteImport.update({
   id: '/verify',
   path: '/verify',
@@ -301,6 +326,11 @@ const GoogleCallbackRoute = GoogleCallbackRouteImport.update({
   path: '/google/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifyConfirmPasswordRoute = VerifyConfirmPasswordRouteImport.update({
+  id: '/confirm-password',
+  path: '/confirm-password',
+  getParentRoute: () => VerifyRoute,
+} as any)
 const ApiAuthProviderRoute = ApiAuthProviderRouteImport.update({
   id: '/api/auth/$provider',
   path: '/api/auth/$provider',
@@ -322,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/verify': typeof VerifyRouteWithChildren
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/audit': typeof AdminAuditRoute
@@ -352,6 +383,9 @@ export interface FileRoutesByFullPath {
   '/app/support': typeof AppSupportRoute
   '/app/upgrade': typeof AppUpgradeRoute
   '/app/videos': typeof AppVideosRoute
+  '/auth/forget-password': typeof AuthForgetPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/docs/privacy-policy': typeof DocsPrivacyPolicyRoute
   '/docs/terms-conditions': typeof DocsTermsConditionsRoute
@@ -360,6 +394,7 @@ export interface FileRoutesByFullPath {
   '/enterprise/verify': typeof EnterpriseVerifyRoute
   '/github/callback': typeof GithubCallbackRoute
   '/google/callback': typeof GoogleCallbackRoute
+  '/verify/confirm-password': typeof VerifyConfirmPasswordRoute
   '/admin/': typeof AdminIndexRoute
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
@@ -373,6 +408,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/verify': typeof VerifyRouteWithChildren
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/audit': typeof AdminAuditRoute
@@ -403,6 +439,9 @@ export interface FileRoutesByTo {
   '/app/support': typeof AppSupportRoute
   '/app/upgrade': typeof AppUpgradeRoute
   '/app/videos': typeof AppVideosRoute
+  '/auth/forget-password': typeof AuthForgetPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/docs/privacy-policy': typeof DocsPrivacyPolicyRoute
   '/docs/terms-conditions': typeof DocsTermsConditionsRoute
@@ -411,6 +450,7 @@ export interface FileRoutesByTo {
   '/enterprise/verify': typeof EnterpriseVerifyRoute
   '/github/callback': typeof GithubCallbackRoute
   '/google/callback': typeof GoogleCallbackRoute
+  '/verify/confirm-password': typeof VerifyConfirmPasswordRoute
   '/admin': typeof AdminIndexRoute
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
@@ -426,6 +466,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/verify': typeof VerifyRouteWithChildren
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/audit': typeof AdminAuditRoute
@@ -456,6 +497,9 @@ export interface FileRoutesById {
   '/app/support': typeof AppSupportRoute
   '/app/upgrade': typeof AppUpgradeRoute
   '/app/videos': typeof AppVideosRoute
+  '/auth/forget-password': typeof AuthForgetPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/docs/privacy-policy': typeof DocsPrivacyPolicyRoute
   '/docs/terms-conditions': typeof DocsTermsConditionsRoute
@@ -464,6 +508,7 @@ export interface FileRoutesById {
   '/enterprise/verify': typeof EnterpriseVerifyRoute
   '/github/callback': typeof GithubCallbackRoute
   '/google/callback': typeof GoogleCallbackRoute
+  '/verify/confirm-password': typeof VerifyConfirmPasswordRoute
   '/admin/': typeof AdminIndexRoute
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
@@ -480,6 +525,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/signup'
+    | '/verify'
     | '/admin/analytics'
     | '/admin/announcements'
     | '/admin/audit'
@@ -510,6 +556,9 @@ export interface FileRouteTypes {
     | '/app/support'
     | '/app/upgrade'
     | '/app/videos'
+    | '/auth/forget-password'
+    | '/auth/login'
+    | '/auth/signup'
     | '/auth/verify'
     | '/docs/privacy-policy'
     | '/docs/terms-conditions'
@@ -518,6 +567,7 @@ export interface FileRouteTypes {
     | '/enterprise/verify'
     | '/github/callback'
     | '/google/callback'
+    | '/verify/confirm-password'
     | '/admin/'
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
@@ -531,6 +581,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/signup'
+    | '/verify'
     | '/admin/analytics'
     | '/admin/announcements'
     | '/admin/audit'
@@ -561,6 +612,9 @@ export interface FileRouteTypes {
     | '/app/support'
     | '/app/upgrade'
     | '/app/videos'
+    | '/auth/forget-password'
+    | '/auth/login'
+    | '/auth/signup'
     | '/auth/verify'
     | '/docs/privacy-policy'
     | '/docs/terms-conditions'
@@ -569,6 +623,7 @@ export interface FileRouteTypes {
     | '/enterprise/verify'
     | '/github/callback'
     | '/google/callback'
+    | '/verify/confirm-password'
     | '/admin'
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
@@ -583,6 +638,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/signup'
+    | '/verify'
     | '/admin/analytics'
     | '/admin/announcements'
     | '/admin/audit'
@@ -613,6 +669,9 @@ export interface FileRouteTypes {
     | '/app/support'
     | '/app/upgrade'
     | '/app/videos'
+    | '/auth/forget-password'
+    | '/auth/login'
+    | '/auth/signup'
     | '/auth/verify'
     | '/docs/privacy-policy'
     | '/docs/terms-conditions'
@@ -621,6 +680,7 @@ export interface FileRouteTypes {
     | '/enterprise/verify'
     | '/github/callback'
     | '/google/callback'
+    | '/verify/confirm-password'
     | '/admin/'
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
@@ -636,6 +696,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  VerifyRoute: typeof VerifyRouteWithChildren
   ApiChatRoute: typeof ApiChatRoute
   ApiFilesRoute: typeof ApiFilesRoute
   AppAccountRoute: typeof AppAccountRoute
@@ -724,6 +785,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify': {
+      id: '/verify'
+      path: '/verify'
+      fullPath: '/verify'
+      preLoaderRoute: typeof VerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -943,6 +1011,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppVideosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/forget-password': {
+      id: '/auth/forget-password'
+      path: '/forget-password'
+      fullPath: '/auth/forget-password'
+      preLoaderRoute: typeof AuthForgetPasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/auth/verify': {
       id: '/auth/verify'
       path: '/verify'
@@ -999,6 +1088,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GoogleCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verify/confirm-password': {
+      id: '/verify/confirm-password'
+      path: '/confirm-password'
+      fullPath: '/verify/confirm-password'
+      preLoaderRoute: typeof VerifyConfirmPasswordRouteImport
+      parentRoute: typeof VerifyRoute
+    }
     '/api/auth/$provider': {
       id: '/api/auth/$provider'
       path: '/api/auth/$provider'
@@ -1053,10 +1149,16 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AuthRouteChildren {
+  AuthForgetPasswordRoute: typeof AuthForgetPasswordRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
   AuthVerifyRoute: typeof AuthVerifyRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthForgetPasswordRoute: AuthForgetPasswordRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
   AuthVerifyRoute: AuthVerifyRoute,
 }
 
@@ -1078,6 +1180,17 @@ const EnterpriseRouteWithChildren = EnterpriseRoute._addFileChildren(
   EnterpriseRouteChildren,
 )
 
+interface VerifyRouteChildren {
+  VerifyConfirmPasswordRoute: typeof VerifyConfirmPasswordRoute
+}
+
+const VerifyRouteChildren: VerifyRouteChildren = {
+  VerifyConfirmPasswordRoute: VerifyConfirmPasswordRoute,
+}
+
+const VerifyRouteWithChildren =
+  VerifyRoute._addFileChildren(VerifyRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
@@ -1088,6 +1201,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  VerifyRoute: VerifyRouteWithChildren,
   ApiChatRoute: ApiChatRoute,
   ApiFilesRoute: ApiFilesRoute,
   AppAccountRoute: AppAccountRoute,
