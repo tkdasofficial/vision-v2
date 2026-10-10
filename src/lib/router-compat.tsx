@@ -20,8 +20,15 @@ export function useNavigate() {
       if (to < 0) router.history.go(to);
       return;
     }
-    if (/[?#]/.test(to)) void navigate({ href: to, replace: opts?.replace } as never);
-    else void navigate({ to: to as never, replace: opts?.replace });
+    // Split "/path?a=b#h" so TanStack gets a real path plus a search object.
+    const u = new URL(to, "http://x");
+    const search = Object.fromEntries(u.searchParams.entries());
+    void navigate({
+      to: u.pathname as never,
+      search: (Object.keys(search).length ? search : undefined) as never,
+      hash: u.hash ? u.hash.slice(1) : undefined,
+      replace: opts?.replace,
+    });
   }, [navigate, router]);
 }
 
