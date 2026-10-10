@@ -61,20 +61,20 @@ const AdminNotifications = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
-          className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground outline-none focus:border-foreground/20 transition-colors"
+          className="w-full px-3 py-2.5 rounded-full border border-border bg-background text-sm text-foreground outline-none focus:border-foreground/20 transition-colors"
         />
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Message"
           rows={3}
-          className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground outline-none focus:border-foreground/20 transition-colors resize-none"
+          className="w-full px-3 py-2.5 rounded-full border border-border bg-background text-sm text-foreground outline-none focus:border-foreground/20 transition-colors resize-none"
         />
         <div className="flex items-center gap-3">
           <select
             value={target}
             onChange={(e) => setTarget(e.target.value)}
-            className="px-3 py-2 rounded-xl border border-border bg-background text-sm text-foreground outline-none"
+            className="px-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none"
           >
             <option value="all">All Users</option>
             <option value="free">Free Users</option>
@@ -84,7 +84,7 @@ const AdminNotifications = () => {
           <button
             onClick={sendNotification}
             disabled={sending || !title.trim() || !message.trim()}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             <Send className="w-4 h-4" />
             Send

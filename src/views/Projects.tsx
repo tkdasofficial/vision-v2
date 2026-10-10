@@ -57,7 +57,7 @@ export default function Projects() {
         <Button variant="ghost" size="icon" aria-label={`Delete ${project.name}`} title="Delete project" onClick={() => void remove(project)}><Trash2 /></Button>
       </div>; })}
     </div>}
-    {active && <section className="mt-8 border-t border-border pt-6"><h2 className="mb-4 text-lg font-semibold">{active.name}</h2>
+    {active && <section className="mt-8 border-t border-border pt-6"><h2 className="mb-4 font-display text-lg font-semibold text-foreground">{active.name}</h2>
       {active.session_id && <Button variant="outline" onClick={() => navigate(`/app/chat/${active.session_id}`)}>Open linked chat</Button>}
       <h3 className="my-4 text-sm text-muted-foreground">Link a chat</h3>
       {history.length === 0 ? <p className="text-sm text-muted-foreground">No saved chats yet</p> : history.map((chat) => <Button key={chat.id} variant="ghost" className="mb-1 w-full justify-start" onClick={() => void attach(chat.id)}>{chat.title}</Button>)}

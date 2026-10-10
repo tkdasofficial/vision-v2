@@ -111,7 +111,7 @@ const Support = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!subject.trim() || !message.trim() || submitting}
-                  className="w-full py-2.5 rounded-xl bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
+                  className="w-full py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
                 >
                   {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
                   Send message

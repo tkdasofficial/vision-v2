@@ -57,7 +57,7 @@ const AdminSubscriptions = () => {
     <div className="p-4 lg:p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-display font-bold text-foreground flex items-center gap-2"><CreditCard className="w-5 h-5" /> Subscriptions</h1>
+          <h1 className="text-xl font-display font-semibold tracking-tight text-foreground flex items-center gap-2"><CreditCard className="w-5 h-5" /> Subscriptions</h1>
           <p className="text-xs text-muted-foreground mt-0.5">Manually manage user plans, status and expiry.</p>
         </div>
         <div className="text-right">
@@ -80,7 +80,7 @@ const AdminSubscriptions = () => {
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search email / name..." className="w-full bg-card border border-border rounded-lg pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
         </div>
-        <select value={planFilter} onChange={(e) => setPlanFilter(e.target.value)} className="bg-card border border-border rounded-lg px-3 py-2 text-sm">
+        <select value={planFilter} onChange={(e) => setPlanFilter(e.target.value)} className="bg-card border border-border rounded-full px-4 py-2.5 text-sm">
           <option value="all">All plans</option>
           {plans.map((p) => <option key={p.plan} value={p.plan}>{p.display_name}</option>)}
         </select>

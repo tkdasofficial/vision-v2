@@ -82,7 +82,7 @@ const AdminChatSessions = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search sessions..."
-            className="pl-9 pr-3 py-2 rounded-xl border border-border bg-background text-sm text-foreground outline-none focus:border-primary/40 transition-colors w-56"
+            className="pl-9 pr-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none focus:border-primary/40 transition-colors w-56"
           />
         </div>
       </div>

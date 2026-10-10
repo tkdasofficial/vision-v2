@@ -67,7 +67,7 @@ const EnterpriseGettingStarted = () => {
       <div className="w-full max-w-md space-y-6">
         <div>
           <p className="text-xs text-muted-foreground mb-1">Enterprise Login · VISION BDI</p>
-          <h1 className="text-2xl font-semibold text-foreground">Set up your enterprise account</h1>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">Set up your enterprise account</h1>
         </div>
 
         <Locked label="Enterprise Name" value={profile.enterpriseName} />

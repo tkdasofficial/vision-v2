@@ -313,7 +313,7 @@ const Settings = () => {
                     <button
                       onClick={handleRequestPush}
                       disabled={pushPermission === "denied"}
-                      className="text-xs font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="text-xs font-medium px-3 py-1.5 rounded-full bg-foreground text-background hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Enable
                     </button>
@@ -368,13 +368,13 @@ const Settings = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setShowDeleteConfirm(false)}
-                      className="flex-1 py-2 rounded-lg border border-border text-sm text-foreground hover:bg-accent transition-colors"
+                      className="flex-1 py-2 rounded-full border border-border text-sm text-foreground hover:bg-accent transition-colors"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleDeleteAccount}
-                      className="flex-1 py-2 rounded-lg bg-destructive text-destructive-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+                      className="flex-1 py-2 rounded-full bg-destructive text-destructive-foreground text-sm font-medium hover:opacity-90 transition-opacity"
                     >
                       Delete
                     </button>

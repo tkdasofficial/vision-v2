@@ -56,7 +56,7 @@ const GettingStarted = () => {
           {STEPS.map((_, i) => <div key={i} className={`h-1 flex-1 rounded-full ${i <= step ? "bg-foreground" : "bg-border"}`} />)}
         </div>
         <p className="text-xs text-muted-foreground mb-1">Step {step + 1} of {STEPS.length}</p>
-        <h1 className="text-2xl font-semibold text-foreground mb-6">{STEPS[step]}</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground mb-6">{STEPS[step]}</h1>
 
         {step === 0 && (
           <div className="space-y-3">
