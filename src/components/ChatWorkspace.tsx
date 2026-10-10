@@ -809,13 +809,17 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
         <Button variant="secondary" className="rounded-full px-3" aria-label="Upgrade Plan" title="Upgrade Plan" onClick={() => navigate("/app/upgrade")}>
           <Crown /><span>Upgrade Plan</span>
         </Button>
-        <Button variant={isIncognito ? "default" : "secondary"} size="icon" className="ml-auto shrink-0 rounded-full" aria-label={isIncognito ? "Start new incognito chat" : "Incognito Chat"} title={isIncognito ? "Start new incognito chat" : "Incognito Chat"} aria-pressed={isIncognito} onClick={onIncognitoChat}>
-          <VenetianMask />
+        <Button variant={isIncognito ? "default" : "secondary"} size="icon" className="ml-auto shrink-0 rounded-full transition-colors" aria-label={isIncognito ? "Turn off incognito" : "Turn on incognito"} title={isIncognito ? "Incognito on — tap to turn off" : "Incognito off — tap to turn on"} aria-pressed={isIncognito} onClick={onIncognitoChat}>
+          {isIncognito ? <EyeOff /> : <Eye />}
         </Button>
       </header>
 
       <AnnouncementBanner />
-      {isIncognito && <p className="px-4 py-2 text-center text-xs font-medium text-muted-foreground">Incognito Chat</p>}
+      {isIncognito && (
+        <p className="flex items-center justify-center gap-1.5 px-4 py-2 text-center text-xs font-medium text-muted-foreground">
+          <EyeOff className="h-3.5 w-3.5" /> Incognito on — this chat won't be saved
+        </p>
+      )}
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
 
