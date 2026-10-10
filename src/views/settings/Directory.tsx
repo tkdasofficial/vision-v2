@@ -21,7 +21,7 @@ export default function SettingsDirectory() {
       <div className="flex-1 px-4 pt-2 pb-12 overflow-y-auto">
         <nav aria-label="Settings categories" className="max-w-lg mx-auto space-y-2">
           {SETTINGS_CATEGORIES.map(({ to, icon: Icon, title }) => (
-            <Link key={to} to={to} className="flex items-center gap-4 rounded-2xl border border-border px-5 py-4 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <Link key={to} to={to} className="flex items-center gap-4 rounded-full border border-border px-5 py-4 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <Icon className="w-5 h-5 text-muted-foreground shrink-0" />
               <p className="min-w-0 flex-1 text-sm font-medium text-foreground">{title}</p>
               <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />

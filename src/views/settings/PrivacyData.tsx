@@ -41,7 +41,7 @@ export default function PrivacyData() {
   return (
     <SettingsPage title="Privacy & Data">
       <SettingsSection title="Your data">
-        <button onClick={exportAll} disabled={!!busy} className="w-full flex items-center gap-3 rounded-2xl border border-border px-5 py-4 hover:bg-accent text-left disabled:opacity-50">
+        <button onClick={exportAll} disabled={!!busy} className="w-full flex items-center gap-3 rounded-full border border-border px-5 py-4 hover:bg-accent text-left disabled:opacity-50">
           {busy === "export" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-muted-foreground" />}
           <div><p className="text-sm font-medium">Download all my data</p></div>
         </button>
@@ -53,7 +53,7 @@ export default function PrivacyData() {
         ) : (
           <>
             {docs.map((d) => (
-              <div key={d.id} className="flex items-center gap-3 rounded-2xl border border-border px-5 py-3">
+              <div key={d.id} className="flex items-center gap-3 rounded-full border border-border px-5 py-3">
                 <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
                 <Link to="/app/doc/$docId" params={{ docId: d.id }} className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{d.title}</p>

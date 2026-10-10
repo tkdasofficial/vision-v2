@@ -26,7 +26,9 @@ const Auth = () => {
 
   // Show errors returned from Google/GitHub sign-in.
   useEffect(() => {
-    const msg = new URLSearchParams(window.location.search).get("error");
+    const qs = new URLSearchParams(window.location.search);
+    const pre = qs.get("email"); if (pre) setEmail(pre);
+    const msg = qs.get("error");
     if (msg) toast({ title: "Sign-in problem", description: msg, variant: "destructive" });
   }, []);
 

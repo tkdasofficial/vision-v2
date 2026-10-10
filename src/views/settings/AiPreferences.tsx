@@ -24,7 +24,7 @@ export default function AiPreferences() {
           onChange={(v) => update({ tone: v })} />
       </SettingsSection>
       <SettingsSection title="Custom instructions" description="Tell VISION about yourself or how to answer. Applied to every chat.">
-        <div className="rounded-2xl border border-border p-4">
+        <div className="rounded-[2rem] border border-border p-5">
           <textarea value={draft} maxLength={MAX_INSTRUCTIONS} onChange={(e) => setDraft(e.target.value)} rows={5}
             aria-label="Custom instructions" placeholder="e.g. I'm a student. Explain with simple examples."
             className="w-full resize-none bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground" />

@@ -16,7 +16,7 @@ export default function About() {
       </SettingsSection>
       <SettingsSection title="Help & legal">
         {links.map((l) => (
-          <Link key={l.to} to={l.to} className="flex items-center justify-between rounded-2xl border border-border px-5 py-4 text-sm font-medium hover:bg-accent">
+          <Link key={l.to} to={l.to} className="flex items-center justify-between rounded-full border border-border px-5 py-4 text-sm font-medium hover:bg-accent">
             {l.label}<ChevronRight className="w-4 h-4 text-muted-foreground" />
           </Link>
         ))}
