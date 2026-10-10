@@ -57,3 +57,9 @@ CREATE TABLE IF NOT EXISTS enterprise_members (user_id TEXT PRIMARY KEY, domain 
 CREATE INDEX IF NOT EXISTS enterprise_members_domain ON enterprise_members(domain);
 CREATE TABLE IF NOT EXISTS oauth_assertions_used (jti TEXT PRIMARY KEY, expires_at INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS password_reset_tickets (token_hash TEXT PRIMARY KEY, user_id TEXT NOT NULL, expires_at INTEGER NOT NULL);
+ALTER TABLE auth_sessions ADD COLUMN created_at INTEGER;
+ALTER TABLE auth_sessions ADD COLUMN last_seen_at INTEGER;
+ALTER TABLE auth_sessions ADD COLUMN user_agent TEXT;
+ALTER TABLE auth_sessions ADD COLUMN ip TEXT;
+CREATE TABLE IF NOT EXISTS login_history (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, created_at INTEGER NOT NULL, user_agent TEXT, ip TEXT);
+CREATE INDEX IF NOT EXISTS idx_login_history_user ON login_history(user_id, created_at);
