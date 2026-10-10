@@ -1,7 +1,7 @@
 // Google and GitHub sign-in (server-only) via the Vision auth gateway Worker.
 // The Worker holds the provider credentials and runs the OAuth exchange; the app
 // sends the browser there with a nonce (also kept in an HttpOnly cookie) and,
-// on return to /<provider>/callback, verifies the Worker's Ed25519-signed
+// on return to /auth/<provider>/callback, verifies the Worker's Ed25519-signed
 // assertion: signature, issuer, audience (this origin), nonce, expiry, single use.
 import { getCookie, setCookie, deleteCookie } from "@tanstack/react-start/server";
 import { d1 } from "./d1.server";
