@@ -72,11 +72,24 @@ const notify = (event: string, user: any) => { cached = user ? { user } : null; 
 const authErr = (message: string | null) => (message ? { message, name: "AuthError", status: 400 } : null);
 const unavailable = (what: string) => ({ data: { user: null, session: null }, error: authErr(`${what} isn't available.`) });
 
+let inflight: Promise<any> | null = null;
+// A network hiccup or slow server must never look like "signed out": retry, and
+// only treat the user as signed out when the server actually says so.
 async function loadUser() {
-  if (cached === undefined) {
-    try { const r = await getCurrentUser(); cached = r.user ? { user: r.user } : null; } catch { cached = null; }
-  }
-  return cached?.user ?? null;
+  if (cached !== undefined) return cached?.user ?? null;
+  inflight ??= (async () => {
+    for (let i = 0; i < 4; i++) {
+      try {
+        const r = await getCurrentUser();
+        cached = r.user ? { user: r.user } : null;
+        return cached?.user ?? null;
+      } catch {
+        await new Promise((res) => setTimeout(res, 400 * 2 ** i));
+      }
+    }
+    return null; // not cached, so the next check asks the server again
+  })().finally(() => { inflight = null; });
+  return inflight;
 }
 
 const auth = {
