@@ -55,3 +55,4 @@ CREATE TABLE IF NOT EXISTS enterprise_attempts (id TEXT PRIMARY KEY, token_hash 
 CREATE INDEX IF NOT EXISTS enterprise_attempts_expires ON enterprise_attempts(expires_at);
 CREATE TABLE IF NOT EXISTS enterprise_members (user_id TEXT PRIMARY KEY, domain TEXT NOT NULL, email TEXT NOT NULL UNIQUE, enterprise_name TEXT NOT NULL, org_type TEXT NOT NULL DEFAULT 'Enterprise', company_size TEXT, role TEXT, business_phone TEXT, phone_verified INTEGER NOT NULL DEFAULT 0, street TEXT, city TEXT, region TEXT, postal_code TEXT, country TEXT, onboarded INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL);
 CREATE INDEX IF NOT EXISTS enterprise_members_domain ON enterprise_members(domain);
+CREATE TABLE IF NOT EXISTS oauth_assertions_used (jti TEXT PRIMARY KEY, expires_at INTEGER NOT NULL);
