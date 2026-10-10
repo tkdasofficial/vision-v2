@@ -123,7 +123,7 @@ const VerifyEmail = () => {
 
           <div className="flex items-center justify-between text-sm">
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/auth/login")}
               className="text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" /> Back to sign in

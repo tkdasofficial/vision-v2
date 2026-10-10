@@ -190,7 +190,7 @@ const Settings = () => {
       await supabase.from("user_settings").delete().eq("user_id", user.id);
       await signOut();
       toast({ title: "Account deleted", description: "Your data has been removed." });
-      navigate("/login");
+      navigate("/auth/login");
     } catch {
       toast({ title: "Error", description: "Failed to delete account.", variant: "destructive" });
     }

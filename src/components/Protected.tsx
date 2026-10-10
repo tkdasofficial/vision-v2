@@ -10,6 +10,6 @@ export function Protected({ children }: { children: ReactNode }) {
         <div className="w-6 h-6 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
       </div>
     );
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/auth/login" replace />;
   return <>{children}</>;
 }
