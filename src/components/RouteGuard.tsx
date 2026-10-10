@@ -20,9 +20,8 @@ export function RouteGuard({ children }: { children: ReactNode }) {
   const { user, loading, offline } = useAuth();
   const location = useLocation();
   const access = classifyRoute(location.pathname);
-  console.log("GUARD", location.pathname, access, loading, !!user);
 
-  if (access === "public" || access === "recovery" || location.pathname.startsWith("/admin")) return <>{children}</>;
+  if (access === "public" || access === "recovery") return <>{children}</>;
   if (loading) return <Loading offline={offline} />;
   if (access === "protected" && !user) {
     return <><Loading /><Navigate to={loginPathFor(location.href)} replace /></>;

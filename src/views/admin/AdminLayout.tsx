@@ -46,14 +46,15 @@ const NAV_GROUPS: { label: string; items: { path: string; label: string; icon: a
 ];
 
 const AdminLayout = () => {
-  const { isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && !isAdmin) navigate("/app/new");
-  }, [isAdmin, loading, navigate]);
+    // Signed-out visitors are handled by RouteGuard; only signed-in non-admins are sent home.
+    if (!loading && user && !isAdmin) navigate("/app/new", { replace: true });
+  }, [user, isAdmin, loading, navigate]);
 
   if (loading) {
     return (
