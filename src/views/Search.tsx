@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import PageHeader from "@/components/PageHeader";
 import { ArrowLeft, ArrowUpRight, FileText, MessageSquare, Search as SearchIcon, Sparkles, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useNavigate } from "@/lib/router-compat";
@@ -69,14 +70,14 @@ export default function Search({ library = false }: { library?: boolean }) {
     <div className="flex h-[100dvh] overflow-hidden bg-background">
       <DesktopSidebar {...sidebarProps} />
       <main className="flex min-w-0 flex-1 flex-col">
-        <header className="flex shrink-0 items-center gap-3 bg-transparent px-4 py-3 sm:px-8">
-          <Button variant="secondary" size="icon" className="rounded-full" aria-label="Back to chat" title="Back to chat" onClick={() => navigate("/app/new")}><ArrowLeft /></Button>
+        <PageHeader title={library ? "Library" : "Search"} backTo="/app/new" className="sm:px-8" />
+        <div className="flex shrink-0 items-center px-4 pb-3 sm:px-8">
             <div className="relative min-w-0 flex-1">
               <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input autoFocus={!library} value={query} onChange={(event) => setQuery(event.target.value)} aria-label={library ? "Search library" : "Search chats, files, and generated items"} placeholder={library ? "Search library" : "Search anything"} className="h-10 rounded-full pl-9 pr-10" />
               {query && <Button variant="ghost" size="icon" aria-label="Clear search" title="Clear search" className="absolute right-1 top-1 size-8 rounded-full" onClick={() => setQuery("")}><X /></Button>}
             </div>
-        </header>
+        </div>
         <div className="shrink-0 overflow-x-auto px-4 pb-3 sm:px-8">
             <Tabs value={library ? assetType : category} onValueChange={(value) => library ? setAssetType(value as AssetType | "all") : setCategory(value as SearchCategory | "all")}>
               <TabsList aria-label={library ? "Library file types" : "Search categories"} className="flex h-auto w-max flex-nowrap justify-start gap-2 bg-transparent p-0">

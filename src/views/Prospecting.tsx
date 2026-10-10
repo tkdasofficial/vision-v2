@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PageHeader from "@/components/PageHeader";
 import { supabase } from "@/lib/cloud/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/hooks/use-toast";
@@ -149,14 +150,8 @@ export default function Prospecting() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
       <header className="border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-foreground text-background flex items-center justify-center"><Radar className="w-5 h-5" /></div>
-            <div>
-              <h1 className="font-display text-xl font-semibold">Client Prospecting</h1>
-              <p className="text-xs text-muted-foreground">Precision discovery → hyper-personalized outreach</p>
-            </div>
-          </div>
+        <div className="max-w-7xl mx-auto pr-4 flex items-center justify-between">
+          <PageHeader title="Client Prospecting" backTo="/app/new" />
           {activeJob && (
             <div className="flex items-center gap-2 text-sm px-3 py-1.5 rounded-lg border border-border bg-card">
               <Loader2 className="w-4 h-4 animate-spin" />

@@ -1,4 +1,5 @@
 import { useNavigate } from "@/lib/router-compat";
+import PageHeader from "@/components/PageHeader";
 import { ArrowLeft, MessageSquare, Mail, HelpCircle, ExternalLink, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
@@ -30,15 +31,10 @@ const Support = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
-      <header className="px-6 pt-6">
-        <button onClick={() => navigate(-1)} aria-label="Go back" className="-ml-2 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-      </header>
+      <PageHeader title="Support" />
 
-      <div className="flex-1 px-6 pt-4 pb-12 overflow-y-auto">
+      <div className="flex-1 px-6 pt-2 pb-12 overflow-y-auto">
         <div className="max-w-lg mx-auto space-y-6">
-          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-8">Support</h1>
           {/* Quick links */}
           <section>
             <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">How can we help?</h2>
