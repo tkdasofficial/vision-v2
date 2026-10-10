@@ -15,3 +15,7 @@
 - [ ] Add gateway callback URLs in Google Cloud Console and GitHub OAuth App (user action)
 - [ ] Real Google/GitHub sign-in check after dashboards are updated
 - [ ] Add the published/custom domain to ALLOWED_RETURN_ORIGINS once published
+- [x] Audit: AI routing per task verified live (fast/deep/code/image); deep answers self-check
+- [x] Audit: fixed endless-redirect loop in page navigation helper
+- [ ] Plans & Pricing shows no plans — needs real plan names/prices from user
+- [ ] Kimi K2.7 Code needs a paid Cloudflare plan (Qwen coder used meanwhile)
