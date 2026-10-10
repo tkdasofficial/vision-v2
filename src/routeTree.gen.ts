@@ -65,6 +65,8 @@ import { Route as EnterpriseVerifyRouteImport } from './routes/enterprise.verify
 import { Route as GithubCallbackRouteImport } from './routes/github.callback'
 import { Route as GoogleCallbackRouteImport } from './routes/google.callback'
 import { Route as HelpFaqRouteImport } from './routes/help.faq'
+import { Route as ImagesIndexRouteImport } from './routes/images.index'
+import { Route as ImagesImageChatIdRouteImport } from './routes/images.$imageChatId'
 import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
 import { Route as LegalTermsRouteImport } from './routes/legal.terms'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -81,6 +83,8 @@ import { Route as SettingsPrivacyRouteImport } from './routes/settings.privacy'
 import { Route as StudioImagesRouteImport } from './routes/studio.images'
 import { Route as StudioVideosRouteImport } from './routes/studio.videos'
 import { Route as VerifySplatRouteImport } from './routes/verify.$'
+import { Route as VideosIndexRouteImport } from './routes/videos.index'
+import { Route as VideosVideoChatIdRouteImport } from './routes/videos.$videoChatId'
 import { Route as ApiOauthProviderRouteImport } from './routes/api/oauth.$provider'
 import { Route as AuthGithubCallbackRouteImport } from './routes/auth.github.callback'
 import { Route as AuthGoogleCallbackRouteImport } from './routes/auth.google.callback'
@@ -368,6 +372,16 @@ const HelpFaqRoute = HelpFaqRouteImport.update({
   path: '/help/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImagesIndexRoute = ImagesIndexRouteImport.update({
+  id: '/images/',
+  path: '/images/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImagesImageChatIdRoute = ImagesImageChatIdRouteImport.update({
+  id: '/images/$imageChatId',
+  path: '/images/$imageChatId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
   id: '/legal/privacy',
   path: '/legal/privacy',
@@ -447,6 +461,16 @@ const VerifySplatRoute = VerifySplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => VerifyRoute,
+} as any)
+const VideosIndexRoute = VideosIndexRouteImport.update({
+  id: '/videos/',
+  path: '/videos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VideosVideoChatIdRoute = VideosVideoChatIdRouteImport.update({
+  id: '/videos/$videoChatId',
+  path: '/videos/$videoChatId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiOauthProviderRoute = ApiOauthProviderRouteImport.update({
   id: '/api/oauth/$provider',
@@ -530,6 +554,7 @@ export interface FileRoutesByFullPath {
   '/github/callback': typeof GithubCallbackRoute
   '/google/callback': typeof GoogleCallbackRoute
   '/help/faq': typeof HelpFaqRoute
+  '/images/$imageChatId': typeof ImagesImageChatIdRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
   '/projects/new': typeof ProjectsNewRoute
@@ -544,10 +569,13 @@ export interface FileRoutesByFullPath {
   '/studio/images': typeof StudioImagesRoute
   '/studio/videos': typeof StudioVideosRoute
   '/verify/$': typeof VerifySplatRoute
+  '/videos/$videoChatId': typeof VideosVideoChatIdRoute
   '/admin/': typeof AdminIndexRoute
   '/chat/': typeof ChatIndexRoute
+  '/images/': typeof ImagesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/videos/': typeof VideosIndexRoute
   '/api/oauth/$provider': typeof ApiOauthProviderRoute
   '/auth/github/callback': typeof AuthGithubCallbackRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
@@ -607,6 +635,7 @@ export interface FileRoutesByTo {
   '/github/callback': typeof GithubCallbackRoute
   '/google/callback': typeof GoogleCallbackRoute
   '/help/faq': typeof HelpFaqRoute
+  '/images/$imageChatId': typeof ImagesImageChatIdRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
   '/projects/new': typeof ProjectsNewRoute
@@ -621,10 +650,13 @@ export interface FileRoutesByTo {
   '/studio/images': typeof StudioImagesRoute
   '/studio/videos': typeof StudioVideosRoute
   '/verify/$': typeof VerifySplatRoute
+  '/videos/$videoChatId': typeof VideosVideoChatIdRoute
   '/admin': typeof AdminIndexRoute
   '/chat': typeof ChatIndexRoute
+  '/images': typeof ImagesIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/videos': typeof VideosIndexRoute
   '/api/oauth/$provider': typeof ApiOauthProviderRoute
   '/auth/github/callback': typeof AuthGithubCallbackRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
@@ -687,6 +719,7 @@ export interface FileRoutesById {
   '/github/callback': typeof GithubCallbackRoute
   '/google/callback': typeof GoogleCallbackRoute
   '/help/faq': typeof HelpFaqRoute
+  '/images/$imageChatId': typeof ImagesImageChatIdRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/terms': typeof LegalTermsRoute
   '/projects/new': typeof ProjectsNewRoute
@@ -701,10 +734,13 @@ export interface FileRoutesById {
   '/studio/images': typeof StudioImagesRoute
   '/studio/videos': typeof StudioVideosRoute
   '/verify/$': typeof VerifySplatRoute
+  '/videos/$videoChatId': typeof VideosVideoChatIdRoute
   '/admin/': typeof AdminIndexRoute
   '/chat/': typeof ChatIndexRoute
+  '/images/': typeof ImagesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/videos/': typeof VideosIndexRoute
   '/api/oauth/$provider': typeof ApiOauthProviderRoute
   '/auth/github/callback': typeof AuthGithubCallbackRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
@@ -768,6 +804,7 @@ export interface FileRouteTypes {
     | '/github/callback'
     | '/google/callback'
     | '/help/faq'
+    | '/images/$imageChatId'
     | '/legal/privacy'
     | '/legal/terms'
     | '/projects/new'
@@ -782,10 +819,13 @@ export interface FileRouteTypes {
     | '/studio/images'
     | '/studio/videos'
     | '/verify/$'
+    | '/videos/$videoChatId'
     | '/admin/'
     | '/chat/'
+    | '/images/'
     | '/projects/'
     | '/settings/'
+    | '/videos/'
     | '/api/oauth/$provider'
     | '/auth/github/callback'
     | '/auth/google/callback'
@@ -845,6 +885,7 @@ export interface FileRouteTypes {
     | '/github/callback'
     | '/google/callback'
     | '/help/faq'
+    | '/images/$imageChatId'
     | '/legal/privacy'
     | '/legal/terms'
     | '/projects/new'
@@ -859,10 +900,13 @@ export interface FileRouteTypes {
     | '/studio/images'
     | '/studio/videos'
     | '/verify/$'
+    | '/videos/$videoChatId'
     | '/admin'
     | '/chat'
+    | '/images'
     | '/projects'
     | '/settings'
+    | '/videos'
     | '/api/oauth/$provider'
     | '/auth/github/callback'
     | '/auth/google/callback'
@@ -924,6 +968,7 @@ export interface FileRouteTypes {
     | '/github/callback'
     | '/google/callback'
     | '/help/faq'
+    | '/images/$imageChatId'
     | '/legal/privacy'
     | '/legal/terms'
     | '/projects/new'
@@ -938,10 +983,13 @@ export interface FileRouteTypes {
     | '/studio/images'
     | '/studio/videos'
     | '/verify/$'
+    | '/videos/$videoChatId'
     | '/admin/'
     | '/chat/'
+    | '/images/'
     | '/projects/'
     | '/settings/'
+    | '/videos/'
     | '/api/oauth/$provider'
     | '/auth/github/callback'
     | '/auth/google/callback'
@@ -979,13 +1027,17 @@ export interface RootRouteChildren {
   GithubCallbackRoute: typeof GithubCallbackRoute
   GoogleCallbackRoute: typeof GoogleCallbackRoute
   HelpFaqRoute: typeof HelpFaqRoute
+  ImagesImageChatIdRoute: typeof ImagesImageChatIdRoute
   LegalPrivacyRoute: typeof LegalPrivacyRoute
   LegalTermsRoute: typeof LegalTermsRoute
   ProjectsNewRoute: typeof ProjectsNewRoute
   StudioImagesRoute: typeof StudioImagesRoute
   StudioVideosRoute: typeof StudioVideosRoute
+  VideosVideoChatIdRoute: typeof VideosVideoChatIdRoute
   ChatIndexRoute: typeof ChatIndexRoute
+  ImagesIndexRoute: typeof ImagesIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  VideosIndexRoute: typeof VideosIndexRoute
   ApiOauthProviderRoute: typeof ApiOauthProviderRoute
 }
 
@@ -1383,6 +1435,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpFaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/images/': {
+      id: '/images/'
+      path: '/images'
+      fullPath: '/images/'
+      preLoaderRoute: typeof ImagesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/images/$imageChatId': {
+      id: '/images/$imageChatId'
+      path: '/images/$imageChatId'
+      fullPath: '/images/$imageChatId'
+      preLoaderRoute: typeof ImagesImageChatIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/legal/privacy': {
       id: '/legal/privacy'
       path: '/legal/privacy'
@@ -1494,6 +1560,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/verify/$'
       preLoaderRoute: typeof VerifySplatRouteImport
       parentRoute: typeof VerifyRoute
+    }
+    '/videos/': {
+      id: '/videos/'
+      path: '/videos'
+      fullPath: '/videos/'
+      preLoaderRoute: typeof VideosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/videos/$videoChatId': {
+      id: '/videos/$videoChatId'
+      path: '/videos/$videoChatId'
+      fullPath: '/videos/$videoChatId'
+      preLoaderRoute: typeof VideosVideoChatIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/oauth/$provider': {
       id: '/api/oauth/$provider'
@@ -1696,13 +1776,17 @@ const rootRouteChildren: RootRouteChildren = {
   GithubCallbackRoute: GithubCallbackRoute,
   GoogleCallbackRoute: GoogleCallbackRoute,
   HelpFaqRoute: HelpFaqRoute,
+  ImagesImageChatIdRoute: ImagesImageChatIdRoute,
   LegalPrivacyRoute: LegalPrivacyRoute,
   LegalTermsRoute: LegalTermsRoute,
   ProjectsNewRoute: ProjectsNewRoute,
   StudioImagesRoute: StudioImagesRoute,
   StudioVideosRoute: StudioVideosRoute,
+  VideosVideoChatIdRoute: VideosVideoChatIdRoute,
   ChatIndexRoute: ChatIndexRoute,
+  ImagesIndexRoute: ImagesIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  VideosIndexRoute: VideosIndexRoute,
   ApiOauthProviderRoute: ApiOauthProviderRoute,
 }
 export const routeTree = rootRouteImport
