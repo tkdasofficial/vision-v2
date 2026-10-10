@@ -64,6 +64,7 @@ import { Route as GoogleCallbackRouteImport } from './routes/google.callback'
 import { Route as VerifyConfirmPasswordRouteImport } from './routes/verify.confirm-password'
 import { Route as ApiAuthProviderRouteImport } from './routes/api/auth.$provider'
 import { Route as AppChatChatIdRouteImport } from './routes/app.chat.$chatId'
+import { Route as AppDocDocIdRouteImport } from './routes/app.doc.$docId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -341,6 +342,11 @@ const AppChatChatIdRoute = AppChatChatIdRouteImport.update({
   path: '/app/chat/$chatId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppDocDocIdRoute = AppDocDocIdRouteImport.update({
+  id: '/app/doc/$docId',
+  path: '/app/doc/$docId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -398,6 +404,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
+  '/app/doc/$docId': typeof AppDocDocIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -454,6 +461,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
+  '/app/doc/$docId': typeof AppDocDocIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -512,6 +520,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
+  '/app/doc/$docId': typeof AppDocDocIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -571,6 +580,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
+    | '/app/doc/$docId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -627,6 +637,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
+    | '/app/doc/$docId'
   id:
     | '__root__'
     | '/'
@@ -684,6 +695,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
+    | '/app/doc/$docId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -720,6 +732,7 @@ export interface RootRouteChildren {
   GoogleCallbackRoute: typeof GoogleCallbackRoute
   ApiAuthProviderRoute: typeof ApiAuthProviderRoute
   AppChatChatIdRoute: typeof AppChatChatIdRoute
+  AppDocDocIdRoute: typeof AppDocDocIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1109,6 +1122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChatChatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/doc/$docId': {
+      id: '/app/doc/$docId'
+      path: '/app/doc/$docId'
+      fullPath: '/app/doc/$docId'
+      preLoaderRoute: typeof AppDocDocIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1225,6 +1245,7 @@ const rootRouteChildren: RootRouteChildren = {
   GoogleCallbackRoute: GoogleCallbackRoute,
   ApiAuthProviderRoute: ApiAuthProviderRoute,
   AppChatChatIdRoute: AppChatChatIdRoute,
+  AppDocDocIdRoute: AppDocDocIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

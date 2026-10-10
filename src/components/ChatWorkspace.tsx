@@ -16,7 +16,8 @@ import TypingIndicator, { detectPhase, type ThinkingPhase } from "./TypingIndica
 import { detectAspectRatio } from "@/lib/detect-aspect-ratio";
 import { getCategory } from "@/lib/file-converter";
 import { analyzeZip } from "@/lib/zip-analyzer";
-import type { TaskMode } from "./TaskModeSelector";
+import type { ChatMode } from "@/lib/ai/modes";
+import { saveDocumentFn } from "@/lib/cloud/documents.functions";
 import { useBackgroundTasks, type BackgroundTask } from "@/hooks/useBackgroundTasks";
 import { supabase, AI_FEATURE_UNAVAILABLE } from "@/lib/cloud/client";
 import { streamChat } from "@/lib/cloud/chat-stream";
@@ -183,7 +184,7 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
     };
   }, [chatId, user, isIncognito]);
 
-  const handleSend = useCallback(async (content: string, imageData?: { base64: string; mimeType: string }, taskMode?: TaskMode) => {
+  const handleSend = useCallback(async (content: string, imageData?: { base64: string; mimeType: string }, taskMode?: ChatMode) => {
     if (creationMode) {
       setCreationError(AI_FEATURE_UNAVAILABLE);
       return;
@@ -203,7 +204,7 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
       setIsTyping(true);
       const history = [...messages, userMsg].map((m) => ({ role: m.role, content: m.content }));
       try {
-        const reply = await streamChat(history, () => {}, tool?.id);
+        const reply = await streamChat(history, () => {}, tool?.id, { mode: taskMode });
         setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "assistant", content: reply || "I couldn't come up with an answer.", timestamp: new Date() }]);
       } catch (e: any) {
         setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "assistant", content: `Sorry, an error occurred: ${e.message}`, timestamp: new Date() }]);
@@ -259,8 +260,8 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
     }
 
     // Designer mode: detect if it's a UI/web design request vs image generation
-    const isUIDesign = taskMode === "designer" && /\b(ui|ux|website|web\s*app|mobile\s*app|landing\s*page|dashboard|layout|wireframe|mockup|prototype|interface|screen|page\s*design|app\s*design|redesign)\b/i.test(content);
-    const isImageGen = (taskMode === "designer" && !isUIDesign) || tool?.id === "image-generator" || /\b(generate|create|make|draw|design)\b.*\b(image|picture|photo|illustration|graphic|visual|thumbnail|art|logo|icon|banner|poster|flyer|infographic|meme)\b/i.test(content);
+    const isUIDesign = false && /\b(ui|ux|website|web\s*app|mobile\s*app|landing\s*page|dashboard|layout|wireframe|mockup|prototype|interface|screen|page\s*design|app\s*design|redesign)\b/i.test(content);
+    const isImageGen = tool?.id === "image-generator" || /\b(generate|create|make|draw|design)\b.*\b(image|picture|photo|illustration|graphic|visual|thumbnail|art|logo|icon|banner|poster|flyer|infographic|meme)\b/i.test(content);
     const detectedRatio = detectAspectRatio(content);
     const isImageToImage = imageData && isImageGen;
 
@@ -395,7 +396,7 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
     }
 
     // Agent mode: web apps & games (2D/3D) builder detection
-    const isAgent = taskMode === "agent" || /\b(build|create|make|generate)\b.*\b(web\s*app|website|landing\s*page|dashboard|portfolio|SPA|single.page.app|game|2d|3d|platformer|rpg|puzzle|arcade|shooter|racing|runner|fighting|tower.defense|card.game|tetris|snake|pong|breakout|flappy|chess|checkers|fps|open.world|sandbox|survival|roguelike|roguelite|metroidvania|beat.em.up|rhythm|simulation|strategy|mmorpg|moba|battle.royale)\b/i.test(content);
+    const isAgent = (!taskMode || taskMode === "default") && /\b(build|create|make|generate)\b.*\b(web\s*app|website|landing\s*page|dashboard|portfolio|SPA|single.page.app|game|2d|3d|platformer|rpg|puzzle|arcade|shooter|racing|runner|fighting|tower.defense|card.game|tetris|snake|pong|breakout|flappy|chess|checkers|fps|open.world|sandbox|survival|roguelike|roguelite|metroidvania|beat.em.up|rhythm|simulation|strategy|mmorpg|moba|battle.royale)\b/i.test(content);
 
     if (isAgent) {
       try {
@@ -565,7 +566,7 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
     }
 
     // Stock footage search for video mode
-    const isVideoSearch = taskMode === "video" || /\b(stock\s*(footage|video|clip)|b[\s-]*roll|video\s*clip)\b/i.test(content);
+    const isVideoSearch = /\b(stock\s*(footage|video|clip)|b[\s-]*roll|video\s*clip)\b/i.test(content);
     if (isVideoSearch) {
       try {
         // Extract search query - use Gemini to parse intent or fall back to content
@@ -688,6 +689,7 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
 
       const replyId = crypto.randomUUID();
       let started = false;
+      let meta: { executionMode: string; output: string } = { executionMode: "default", output: "chat" };
       const finalText = await streamChat(chatMessages, (full) => {
         const visible = full.replace(/<think>[\s\S]*?(<\/think>|$)/g, "").trimStart();
         if (!visible) return;
@@ -695,14 +697,23 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
         setMessages((prev) => prev.some((m) => m.id === replyId)
           ? prev.map((m) => (m.id === replyId ? { ...m, content: visible } : m))
           : [...prev, { id: replyId, role: "assistant", content: visible, timestamp: new Date(), toolId: tool?.id }]);
-      }, tool?.id);
+      }, tool?.id, { mode: taskMode, onMeta: (m) => { meta = m; } });
+      const replyText = finalText || "I couldn't come up with an answer. Please try again.";
+      let reply: ChatMessageType = { id: replyId, role: "assistant", content: replyText, timestamp: new Date(), toolId: tool?.id, executionMode: meta.executionMode };
+      // Research reports become a saved document shown as a compact card (saved once per reply).
+      if (meta.output === "document" && finalText) {
+        try {
+          const title = finalText.match(/^#\s+(.+)$/m)?.[1]?.trim() || content.slice(0, 80);
+          reply = { ...reply, document: await saveDocumentFn({ data: { title, content: finalText } }) };
+        } catch { /* keep the report as a normal chat reply */ }
+      }
       setMessages((prev) => prev.some((m) => m.id === replyId)
-        ? prev.map((m) => (m.id === replyId ? { ...m, content: finalText || m.content } : m))
-        : [...prev, { id: replyId, role: "assistant", content: finalText || "I couldn't come up with an answer. Please try again.", timestamp: new Date(), toolId: tool?.id }]);
+        ? prev.map((m) => (m.id === replyId ? reply : m))
+        : [...prev, reply]);
       clearTimeout(phaseTimer);
       setIsTyping(false);
       // Save the reply even if this screen was replaced while it streamed.
-      if (sessionId) updateChatMessages(sessionId, [...messages, userMsg, { id: replyId, role: "assistant", content: finalText || "I couldn't come up with an answer. Please try again.", timestamp: new Date(), toolId: tool?.id }]);
+      if (sessionId) updateChatMessages(sessionId, [...messages, userMsg, reply]);
     } catch (e: any) {
       setMessages((prev) => [...prev, {
         id: (Date.now() + 1).toString(),

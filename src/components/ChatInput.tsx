@@ -3,14 +3,15 @@ import { ArrowUp, Paperclip, Mic, MicOff, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PromptInput, PromptInputTextarea, PromptInputFooter, PromptInputSubmit } from "@/components/ai-elements/prompt-input";
-import TaskModeSelector, { type TaskMode } from "./TaskModeSelector";
+import ModeSelector from "./ModeSelector";
+import type { ChatMode } from "@/lib/ai/modes";
 import type { CreationMode } from "@/lib/creation-references";
 import { appendTranscript } from "@/lib/append-transcript";
 
 type Props = {
   toolName?: string;
   creationMode?: CreationMode;
-  onSend: (message: string, imageData?: { base64: string; mimeType: string }, taskMode?: TaskMode) => void;
+  onSend: (message: string, imageData?: { base64: string; mimeType: string }, taskMode?: ChatMode) => void;
   onZipUpload?: (file: File) => void;
   onFileConvert?: (file: File) => void;
   disabled?: boolean;
@@ -19,7 +20,7 @@ type Props = {
 const ChatInput = ({ toolName, onSend, onZipUpload, onFileConvert, disabled, creationMode }: Props) => {
   const [value, setValue] = useState("");
   const [attachedImage, setAttachedImage] = useState<{ base64: string; mimeType: string; preview: string } | null>(null);
-  const [taskMode, setTaskMode] = useState<TaskMode>("general");
+  const [taskMode, setTaskMode] = useState<ChatMode>("default");
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
   const finalTranscriptRef = useRef("");
@@ -238,7 +239,7 @@ const ChatInput = ({ toolName, onSend, onZipUpload, onFileConvert, disabled, cre
               >
                 <Paperclip className="w-[18px] h-[18px]" />
                </Button>
-              {!creationMode && <TaskModeSelector selectedMode={taskMode} onModeChange={setTaskMode} />}
+              {!creationMode && <ModeSelector selectedMode={taskMode} onModeChange={setTaskMode} />}
             </div>
 
             <div className={cn(

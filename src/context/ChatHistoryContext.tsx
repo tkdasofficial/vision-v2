@@ -84,6 +84,8 @@ function buildMetadata(msg: ChatMessage): Record<string, any> {
   if (msg.videoGeneration) meta.videoGeneration = msg.videoGeneration;
   if (msg.videoEdit) meta.videoEdit = msg.videoEdit;
   if (msg.webApp) meta.webApp = msg.webApp;
+  if (msg.document) meta.document = msg.document;
+  if (msg.executionMode) meta.executionMode = msg.executionMode;
   return meta;
 }
 
@@ -101,6 +103,8 @@ function rowToMessage(row: any): ChatMessage {
     videoGeneration: meta.videoGeneration,
     videoEdit: meta.videoEdit,
     webApp: meta.webApp,
+    document: meta.document,
+    executionMode: meta.executionMode,
   };
 }
 
