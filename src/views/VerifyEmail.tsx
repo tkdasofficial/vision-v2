@@ -59,7 +59,7 @@ const VerifyEmail = () => {
       <div className="w-full max-w-sm mx-auto flex-1 flex flex-col justify-center gap-8">
         <div className="space-y-2">
           <img src={logo} alt="Vision" className="w-12 h-12 rounded-2xl" />
-          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground pt-4">{isReset ? "Reset your password" : "Verify your email"}</h1>
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground pt-4">{isReset ? "Enter your code" : "Verify your email"}</h1>
           <p className="text-sm text-muted-foreground">
             We sent an 8-digit code to <span className="font-medium text-foreground">{email}</span>
           </p>

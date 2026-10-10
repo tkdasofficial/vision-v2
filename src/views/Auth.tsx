@@ -250,7 +250,7 @@ const Auth = () => {
         <div className="space-y-2">
           <img src={logo} alt="Vision" className="w-12 h-12 rounded-2xl" />
           <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground pt-4">
-            {mode === "login" ? "Log in" : mode === "signup" ? "Create account" : "Reset password"}
+            {mode === "login" ? "Log in" : mode === "signup" ? "Create account" : "Forgot password"}
           </h1>
           {mode === "forgot" && (
             <p className="text-sm text-muted-foreground">
