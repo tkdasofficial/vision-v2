@@ -11,3 +11,7 @@
 - [ ] Point workers.dev proxy at the published app URL (needs app published)
 - [ ] End-to-end check of real Google/GitHub sign-in and a real file upload after publish
 - [x] Security system: signup risk pipeline (email + OAuth), anti-bot hints, CF-IP network limits, OTP keyed hashing/atomic consume, session rotation + cap, CSRF checks, one-time welcome credit ledger, audit/redaction, chat/upload limits
+- [x] Central Cloudflare auth gateway (vision-auth Worker): Google/GitHub OAuth, worker-only credentials, allowlisted return origins, signed single-use assertions
+- [ ] Add gateway callback URLs in Google Cloud Console and GitHub OAuth App (user action)
+- [ ] Real Google/GitHub sign-in check after dashboards are updated
+- [ ] Add the published/custom domain to ALLOWED_RETURN_ORIGINS once published
