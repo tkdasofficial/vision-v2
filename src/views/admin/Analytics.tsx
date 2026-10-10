@@ -133,7 +133,7 @@ const AdminAnalytics = () => {
         ].map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.label} className="rounded-xl border border-border bg-card p-4">
+            <div key={card.label} className="rounded-2xl border border-border px-5 py-4">
               <div className="flex items-center gap-2 mb-1">
                 <Icon className="w-4 h-4 text-primary" />
                 <span className="text-xs text-muted-foreground">{card.label}</span>

@@ -74,7 +74,7 @@ const AdminSupport = () => {
         filtered.length === 0 ? <div className="py-20 text-center text-sm text-muted-foreground">No tickets in this view.</div> : (
         <div className="space-y-2">
           {filtered.map((t) => (
-            <div key={t.id} className="rounded-xl border border-border bg-card p-4">
+            <div key={t.id} className="rounded-2xl border border-border px-5 py-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">

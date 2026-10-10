@@ -30,19 +30,18 @@ const Support = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
-      <header className="flex items-center justify-between px-4 py-3 bg-transparent">
-        <button onClick={() => navigate(-1)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+      <header className="px-6 pt-6">
+        <button onClick={() => navigate(-1)} aria-label="Go back" className="-ml-2 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-sm font-display font-semibold text-foreground">Support</h1>
-        <span className="w-9" aria-hidden="true" />
       </header>
 
-      <div className="flex-1 px-4 py-6 sm:px-6 overflow-y-auto">
+      <div className="flex-1 px-6 pt-4 pb-12 overflow-y-auto">
         <div className="max-w-lg mx-auto space-y-6">
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-8">Support</h1>
           {/* Quick links */}
           <section>
-            <h2 className="font-display text-lg font-semibold text-foreground mb-4">How can we help?</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">How can we help?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 { icon: HelpCircle, label: "FAQ", desc: "Common questions answered", link: "#" },
@@ -63,7 +62,7 @@ const Support = () => {
 
           {/* Contact form */}
           <section>
-            <h2 className="font-display text-lg font-semibold text-foreground mb-4">Send a message</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Send a message</h2>
             {submitted ? (
               <div className="rounded-xl border border-border bg-card p-6 text-center animate-fade-up">
                 <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-3">
@@ -81,27 +80,27 @@ const Support = () => {
             ) : (
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Subject</label>
+                  <label className="text-sm font-medium text-foreground mb-1.5 block">Subject</label>
                   <input
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     placeholder="What do you need help with?"
-                    className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-foreground/20 transition-colors"
+                    className="w-full border border-border text-sm text-foreground outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Message</label>
+                  <label className="text-sm font-medium text-foreground mb-1.5 block">Message</label>
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Describe your issue or question..."
                     rows={4}
-                    className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-foreground/20 transition-colors resize-none"
+                    className="w-full border border-border text-sm text-foreground outline-none resize-none px-4 py-3 rounded-2xl bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Priority</label>
-                  <select value={priority} onChange={(e) => setPriority(e.target.value)} className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground outline-none">
+                  <label className="text-sm font-medium text-foreground mb-1.5 block">Priority</label>
+                  <select value={priority} onChange={(e) => setPriority(e.target.value)} className="w-full border border-border text-sm text-foreground outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors">
                     <option value="low">Low</option>
                     <option value="normal">Normal</option>
                     <option value="high">High</option>
@@ -111,7 +110,7 @@ const Support = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!subject.trim() || !message.trim() || submitting}
-                  className="w-full py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
                 >
                   {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
                   Send message

@@ -198,7 +198,7 @@ export default function Prospecting() {
               <Field className="md:col-span-2" label="Industry / niche" value={webNiche} onChange={setWebNiche} placeholder="e.g. food companies in Mumbai" />
               <Field label="Target count" type="number" value={webTarget} onChange={(v: any) => setWebTarget(Number(v))} />
               <div className="flex items-end">
-                <button onClick={startWeb} disabled={running} className="w-full px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                <button onClick={startWeb} disabled={running} className="w-full px-4 py-3 rounded-full bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50">
                   <Play className="w-4 h-4" />Discover companies
                 </button>
               </div>
@@ -278,7 +278,7 @@ export default function Prospecting() {
                 placeholder="jane@acme.com, ops@studio.io" />
             </div>
             <div className="flex items-end">
-              <button onClick={addManualLeads} className="w-full px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2">
+              <button onClick={addManualLeads} className="w-full px-4 py-3 rounded-full bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2">
                 <UserPlus className="w-4 h-4" />Add to board
               </button>
             </div>
@@ -321,7 +321,7 @@ function Field({ label, value, onChange, placeholder, type = "text", className =
     <div className={className}>
       <label className="text-xs text-muted-foreground">{label}</label>
       <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-        className="mt-1 w-full px-3 py-2 rounded-lg bg-background border border-border text-sm outline-none focus:border-foreground/40" />
+        className="mt-1 w-full border border-border text-sm outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors" />
     </div>
   );
 }

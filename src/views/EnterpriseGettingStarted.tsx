@@ -93,7 +93,7 @@ const EnterpriseGettingStarted = () => {
           </div>
         </div>
 
-        <button onClick={submit} disabled={!valid || saving} className="w-full h-11 rounded-full bg-foreground text-background text-sm font-medium disabled:opacity-40">
+        <button onClick={submit} disabled={!valid || saving} className="w-full h-12 rounded-full bg-foreground text-background text-sm font-medium disabled:opacity-40">
           {saving ? "Saving…" : "Continue"}
         </button>
       </div>

@@ -6,17 +6,15 @@ const Terms = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
-      <header className="flex items-center justify-between px-4 py-3 bg-transparent">
-        <button onClick={() => navigate(-1)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+      <header className="px-6 pt-6">
+        <button onClick={() => navigate(-1)} aria-label="Go back" className="-ml-2 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-sm font-display font-semibold text-foreground">Terms & Conditions</h1>
-        <span className="w-9" aria-hidden="true" />
       </header>
 
-      <div className="flex-1 px-4 py-6 sm:px-6 overflow-y-auto">
+      <div className="flex-1 px-6 pt-4 pb-12 overflow-y-auto">
         <div className="max-w-lg mx-auto prose-sm">
-          <h2 className="font-display text-lg font-semibold text-foreground mb-4">Terms of Service</h2>
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-8">Terms & Conditions</h1>
           <p className="text-sm text-muted-foreground mb-4">Last updated: March 6, 2026</p>
 
           {[

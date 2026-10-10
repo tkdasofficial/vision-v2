@@ -61,20 +61,20 @@ const AdminNotifications = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
-          className="w-full px-3 py-2.5 rounded-full border border-border bg-background text-sm text-foreground outline-none focus:border-foreground/20 transition-colors"
+          className="w-full border border-border text-sm text-foreground outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors"
         />
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Message"
           rows={3}
-          className="w-full px-3 py-2.5 rounded-full border border-border bg-background text-sm text-foreground outline-none focus:border-foreground/20 transition-colors resize-none"
+          className="w-full border border-border text-sm text-foreground outline-none resize-none px-4 py-3 rounded-2xl bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors"
         />
         <div className="flex items-center gap-3">
           <select
             value={target}
             onChange={(e) => setTarget(e.target.value)}
-            className="px-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none"
+            className="border border-border text-sm text-foreground outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors"
           >
             <option value="all">All Users</option>
             <option value="free">Free Users</option>

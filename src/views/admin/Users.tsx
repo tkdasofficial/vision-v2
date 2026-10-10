@@ -151,12 +151,12 @@ const AdminUsers = () => {
               className="pl-9 pr-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none focus:border-primary/40 transition-colors w-48"
             />
           </div>
-          <select value={filterPlan} onChange={(e) => setFilterPlan(e.target.value)} className="px-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none">
+          <select value={filterPlan} onChange={(e) => setFilterPlan(e.target.value)} className="border border-border text-sm text-foreground outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors">
             <option value="all">All Plans</option>
             {PLAN_OPTIONS.map((p) => <option key={p} value={p}>{p}</option>)}
           </select>
 
-          <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)} className="px-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none">
+          <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)} className="border border-border text-sm text-foreground outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors">
             <option value="all">All Roles</option>
             <option value="admin">Admins</option>
             <option value="user">Users</option>
