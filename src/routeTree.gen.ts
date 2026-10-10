@@ -74,6 +74,7 @@ import { Route as AppSettingsChatHistoryRouteImport } from './routes/app.setting
 import { Route as AppSettingsLanguageRouteImport } from './routes/app.settings.language'
 import { Route as AppSettingsNotificationsRouteImport } from './routes/app.settings.notifications'
 import { Route as AppSettingsPrivacyDataRouteImport } from './routes/app.settings.privacy-data'
+import { Route as AppSettingsResetPasswordRouteImport } from './routes/app.settings.reset-password'
 import { Route as AppSettingsSecurityRouteImport } from './routes/app.settings.security'
 
 const IndexRoute = IndexRouteImport.update({
@@ -405,6 +406,12 @@ const AppSettingsPrivacyDataRoute = AppSettingsPrivacyDataRouteImport.update({
   path: '/privacy-data',
   getParentRoute: () => AppSettingsRoute,
 } as any)
+const AppSettingsResetPasswordRoute =
+  AppSettingsResetPasswordRouteImport.update({
+    id: '/reset-password',
+    path: '/reset-password',
+    getParentRoute: () => AppSettingsRoute,
+  } as any)
 const AppSettingsSecurityRoute = AppSettingsSecurityRouteImport.update({
   id: '/security',
   path: '/security',
@@ -476,6 +483,7 @@ export interface FileRoutesByFullPath {
   '/app/settings/language': typeof AppSettingsLanguageRoute
   '/app/settings/notifications': typeof AppSettingsNotificationsRoute
   '/app/settings/privacy-data': typeof AppSettingsPrivacyDataRoute
+  '/app/settings/reset-password': typeof AppSettingsResetPasswordRoute
   '/app/settings/security': typeof AppSettingsSecurityRoute
   '/app/settings/': typeof AppSettingsIndexRoute
 }
@@ -542,6 +550,7 @@ export interface FileRoutesByTo {
   '/app/settings/language': typeof AppSettingsLanguageRoute
   '/app/settings/notifications': typeof AppSettingsNotificationsRoute
   '/app/settings/privacy-data': typeof AppSettingsPrivacyDataRoute
+  '/app/settings/reset-password': typeof AppSettingsResetPasswordRoute
   '/app/settings/security': typeof AppSettingsSecurityRoute
   '/app/settings': typeof AppSettingsIndexRoute
 }
@@ -611,6 +620,7 @@ export interface FileRoutesById {
   '/app/settings/language': typeof AppSettingsLanguageRoute
   '/app/settings/notifications': typeof AppSettingsNotificationsRoute
   '/app/settings/privacy-data': typeof AppSettingsPrivacyDataRoute
+  '/app/settings/reset-password': typeof AppSettingsResetPasswordRoute
   '/app/settings/security': typeof AppSettingsSecurityRoute
   '/app/settings/': typeof AppSettingsIndexRoute
 }
@@ -681,6 +691,7 @@ export interface FileRouteTypes {
     | '/app/settings/language'
     | '/app/settings/notifications'
     | '/app/settings/privacy-data'
+    | '/app/settings/reset-password'
     | '/app/settings/security'
     | '/app/settings/'
   fileRoutesByTo: FileRoutesByTo
@@ -747,6 +758,7 @@ export interface FileRouteTypes {
     | '/app/settings/language'
     | '/app/settings/notifications'
     | '/app/settings/privacy-data'
+    | '/app/settings/reset-password'
     | '/app/settings/security'
     | '/app/settings'
   id:
@@ -815,6 +827,7 @@ export interface FileRouteTypes {
     | '/app/settings/language'
     | '/app/settings/notifications'
     | '/app/settings/privacy-data'
+    | '/app/settings/reset-password'
     | '/app/settings/security'
     | '/app/settings/'
   fileRoutesById: FileRoutesById
@@ -1313,6 +1326,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsPrivacyDataRouteImport
       parentRoute: typeof AppSettingsRoute
     }
+    '/app/settings/reset-password': {
+      id: '/app/settings/reset-password'
+      path: '/reset-password'
+      fullPath: '/app/settings/reset-password'
+      preLoaderRoute: typeof AppSettingsResetPasswordRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
     '/app/settings/security': {
       id: '/app/settings/security'
       path: '/security'
@@ -1411,6 +1431,7 @@ interface AppSettingsRouteChildren {
   AppSettingsLanguageRoute: typeof AppSettingsLanguageRoute
   AppSettingsNotificationsRoute: typeof AppSettingsNotificationsRoute
   AppSettingsPrivacyDataRoute: typeof AppSettingsPrivacyDataRoute
+  AppSettingsResetPasswordRoute: typeof AppSettingsResetPasswordRoute
   AppSettingsSecurityRoute: typeof AppSettingsSecurityRoute
   AppSettingsIndexRoute: typeof AppSettingsIndexRoute
 }
@@ -1424,6 +1445,7 @@ const AppSettingsRouteChildren: AppSettingsRouteChildren = {
   AppSettingsLanguageRoute: AppSettingsLanguageRoute,
   AppSettingsNotificationsRoute: AppSettingsNotificationsRoute,
   AppSettingsPrivacyDataRoute: AppSettingsPrivacyDataRoute,
+  AppSettingsResetPasswordRoute: AppSettingsResetPasswordRoute,
   AppSettingsSecurityRoute: AppSettingsSecurityRoute,
   AppSettingsIndexRoute: AppSettingsIndexRoute,
 }
