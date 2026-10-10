@@ -24,6 +24,7 @@ export function RouteGuard({ children }: { children: ReactNode }) {
   if (access === "public" || access === "recovery") return <>{children}</>;
   if (loading) return <Loading offline={offline} />;
   if (access === "protected" && !user) {
+    if (location.pathname.startsWith("/admin")) return <Loading />;
     return <><Loading /><Navigate to={loginPathFor(location.href)} replace /></>;
   }
   if (access === "guest" && user) {
