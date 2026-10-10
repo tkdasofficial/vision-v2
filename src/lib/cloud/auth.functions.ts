@@ -210,6 +210,8 @@ export const requestPasswordResetFn = createServerFn({ method: "POST" })
 
 const RESET_COOKIE = "vision_reset";
 const RESET_TTL = 10 * 60;
+// SameSite=None + Partitioned so the ticket survives when the app runs inside an embedded preview frame; CSRF is still blocked by assertSameOrigin on every reset step.
+const RESET_COOKIE_OPTS = { httpOnly: true, secure: true, sameSite: "none" as const, partitioned: true, path: "/" };
 
 /** Step 1 of reset: checks the emailed code and issues a short-lived, single-use reset ticket (HttpOnly cookie). */
 export const verifyResetCodeFn = createServerFn({ method: "POST" })
@@ -243,7 +245,7 @@ export const verifyResetCodeFn = createServerFn({ method: "POST" })
     // One open ticket per account; the raw token only ever lives in the HttpOnly cookie.
     await d1("DELETE FROM password_reset_tickets WHERE user_id = ? OR expires_at < ?", [row.id, now]);
     await d1("INSERT INTO password_reset_tickets (token_hash, user_id, expires_at) VALUES (?, ?, ?)", [await a.sha256(ticket), row.id, now + RESET_TTL]);
-    setCookie(RESET_COOKIE, ticket, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: RESET_TTL });
+    setCookie(RESET_COOKIE, ticket, { ...RESET_COOKIE_OPTS, maxAge: RESET_TTL });
     await S.audit(S.d1Store, { type: "password.reset_code_verified", decision: "ALLOW", subject: row.id });
     return { ok: true, error: null };
   });
@@ -276,7 +278,7 @@ export const completePasswordResetFn = createServerFn({ method: "POST" })
     if (!ticket) return expired;
     // Atomic single use: the ticket row is deleted as it is read.
     const t: any = (await d1("DELETE FROM password_reset_tickets WHERE token_hash = ? AND expires_at >= ? RETURNING user_id", [await a.sha256(ticket), Math.floor(Date.now() / 1000)]))[0];
-    deleteCookie(RESET_COOKIE, { path: "/" });
+    deleteCookie(RESET_COOKIE, RESET_COOKIE_OPTS);
     if (!t) return expired;
     const row: any = (await d1("SELECT u.*, p.is_banned FROM auth_users u LEFT JOIN profiles p ON p.id = u.id WHERE u.id = ?", [t.user_id]))[0];
     if (!row) return expired;
