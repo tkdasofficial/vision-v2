@@ -19,6 +19,10 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        {
+          const { factsFrom, assertSameOrigin } = await import("@/lib/cloud/security.server");
+          try { assertSameOrigin(factsFrom(request.headers, null)); } catch (e: any) { return Response.json({ error: e.message }, { status: 403 }); }
+        }
         const { getCaller } = await import("@/lib/cloud/auth.server");
         const caller = await getCaller();
         if (!caller) return Response.json({ error: "Please sign in to chat." }, { status: 401 });

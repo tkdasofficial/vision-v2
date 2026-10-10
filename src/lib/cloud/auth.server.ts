@@ -78,12 +78,6 @@ export async function createUser(email: string, opts: { password?: string; metad
   return (await d1("SELECT * FROM auth_users WHERE id = ?", [id]))[0];
 }
 
-function requestInfo() {
-  try {
-    const { factsFrom } = require_facts();
-    return factsFrom;
-  } catch { return null; }
-}
 // Lightweight header read (avoids importing the security module eagerly).
 async function clientInfo(): Promise<{ ua: string; ip: string | null }> {
   try {
@@ -93,8 +87,6 @@ async function clientInfo(): Promise<{ ua: string; ip: string | null }> {
     return { ua: (h.get("user-agent") ?? "").slice(0, 300), ip };
   } catch { return { ua: "", ip: null }; }
 }
-function require_facts(): any { throw new Error("unused"); }
-void requestInfo;
 
 /** Issues a fresh session (rotating any current one), prunes expired ones, caps concurrent sessions, and records login history. */
 export async function startSession(userId: string) {
