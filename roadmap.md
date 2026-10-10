@@ -1,0 +1,13 @@
+# Vision workspace
+- [x] Rename all visible branding to Vision.
+- [x] Add Images, Videos, Library, Projects, and Integrations sidebar pages.
+- [x] Add creation-only workspaces with eight square scrollable references.
+- [x] Add applicable Library file-type filters.
+- [x] Update Projects header and add a separate creation page.
+- [x] Set AUTH_ORIGIN secret to https://vision-auth.tusharkantidasofficial.workers.dev
+- [x] Wire Google/GitHub OAuth using saved GOOGLE_/GITHUB_ client secrets (env names already matched)
+- [x] Google Drive storage: uploads go to Drive per-type sub-folders; records + links in D1 (user_files)
+- [x] SMTP via GOOGLE_APP_PASSWORD: 8-digit OTP verification, /auth/verify page, resend + rate limits
+- [ ] Point workers.dev proxy at the published app URL (needs app published)
+- [ ] End-to-end check of real Google/GitHub sign-in and a real file upload after publish
+- [x] Security system: signup risk pipeline (email + OAuth), anti-bot hints, CF-IP network limits, OTP keyed hashing/atomic consume, session rotation + cap, CSRF checks, one-time welcome credit ledger, audit/redaction, chat/upload limits
