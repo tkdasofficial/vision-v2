@@ -54,6 +54,7 @@ import { Route as AuthForgetPasswordRouteImport } from './routes/auth.forget-pas
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
 import { Route as AuthVerifyRouteImport } from './routes/auth.verify'
+import { Route as DocsFaqRouteImport } from './routes/docs.faq'
 import { Route as DocsPrivacyPolicyRouteImport } from './routes/docs.privacy-policy'
 import { Route as DocsTermsConditionsRouteImport } from './routes/docs.terms-conditions'
 import { Route as EnterpriseEmailRouteImport } from './routes/enterprise.email'
@@ -302,6 +303,11 @@ const AuthVerifyRoute = AuthVerifyRouteImport.update({
   path: '/verify',
   getParentRoute: () => AuthRoute,
 } as any)
+const DocsFaqRoute = DocsFaqRouteImport.update({
+  id: '/docs/faq',
+  path: '/docs/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DocsPrivacyPolicyRoute = DocsPrivacyPolicyRouteImport.update({
   id: '/docs/privacy-policy',
   path: '/docs/privacy-policy',
@@ -463,6 +469,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/auth/verify': typeof AuthVerifyRoute
+  '/docs/faq': typeof DocsFaqRoute
   '/docs/privacy-policy': typeof DocsPrivacyPolicyRoute
   '/docs/terms-conditions': typeof DocsTermsConditionsRoute
   '/enterprise/email': typeof EnterpriseEmailRoute
@@ -530,6 +537,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/auth/verify': typeof AuthVerifyRoute
+  '/docs/faq': typeof DocsFaqRoute
   '/docs/privacy-policy': typeof DocsPrivacyPolicyRoute
   '/docs/terms-conditions': typeof DocsTermsConditionsRoute
   '/enterprise/email': typeof EnterpriseEmailRoute
@@ -600,6 +608,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/auth/verify': typeof AuthVerifyRoute
+  '/docs/faq': typeof DocsFaqRoute
   '/docs/privacy-policy': typeof DocsPrivacyPolicyRoute
   '/docs/terms-conditions': typeof DocsTermsConditionsRoute
   '/enterprise/email': typeof EnterpriseEmailRoute
@@ -671,6 +680,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/auth/verify'
+    | '/docs/faq'
     | '/docs/privacy-policy'
     | '/docs/terms-conditions'
     | '/enterprise/email'
@@ -738,6 +748,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/auth/verify'
+    | '/docs/faq'
     | '/docs/privacy-policy'
     | '/docs/terms-conditions'
     | '/enterprise/email'
@@ -807,6 +818,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/auth/verify'
+    | '/docs/faq'
     | '/docs/privacy-policy'
     | '/docs/terms-conditions'
     | '/enterprise/email'
@@ -860,6 +872,7 @@ export interface RootRouteChildren {
   AppSupportRoute: typeof AppSupportRoute
   AppUpgradeRoute: typeof AppUpgradeRoute
   AppVideosRoute: typeof AppVideosRoute
+  DocsFaqRoute: typeof DocsFaqRoute
   DocsPrivacyPolicyRoute: typeof DocsPrivacyPolicyRoute
   DocsTermsConditionsRoute: typeof DocsTermsConditionsRoute
   GithubCallbackRoute: typeof GithubCallbackRoute
@@ -1186,6 +1199,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/docs/faq': {
+      id: '/docs/faq'
+      path: '/docs/faq'
+      fullPath: '/docs/faq'
+      preLoaderRoute: typeof DocsFaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/docs/privacy-policy': {
       id: '/docs/privacy-policy'
       path: '/docs/privacy-policy'
@@ -1482,6 +1502,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppSupportRoute: AppSupportRoute,
   AppUpgradeRoute: AppUpgradeRoute,
   AppVideosRoute: AppVideosRoute,
+  DocsFaqRoute: DocsFaqRoute,
   DocsPrivacyPolicyRoute: DocsPrivacyPolicyRoute,
   DocsTermsConditionsRoute: DocsTermsConditionsRoute,
   GithubCallbackRoute: GithubCallbackRoute,

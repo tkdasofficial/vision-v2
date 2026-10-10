@@ -67,8 +67,9 @@ class QueryBuilder implements PromiseLike<QueryResult> {
 type Listener = (event: string, session: any) => void;
 const authListeners = new Set<Listener>();
 let cached: { user: any } | null | undefined;
+let authGen = 0; // bumps on sign-in/out so a slower verification can't overwrite it
 const asSession = (user: any) => (user ? { user, access_token: "cookie", token_type: "bearer" } : null);
-const notify = (event: string, user: any) => { cached = user ? { user } : null; authListeners.forEach((fn) => setTimeout(() => fn(event, asSession(user)), 0)); };
+const notify = (event: string, user: any) => { authGen++; cached = user ? { user } : null; authListeners.forEach((fn) => setTimeout(() => fn(event, asSession(user)), 0)); };
 const authErr = (message: string | null) => (message ? { message, name: "AuthError", status: 400 } : null);
 const unavailable = (what: string) => ({ data: { user: null, session: null }, error: authErr(`${what} isn't available.`) });
 
@@ -78,16 +79,18 @@ let inflight: Promise<any> | null = null;
 async function loadUser() {
   if (cached !== undefined) return cached?.user ?? null;
   inflight ??= (async () => {
+    const gen = authGen;
     for (let i = 0; i < 4; i++) {
       try {
         const r = await getCurrentUser();
+        if (gen !== authGen) return cached?.user ?? null;
         cached = r.user ? { user: r.user } : null;
         return cached?.user ?? null;
       } catch {
         await new Promise((res) => setTimeout(res, 400 * 2 ** i));
       }
     }
-    return null; // not cached, so the next check asks the server again
+    throw new Error("Can't reach the server"); // unknown, not signed out; next check asks again
   })().finally(() => { inflight = null; });
   return inflight;
 }
@@ -117,8 +120,14 @@ const auth = {
     return { data: { provider, url: `/api/auth/${provider}` }, error: null };
   },
   async signOut() { await signOutFn(); notify("SIGNED_OUT", null); return { error: null }; },
-  async getSession() { return { data: { session: asSession(await loadUser()) }, error: null }; },
-  async getUser() { return { data: { user: await loadUser() }, error: null }; },
+  async getSession() {
+    try { return { data: { session: asSession(await loadUser()) }, error: null }; }
+    catch (e: any) { return { data: { session: null }, error: { message: e?.message ?? "Can't reach the server", name: "AuthRetryableFetchError", status: 0 } }; }
+  },
+  async getUser() {
+    try { return { data: { user: await loadUser() }, error: null }; }
+    catch (e: any) { return { data: { user: null }, error: { message: e?.message ?? "Can't reach the server", name: "AuthRetryableFetchError", status: 0 } }; }
+  },
   async updateUser(attrs: { password?: string; currentPassword?: string; data?: Row }) {
     const r = await updateUserFn({ data: attrs });
     if (r.user) notify("USER_UPDATED", r.user);
@@ -126,7 +135,7 @@ const auth = {
   },
   onAuthStateChange(cb: Listener) {
     authListeners.add(cb);
-    loadUser().then((u) => cb("INITIAL_SESSION", asSession(u)));
+    loadUser().then((u) => cb("INITIAL_SESSION", asSession(u)), () => { /* unknown: getSession reports it */ });
     return { data: { subscription: { unsubscribe: () => authListeners.delete(cb) } } };
   },
   async resetPasswordForEmail(email: string, _opts?: any) {

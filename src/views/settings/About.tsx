@@ -6,6 +6,7 @@ const links = [
   { to: "/app/support", label: "Help & Support" },
   { to: "/docs/terms-conditions", label: "Terms of Service" },
   { to: "/docs/privacy-policy", label: "Privacy Policy" },
+  { to: "/docs/faq", label: "FAQ" },
 ] as const;
 
 export default function About() {

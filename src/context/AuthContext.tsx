@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/cloud/client";
 import type { LocalUser as User, LocalSession as Session } from "@/lib/cloud/client";
 
@@ -15,6 +16,8 @@ type AuthContextType = {
   profile: Profile | null;
   isAdmin: boolean;
   loading: boolean;
+  /** The server couldn't be reached to confirm the session; still retrying. */
+  offline: boolean;
   signOut: () => Promise<void>;
 };
 
@@ -27,6 +30,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [offline, setOffline] = useState(false);
+  const queryClient = useQueryClient();
 
   const fetchProfile = async (userId: string) => {
     const { data } = await supabase
@@ -66,7 +71,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
+    const verify = () => supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (error) {
+        // Couldn't reach the server: stay in the loading state and try again, never sign out.
+        setOffline(true);
+        retryTimer = setTimeout(verify, 5000);
+        return;
+      }
+      setOffline(false);
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
@@ -75,12 +88,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       setLoading(false);
     });
+    verify();
 
-    return () => subscription.unsubscribe();
+    return () => { clearTimeout(retryTimer); subscription.unsubscribe(); };
   }, []);
 
   const signOut = async () => {
+    await queryClient.cancelQueries();
     await supabase.auth.signOut();
+    queryClient.clear();
     setUser(null);
     setSession(null);
     setProfile(null);
@@ -88,7 +104,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, profile, isAdmin, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, profile, isAdmin, loading, offline, signOut }}>
       {children}
     </AuthContext.Provider>
   );

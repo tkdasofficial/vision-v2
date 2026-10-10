@@ -1,15 +1,7 @@
 import type { ReactNode } from "react";
-import { useAuth } from "@/context/AuthContext";
-import { Navigate } from "@/lib/router-compat";
 
+// Access is enforced once, centrally, by RouteGuard in the root route (see src/lib/route-access.ts).
+// Kept as a marker so route files stay readable; it adds no second check.
 export function Protected({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth();
-  if (loading)
-    return (
-      <div className="min-h-[100dvh] bg-background flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
-      </div>
-    );
-  if (!user) return <Navigate to="/auth/login" replace />;
   return <>{children}</>;
 }
