@@ -14,4 +14,5 @@ export function isSameOriginRequest(req: RequestFacts, extraAllowedOrigins: stri
   }
 }
 
-export const SESSION_COOKIE_OPTIONS = { httpOnly: true, secure: true, sameSite: "lax" as const, path: "/" };
+// SameSite=None + Partitioned so sign-in persists inside embedded previews; cross-site writes are still blocked by isSameOriginRequest.
+export const SESSION_COOKIE_OPTIONS = { httpOnly: true, secure: true, sameSite: "none" as const, partitioned: true, path: "/" };

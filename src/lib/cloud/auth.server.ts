@@ -78,14 +78,30 @@ export async function createUser(email: string, opts: { password?: string; metad
   return (await d1("SELECT * FROM auth_users WHERE id = ?", [id]))[0];
 }
 
-/** Issues a fresh session (rotating any current one), prunes expired ones, and caps concurrent sessions. */
+// Lightweight header read (avoids importing the security module eagerly).
+async function clientInfo(): Promise<{ ua: string; ip: string | null }> {
+  try {
+    const { getRequest } = await import("@tanstack/react-start/server");
+    const h = getRequest().headers;
+    const ip = h.get("cf-connecting-ip") ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
+    return { ua: (h.get("user-agent") ?? "").slice(0, 300), ip };
+  } catch { return { ua: "", ip: null }; }
+}
+
+/** Issues a fresh session (rotating any current one), prunes expired ones, caps concurrent sessions, and records login history. */
 export async function startSession(userId: string) {
   const prev = getCookie(SESSION_COOKIE);
   if (prev) await d1("DELETE FROM auth_sessions WHERE token_hash = ?", [await sha256(prev)]);
   const token = randomToken(32);
   const now = Math.floor(Date.now() / 1000);
   const expires = now + SESSION_DAYS * 86400;
-  await d1("INSERT INTO auth_sessions (token_hash, user_id, expires_at) VALUES (?, ?, ?)", [await sha256(token), userId, expires]);
+  const { ua, ip } = await clientInfo();
+  await d1(
+    "INSERT INTO auth_sessions (token_hash, user_id, expires_at, created_at, last_seen_at, user_agent, ip) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [await sha256(token), userId, expires, now, now, ua, ip],
+  );
+  await d1("INSERT INTO login_history (id, user_id, created_at, user_agent, ip) VALUES (?, ?, ?, ?, ?)", [crypto.randomUUID(), userId, now, ua, ip]);
+  await d1("DELETE FROM login_history WHERE user_id = ? AND created_at < ?", [userId, now - 180 * 86400]);
   await d1("DELETE FROM auth_sessions WHERE user_id = ? AND expires_at <= ?", [userId, now]);
   await d1(
     "DELETE FROM auth_sessions WHERE user_id = ? AND token_hash NOT IN (SELECT token_hash FROM auth_sessions WHERE user_id = ? ORDER BY expires_at DESC, rowid DESC LIMIT ?)",
@@ -97,26 +113,35 @@ export async function startSession(userId: string) {
 export async function endSession() {
   const token = getCookie(SESSION_COOKIE);
   if (token) await d1("DELETE FROM auth_sessions WHERE token_hash = ?", [await sha256(token)]);
-  deleteCookie(SESSION_COOKIE, { path: "/" });
+  deleteCookie(SESSION_COOKIE, SESSION_COOKIE_OPTIONS);
+  deleteCookie(SESSION_COOKIE, { path: "/" }); // legacy non-partitioned cookie
 }
 
 export type Caller = { user: PublicUser; isAdmin: boolean };
 
-/** Returns the signed-in caller from the secure session cookie, or null. */
+/** Returns the signed-in caller from the secure session cookie, or null. Active sessions slide forward so users stay signed in. */
 export async function getCaller(): Promise<Caller | null> {
   const token = getCookie(SESSION_COOKIE);
   if (!token) return null;
   const now = Math.floor(Date.now() / 1000);
+  const hash = await sha256(token);
   const rows = await d1(
-    `SELECT u.*, p.is_banned AS is_banned,
+    `SELECT u.*, p.is_banned AS is_banned, s.expires_at AS s_expires, s.last_seen_at AS s_seen,
        EXISTS(SELECT 1 FROM user_roles r WHERE r.user_id = u.id AND r.role = 'admin') AS is_admin
      FROM auth_sessions s JOIN auth_users u ON u.id = s.user_id
      LEFT JOIN profiles p ON p.id = u.id
      WHERE s.token_hash = ? AND s.expires_at > ?`,
-    [await sha256(token), now],
+    [hash, now],
   );
   const row: any = rows[0];
   if (!row || row.is_banned) return null;
+  // Renew at most once a day: extend expiry and refresh the cookie.
+  if (!row.s_seen || now - row.s_seen > 86400) {
+    try {
+      await d1("UPDATE auth_sessions SET last_seen_at = ?, expires_at = ? WHERE token_hash = ?", [now, now + SESSION_DAYS * 86400, hash]);
+      setCookie(SESSION_COOKIE, token, { ...SESSION_COOKIE_OPTIONS, maxAge: SESSION_DAYS * 86400 });
+    } catch { /* renewal is best-effort */ }
+  }
   return { user: toPublicUser(row), isAdmin: !!row.is_admin };
 }
 
