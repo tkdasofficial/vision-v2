@@ -63,3 +63,5 @@ ALTER TABLE auth_sessions ADD COLUMN user_agent TEXT;
 ALTER TABLE auth_sessions ADD COLUMN ip TEXT;
 CREATE TABLE IF NOT EXISTS login_history (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, created_at INTEGER NOT NULL, user_agent TEXT, ip TEXT);
 CREATE INDEX IF NOT EXISTS idx_login_history_user ON login_history(user_id, created_at);
+CREATE TABLE IF NOT EXISTS research_documents (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL, content TEXT NOT NULL, created_at INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_research_documents_user ON research_documents(user_id, created_at);

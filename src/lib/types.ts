@@ -106,4 +106,8 @@ export type ChatMessage = {
   };
   agentPlan?: AgentPlan;
   story?: StoryRequest;
+  /** Research report saved as a document; rendered as a compact card. */
+  document?: { id: string; title: string };
+  /** Internal workflow the server used; never changes the selected mode. */
+  executionMode?: string;
 };
