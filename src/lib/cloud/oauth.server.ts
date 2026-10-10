@@ -15,8 +15,8 @@ type Creds = { id: string; secret: string };
 
 const envCreds = (p: Provider): Creds | null => {
   const env: Record<Provider, [string | undefined, string | undefined]> = {
-    google: [process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET],
-    github: [process.env.GITHUB_CLIENT_ID, process.env.GITHUB_CLIENT_SECRET],
+    google: [process.env["GOOGLE_CLIENT_ID"], process.env["GOOGLE_CLIENT_SECRET"]],
+    github: [process.env["GITHUB_CLIENT_ID"], process.env["GITHUB_CLIENT_SECRET"]],
   };
   const [id, secret] = env[p];
   return id && secret ? { id, secret } : null;
@@ -25,7 +25,7 @@ const envCreds = (p: Provider): Creds | null => {
 const label = (p: Provider) => (p === "google" ? "Google" : "GitHub");
 
 const redirectUri = (req: Request, p: Provider) =>
-  providerCallbackUrl(process.env.AUTH_ORIGIN || new URL(req.url).origin, p);
+  providerCallbackUrl(process.env["AUTH_ORIGIN"] || new URL(req.url).origin, p);
 // Response.redirect() has immutable headers, which breaks the dev server's
 // header merging ("TypeError: immutable") — build redirects manually instead.
 const redirectTo = (url: string) => new Response(null, { status: 302, headers: { Location: url } });

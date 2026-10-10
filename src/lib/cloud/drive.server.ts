@@ -18,9 +18,9 @@ export function kindForMime(mime: string, name: string): Kind {
 }
 
 async function accessToken(): Promise<string> {
-  const id = process.env.GOOGLE_CLIENT_ID;
-  const secret = process.env.GOOGLE_CLIENT_SECRET;
-  const refresh = process.env.GOOGLE_REFRESH_TOKEN;
+  const id = process.env["GOOGLE_CLIENT_ID"];
+  const secret = process.env["GOOGLE_CLIENT_SECRET"];
+  const refresh = process.env["GOOGLE_REFRESH_TOKEN"];
   if (!id || !secret || !refresh) throw new Error("File storage is not configured");
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
@@ -62,7 +62,7 @@ async function ensureFolder(token: string, name: string, parent: string): Promis
 
 /** Returns the sub-folder id for a kind, creating and caching folders once. */
 async function folderFor(token: string, kind: Kind): Promise<string> {
-  const root = process.env.GOOGLE_DRIVE_FOLDER_ID;
+  const root = process.env["GOOGLE_DRIVE_FOLDER_ID"];
   if (!root) throw new Error("File storage folder is not configured");
   const cacheKey = `drive_folder_${kind}`;
   const cached = await d1<{ value: string }>("SELECT value FROM app_config WHERE key = ?", [cacheKey]);
