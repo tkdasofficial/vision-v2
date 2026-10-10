@@ -1,7 +1,7 @@
 // Browser-side data client. Every request runs on the server, which checks the
 // signed-in user and only touches rows they're allowed to.
 import { runDataQuery } from "./data.functions";
-import { getCurrentUser, signInFn, signOutFn, signUpFn, updateUserFn, verifyEmailFn, resendVerificationFn, requestPasswordResetFn, resetPasswordFn } from "./auth.functions";
+import { getCurrentUser, signInFn, signOutFn, signUpFn, updateUserFn, verifyEmailFn, resendVerificationFn, requestPasswordResetFn, verifyResetCodeFn, completePasswordResetFn, resetTicketStatusFn } from "./auth.functions";
 import type { QueryFilter, QueryResult, QuerySpec } from "./query-types";
 
 type Row = Record<string, any>;
@@ -120,8 +120,15 @@ const auth = {
     const r = await requestPasswordResetFn({ data: { email } });
     return { data: null, error: authErr(r.error ?? null) };
   },
-  async resetPasswordWithCode(email: string, code: string, password: string) {
-    const r = await resetPasswordFn({ data: { email, code, password } });
+  async verifyResetCode(email: string, code: string) {
+    const r = await verifyResetCodeFn({ data: { email, code } });
+    return { data: { ok: r.ok }, error: authErr(r.error) };
+  },
+  async resetTicketStatus() {
+    return resetTicketStatusFn();
+  },
+  async completePasswordReset(password: string) {
+    const r = await completePasswordResetFn({ data: { password } });
     if (r.user) notify("SIGNED_IN", r.user);
     return { data: { user: r.user }, error: authErr(r.error) };
   },

@@ -208,35 +208,80 @@ export const requestPasswordResetFn = createServerFn({ method: "POST" })
     return { ok: true, error: null };
   });
 
-export const resetPasswordFn = createServerFn({ method: "POST" })
-  .inputValidator((d: { email: string; code: string; password: string }) => d)
-  .handler(async ({ data }): Promise<AuthResult> => {
+const RESET_COOKIE = "vision_reset";
+const RESET_TTL = 10 * 60;
+
+/** Step 1 of reset: checks the emailed code and issues a short-lived, single-use reset ticket (HttpOnly cookie). */
+export const verifyResetCodeFn = createServerFn({ method: "POST" })
+  .inputValidator((d: { email: string; code: string }) => d)
+  .handler(async ({ data }): Promise<{ ok: boolean; error: string | null }> => {
     const a = await import("./auth.server");
     const { d1 } = await import("./d1.server");
+    const { setCookie } = await import("@tanstack/react-start/server");
     const S = await sec();
     const email = S.normalizeEmail(data?.email);
     const code = String(data?.code ?? "").trim();
-    const password = typeof data?.password === "string" ? data.password : "";
-    if (!S.isValidEmail(email) || !/^\d{8}$/.test(code)) return { user: null, error: "Enter the 8-digit code from your email." };
-    if (password.length < 8 || password.length > 128) return { user: null, error: "Password must be 8–128 characters." };
+    if (!S.isValidEmail(email) || !/^\d{8}$/.test(code)) return { ok: false, error: "Enter the 8-digit code from your email." };
     const facts = S.currentFacts();
-    try { S.assertSameOrigin(facts); } catch (e: any) { return { user: null, error: e.message }; }
+    try { S.assertSameOrigin(facts); } catch (e: any) { return { ok: false, error: e.message }; }
     const keys = await S.keysFor(facts, email);
     const L = S.SECURITY_CONFIG.limits;
     try {
       await S.enforceLimits(S.d1Store, [[`otpv:email:${keys.emailKey}`, L.otpVerifyPerEmail], [keys.ipKey && `otpv:ip:${keys.ipKey}`, L.otpVerifyPerIp]]);
-    } catch (e: any) { return { user: null, error: e.message }; }
+    } catch (e: any) { return { ok: false, error: e.message }; }
     const { checkOtp } = await import("./otp.server");
     if (!(await checkOtp(email, code, "reset"))) {
       if (keys.ipKey) await S.d1Store.hit(`vfail:ip:${keys.ipKey}`, 3600, S.nowSec());
       await S.audit(S.d1Store, { type: "password.reset_failed", decision: "DENY", subject: keys.emailKey });
-      return { user: null, error: "That code is incorrect or expired." };
+      return { ok: false, error: "That code is incorrect or expired." };
     }
-    const row: any = (await d1("SELECT u.*, p.is_banned FROM auth_users u LEFT JOIN profiles p ON p.id = u.id WHERE u.email = ?", [email]))[0];
-    if (!row) return { user: null, error: "That code is incorrect or expired." };
+    const row: any = (await d1("SELECT u.id, p.is_banned FROM auth_users u LEFT JOIN profiles p ON p.id = u.id WHERE u.email = ?", [email]))[0];
+    if (!row) return { ok: false, error: "That code is incorrect or expired." };
+    if (row.is_banned) return { ok: false, error: "This account has been suspended." };
+    const now = Math.floor(Date.now() / 1000);
+    const ticket = a.randomToken(32);
+    // One open ticket per account; the raw token only ever lives in the HttpOnly cookie.
+    await d1("DELETE FROM password_reset_tickets WHERE user_id = ? OR expires_at < ?", [row.id, now]);
+    await d1("INSERT INTO password_reset_tickets (token_hash, user_id, expires_at) VALUES (?, ?, ?)", [await a.sha256(ticket), row.id, now + RESET_TTL]);
+    setCookie(RESET_COOKIE, ticket, { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: RESET_TTL });
+    await S.audit(S.d1Store, { type: "password.reset_code_verified", decision: "ALLOW", subject: row.id });
+    return { ok: true, error: null };
+  });
+
+/** Whether this browser holds a valid reset ticket (lets the confirm page send people back if not). */
+export const resetTicketStatusFn = createServerFn({ method: "GET" }).handler(async () => {
+  const a = await import("./auth.server");
+  const { d1 } = await import("./d1.server");
+  const { getCookie } = await import("@tanstack/react-start/server");
+  const ticket = getCookie(RESET_COOKIE);
+  if (!ticket) return { valid: false };
+  const row = (await d1("SELECT 1 AS ok FROM password_reset_tickets WHERE token_hash = ? AND expires_at >= ?", [await a.sha256(ticket), Math.floor(Date.now() / 1000)]))[0];
+  return { valid: !!row };
+});
+
+/** Step 2 of reset: consumes the ticket, sets the new password, signs out other devices and signs this one in. */
+export const completePasswordResetFn = createServerFn({ method: "POST" })
+  .inputValidator((d: { password: string }) => d)
+  .handler(async ({ data }): Promise<AuthResult> => {
+    const a = await import("./auth.server");
+    const { d1 } = await import("./d1.server");
+    const { getCookie, deleteCookie } = await import("@tanstack/react-start/server");
+    const S = await sec();
+    const password = typeof data?.password === "string" ? data.password : "";
+    if (password.length < 8 || password.length > 128) return { user: null, error: "Password must be 8–128 characters." };
+    const facts = S.currentFacts();
+    try { S.assertSameOrigin(facts); } catch (e: any) { return { user: null, error: e.message }; }
+    const ticket = getCookie(RESET_COOKIE);
+    const expired = { user: null, error: "Your reset session expired. Please request a new code." };
+    if (!ticket) return expired;
+    // Atomic single use: the ticket row is deleted as it is read.
+    const t: any = (await d1("DELETE FROM password_reset_tickets WHERE token_hash = ? AND expires_at >= ? RETURNING user_id", [await a.sha256(ticket), Math.floor(Date.now() / 1000)]))[0];
+    deleteCookie(RESET_COOKIE, { path: "/" });
+    if (!t) return expired;
+    const row: any = (await d1("SELECT u.*, p.is_banned FROM auth_users u LEFT JOIN profiles p ON p.id = u.id WHERE u.id = ?", [t.user_id]))[0];
+    if (!row) return expired;
     if (row.is_banned) return { user: null, error: "This account has been suspended." };
     const salt = a.randomToken(16);
-    // The code proves email ownership: set the new password, mark verified, and sign out every other device.
     await d1("UPDATE auth_users SET password_hash = ?, salt = ?, email_verified = 1 WHERE id = ?", [await a.hashPassword(password, salt), salt, row.id]);
     await d1("DELETE FROM auth_sessions WHERE user_id = ?", [row.id]);
     await S.audit(S.d1Store, { type: "password.reset_completed", decision: "ALLOW", subject: row.id });

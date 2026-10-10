@@ -40,11 +40,11 @@ export async function finishOAuth(req: Request, p: Provider) {
   const saved = getCookie(STATE_COOKIE);
   deleteCookie(STATE_COOKIE, { path: "/" });
   const err = url.searchParams.get("error");
-  if (err) return back(req, "/login?error=" + encodeURIComponent(GATEWAY_ERRORS[err] ?? "Sign-in failed. Please try again."));
+  if (err) return back(req, "/auth/login?error=" + encodeURIComponent(GATEWAY_ERRORS[err] ?? "Sign-in failed. Please try again."));
   const assertion = url.searchParams.get("assertion");
   const [savedP, nonce] = (saved ?? "").split(":");
   if (!assertion || savedP !== p || !nonce)
-    return back(req, "/login?error=" + encodeURIComponent("Sign-in was cancelled or expired. Please try again."));
+    return back(req, "/auth/login?error=" + encodeURIComponent("Sign-in was cancelled or expired. Please try again."));
   try {
     const claims = await verifyGatewayAssertion(assertion, { issuer: gateway(), audience: appOrigin(req), provider: p, nonce });
     // Single use: a replayed assertion is rejected.
@@ -74,7 +74,7 @@ export async function finishOAuth(req: Request, p: Provider) {
         const facts = S.factsFrom(req.headers, S.ensureDeviceId());
         const keys = await S.keysFor(facts, prof.email);
         const verdict = await evaluateSignup(S.d1Store, { entry: "oauth", email: prof.email, req: facts, keys });
-        if (!verdict.allowed) return back(req, "/login?error=" + encodeURIComponent(verdict.userMessage ?? "Sign-up is temporarily unavailable."));
+        if (!verdict.allowed) return back(req, "/auth/login?error=" + encodeURIComponent(verdict.userMessage ?? "Sign-up is temporarily unavailable."));
         userId = (await createUser(prof.email, { metadata: { full_name: prof.name, avatar_url: prof.avatar } })).id;
         await recordAccountCreated(S.d1Store, prof.email, keys);
         newAccount = true;
@@ -84,7 +84,7 @@ export async function finishOAuth(req: Request, p: Provider) {
     // Provider-verified email — no code needed.
     await d1("UPDATE auth_users SET email_verified = 1 WHERE id = ?", [userId]);
     const banned = (await d1<{ is_banned: number }>("SELECT is_banned FROM profiles WHERE id = ?", [userId]))[0]?.is_banned;
-    if (banned) return back(req, "/login?error=" + encodeURIComponent("This account has been suspended."));
+    if (banned) return back(req, "/auth/login?error=" + encodeURIComponent("This account has been suspended."));
     if (newAccount) {
       const S = await import("./security.server");
       await S.grantWelcomeCredits(userId!, prof.email, S.factsFrom(req.headers, S.ensureDeviceId()));
@@ -93,6 +93,6 @@ export async function finishOAuth(req: Request, p: Provider) {
     return back(req, "/app/new");
   } catch (e) {
     console.error("[oauth]", p, (e as Error).message);
-    return back(req, "/login?error=" + encodeURIComponent("Sign-in failed. Please try again."));
+    return back(req, "/auth/login?error=" + encodeURIComponent("Sign-in failed. Please try again."));
   }
 }

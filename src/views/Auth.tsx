@@ -12,7 +12,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { pathname } = useLocation();
-  const [mode, setMode] = useState<Mode>(pathname === "/signup" ? "signup" : pathname === "/forgot-password" ? "forgot" : "login");
+  const [mode, setMode] = useState<Mode>(pathname === "/auth/signup" ? "signup" : pathname === "/auth/forget-password" ? "forgot" : "login");
   // Two-step email auth: "email" first (validated server-side), then "password".
   const [step, setStep] = useState<"email" | "password">("email");
   const [email, setEmail] = useState("");
@@ -57,7 +57,7 @@ const Auth = () => {
     try {
       if (mode === "forgot") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/reset-password`,
+          redirectTo: `${window.location.origin}/auth/verify`,
         });
         if (error) throw error;
         toast({ title: "Check your email", description: "If an account exists, we sent an 8-digit reset code." });
@@ -230,7 +230,7 @@ const Auth = () => {
               </button>
             )}
             <button
-              onClick={() => { setMode("login"); setOtpCode(""); navigate("/login"); }}
+              onClick={() => { setMode("login"); setOtpCode(""); navigate("/auth/login"); }}
               className="flex items-center gap-1 text-xs text-foreground font-medium hover:underline"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -342,7 +342,7 @@ const Auth = () => {
                 <label htmlFor="auth-password" className="text-sm font-medium text-foreground">Password</label>
                 {mode === "login" && (
                   <button
-                    onClick={() => { setMode("forgot"); navigate("/forgot-password"); }}
+                    onClick={() => { setMode("forgot"); navigate("/auth/forget-password"); }}
                     className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Forgot password?
@@ -391,19 +391,19 @@ const Auth = () => {
           {mode === "login" ? (
             <>
               Don't have an account?{" "}
-              <button onClick={() => { setMode("signup"); setStep("email"); setPassword(""); navigate("/signup"); }} className="text-foreground font-medium underline underline-offset-4 hover:opacity-80">
+              <button onClick={() => { setMode("signup"); setStep("email"); setPassword(""); navigate("/auth/signup"); }} className="text-foreground font-medium underline underline-offset-4 hover:opacity-80">
                 Create your account
               </button>
             </>
           ) : mode === "signup" ? (
             <>
               Already have an account?{" "}
-              <button onClick={() => { setMode("login"); setStep("email"); setPassword(""); navigate("/login"); }} className="text-foreground font-medium underline underline-offset-4 hover:opacity-80">
+              <button onClick={() => { setMode("login"); setStep("email"); setPassword(""); navigate("/auth/login"); }} className="text-foreground font-medium underline underline-offset-4 hover:opacity-80">
                 Log in
               </button>
             </>
           ) : (
-            <button onClick={() => { setMode("login"); navigate("/login"); }} className="flex items-center gap-1 text-foreground font-medium hover:underline mx-auto">
+            <button onClick={() => { setMode("login"); navigate("/auth/login"); }} className="flex items-center gap-1 text-foreground font-medium hover:underline mx-auto">
               <ArrowLeft className="w-3.5 h-3.5" />
               Back to sign in
             </button>

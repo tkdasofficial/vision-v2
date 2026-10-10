@@ -203,13 +203,14 @@ const Account = () => {
                   if (!email) return;
                   setResetLoading(true);
                   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: `${window.location.origin}/reset-password`,
+                    redirectTo: `${window.location.origin}/auth/verify`,
                   });
                   setResetLoading(false);
                   if (error) {
                     toast({ title: "Error", description: error.message, variant: "destructive" });
                   } else {
-                    toast({ title: "Check your email", description: "We sent you a password reset link." });
+                    toast({ title: "Check your email", description: "We sent you an 8-digit reset code." });
+                    navigate(`/auth/verify?email=${encodeURIComponent(email)}&mode=reset`);
                   }
                 }}
                 disabled={resetLoading}

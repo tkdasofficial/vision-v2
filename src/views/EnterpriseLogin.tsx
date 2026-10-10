@@ -162,7 +162,7 @@ const EnterpriseLogin = ({ page }: { page: Page }) => {
           {state && state.step !== "identity" && (
             <button onClick={restart} className="text-foreground font-medium hover:underline">Use a different enterprise</button>
           )}
-          <button onClick={() => navigate("/login")} className="flex items-center gap-1 text-foreground font-medium hover:underline">
+          <button onClick={() => navigate("/auth/login")} className="flex items-center gap-1 text-foreground font-medium hover:underline">
             <ArrowLeft className="w-3.5 h-3.5" /> Back to sign in
           </button>
         </p>

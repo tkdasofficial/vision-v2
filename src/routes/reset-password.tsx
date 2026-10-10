@@ -1,20 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/ResetPassword";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// Old reset address: the reset flow now starts at /auth/forget-password.
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({
-    meta: [
-      { title: "Reset password — Vision" },
-      { name: "description", content: "Reset password in Vision, your all-in-one AI workspace." },
-      { property: "og:title", content: "Reset password — Vision" },
-      { property: "og:description", content: "Reset password in Vision, your all-in-one AI workspace." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: RouteComponent,
+  beforeLoad: () => {
+    throw redirect({ to: "/auth/forget-password", replace: true });
+  },
 });
-
-function RouteComponent() {
-  return <Page />;
-}
