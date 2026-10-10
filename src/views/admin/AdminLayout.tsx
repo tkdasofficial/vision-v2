@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PageHeader from "@/components/PageHeader";
 import { useNavigate, useLocation, Outlet } from "@/lib/router-compat";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -122,10 +123,7 @@ const AdminLayout = () => {
       </div>
 
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        <header className="flex items-center gap-3 px-4 py-3 border-b border-border bg-background/80 backdrop-blur-sm lg:hidden">
-          <button onClick={() => setMobileOpen(true)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"><Menu className="w-5 h-5" /></button>
-          <h1 className="text-sm font-display font-semibold text-foreground">Admin</h1>
-        </header>
+        <PageHeader title="Admin" onMenu={() => setMobileOpen(true)} className="border-b border-border bg-background/80 backdrop-blur-sm lg:hidden" />
         <div className="flex-1 overflow-y-auto"><Outlet /></div>
       </div>
     </div>
