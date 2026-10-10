@@ -9,7 +9,7 @@ export function SettingsPage({ title, children, loading, backTo = "/app/settings
     <div className="min-h-[100dvh] bg-background flex flex-col">
       <PageHeader title={title} backTo={backTo} />
       <div className="flex-1 px-4 pt-2 pb-12 overflow-y-auto">
-        <div className="max-w-lg mx-auto space-y-6">
+        <div className="max-w-lg mx-auto space-y-5">
           {loading ? <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div> : children}
         </div>
       </div>
@@ -20,16 +20,15 @@ export function SettingsPage({ title, children, loading, backTo = "/app/settings
 export function SettingsSection({ title, description, children }: { title: string; description?: string; children?: ReactNode }) {
   return (
     <section>
-      <h2 className="px-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">{title}</h2>
-      {description && !children && <p className="mt-2 px-1 text-sm text-muted-foreground">{description}</p>}
-      {children && <div className="mt-2 space-y-2">{children}</div>}
+      {description && !children && <p className="px-5 text-sm text-muted-foreground">{description}</p>}
+      {children && <div className="space-y-2" aria-label={title}>{children}</div>}
     </section>
   );
 }
 
 export function SettingsRow({ label, hint, children, className }: { label: string; hint?: string; children?: ReactNode; className?: string }) {
   return (
-    <div className={cn("flex items-center justify-between gap-4 rounded-2xl border border-border px-5 py-4", className)}>
+    <div className={cn("flex items-center justify-between gap-4 rounded-full border border-border px-5 py-3 min-h-14", className)}>
       <p className="min-w-0 text-sm font-medium text-foreground">{label}</p>
       {children}
     </div>
@@ -62,7 +61,7 @@ export function SettingsChoice<T extends string>({ label, hint, value, options, 
         {options.map((o) => (
           <button
             key={o.value} type="button" role="radio" aria-checked={value === o.value} onClick={() => onChange(o.value)}
-            className={cn("rounded-full px-4 py-2 text-sm transition-colors border",
+            className={cn("shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm transition-colors border",
               value === o.value ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-accent")}
           >{o.label}</button>
         ))}
@@ -73,7 +72,7 @@ export function SettingsChoice<T extends string>({ label, hint, value, options, 
 
 export function ConfirmBox({ text, confirmLabel, onCancel, onConfirm, busy }: { text: string; confirmLabel: string; onCancel: () => void; onConfirm: () => void; busy?: boolean }) {
   return (
-    <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4">
+    <div className="rounded-[2rem] border border-destructive/30 bg-destructive/5 p-5">
       <p className="text-sm text-foreground mb-3">{text}</p>
       <div className="flex gap-2">
         <button onClick={onCancel} className="flex-1 py-2.5 rounded-full border border-border text-sm text-foreground hover:bg-accent">Cancel</button>
