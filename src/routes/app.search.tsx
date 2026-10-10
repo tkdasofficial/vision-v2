@@ -11,5 +11,8 @@ export const Route = createFileRoute("/app/search")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  component: () => <Protected><Search /></Protected>,
+  component: SearchPage,
 });
+function SearchPage() {
+  return <Protected><Search /></Protected>;
+}

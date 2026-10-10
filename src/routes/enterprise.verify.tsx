@@ -10,5 +10,9 @@ export const Route = createFileRoute("/enterprise/verify")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  component: () => <EnterpriseLogin page="verify" />,
+  component: EnterpriseVerifyPage,
 });
+
+function EnterpriseVerifyPage() {
+  return <EnterpriseLogin page="verify" />;
+}
