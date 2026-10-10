@@ -244,6 +244,26 @@ const useSegmentedTypewriter = (segments: Segment[], enabled: boolean) => {
   return { charCounts, allDone };
 };
 
+const USER_PREVIEW_CHARS = 50;
+const UserBubble = ({ content, imageUrl }: { content: string; imageUrl?: string }) => {
+  const [expanded, setExpanded] = useState(false);
+  const long = (content || "").length > USER_PREVIEW_CHARS;
+  const shown = long && !expanded ? content.slice(0, USER_PREVIEW_CHARS).trimEnd() + "…" : content;
+  return (
+    <div className="relative max-w-[50%] min-w-0 rounded-2xl rounded-br-sm bg-muted text-foreground px-3.5 py-2 text-[15px]">
+      {imageUrl && (
+        <img src={imageUrl} alt="Attached" className="w-28 sm:w-36 h-28 sm:h-36 rounded-xl object-cover mb-2.5 border border-background/10" />
+      )}
+      <p className="leading-relaxed whitespace-pre-wrap break-words">{shown}</p>
+      {long && (
+        <button type="button" onClick={() => setExpanded((v) => !v)} className="mt-1 text-xs font-medium text-muted-foreground hover:text-foreground">
+          {expanded ? "Show Less" : "Show More"}
+        </button>
+      )}
+    </div>
+  );
+};
+
 const ChatMessage = forwardRef<HTMLDivElement, Props>(({ message, isNew = false }, ref) => {
   const isUser = message.role === "user";
   const [copied, setCopied] = useState(false);
@@ -323,26 +343,10 @@ const ChatMessage = forwardRef<HTMLDivElement, Props>(({ message, isNew = false 
     >
       {isUser ? (
         <div className="flex justify-end">
-          <div
-            className={cn(
-              "relative rounded-2xl rounded-br-sm bg-muted text-foreground transition-all duration-200",
-              size === "short" && "px-3.5 py-2 text-[15px] max-w-[80%] sm:max-w-[75%]",
-              size === "medium" && "px-3.5 py-2.5 text-[15px] max-w-[85%] sm:max-w-[82%]",
-              size === "long" && "px-3.5 py-3 text-[14px] max-w-[92%] sm:max-w-[88%] leading-relaxed",
-            )}
-          >
-            {message.imageUrl && (
-              <img
-                src={message.imageUrl}
-                alt="Attached"
-                className="w-28 sm:w-36 h-28 sm:h-36 rounded-xl object-cover mb-2.5 border border-background/10"
-              />
-            )}
-            <p className="leading-relaxed whitespace-pre-wrap break-words">{message.content}</p>
-          </div>
+          <UserBubble content={message.content} imageUrl={message.imageUrl} />
         </div>
       ) : (
-        <div className="group relative max-w-full sm:max-w-[92%]">
+        <div className="group relative w-full">
           <div className="space-y-3">
             {message.imageUrl && (
               <img
@@ -360,39 +364,11 @@ const ChatMessage = forwardRef<HTMLDivElement, Props>(({ message, isNew = false 
 
               if (!segVisible) return null;
 
-              if (seg.type === "task") {
-                const segDone = charCounts[i] >= seg.content.length;
-                return (
-                  <div key={i} className="rounded-xl border border-border bg-card overflow-hidden w-full will-change-contents">
-                    <div className="flex items-center justify-between px-3 sm:px-4 md:px-5 pt-2.5 pb-1">
-                      <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Task</span>
-                      {segDone && <CardCopyButton content={seg.content} />}
-                    </div>
-                    <div className="overflow-y-auto px-3 sm:px-4 md:px-5 pb-3 sm:pb-4 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh]">
-                      <div className={cn(
-                        "prose prose-sm prose-neutral dark:prose-invert max-w-none text-foreground text-[13px] sm:text-sm",
-                        proseClasses
-                      )}>
-                        <ReactMarkdown components={mdComponents}>{displayed}</ReactMarkdown>
-                        {isActive && <span className="inline-block w-[2px] h-[1em] bg-foreground/70 align-middle animate-pulse ml-0.5" />}
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-
-              // Text segment (intro or outro)
-              const textSize = getMessageSize(displayed);
               return (
-                <div
-                  key={i}
-                  className={cn(
-                    "relative rounded-2xl rounded-tl-sm will-change-contents",
-                    textSize === "short"
-                      ? "bg-card border border-border px-3.5 py-2.5 inline-block"
-                      : "px-0.5"
+                <div key={i} className="relative w-full will-change-contents">
+                  {seg.type === "task" && charCounts[i] >= seg.content.length && (
+                    <div className="flex justify-end mb-1"><CardCopyButton content={seg.content} /></div>
                   )}
-                >
                   <div className={cn(
                     "prose prose-sm prose-neutral dark:prose-invert max-w-none text-foreground text-[13px] sm:text-sm break-words",
                     proseClasses
