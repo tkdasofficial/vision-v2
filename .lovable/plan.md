@@ -1,95 +1,41 @@
-# Client Discovery & Email Automation Engine
+# Settings Refinement + Research Web Search
 
-Builds a self-contained prospecting + cold-outreach system on top of the existing Supabase + Gmail OAuth stack. No paid third-party scraping services.
+Delivered in two stages so each can be tested before the next.
 
-## Architecture
+## Stage 1 — Settings (Part A/B)
 
-```text
-User → Prospecting UI ──┐
-                        ├─► youtube-prospector (edge fn) ──► YouTube Data API v3
-                        ├─► web-prospector      (edge fn) ──► Gemini (Search Grounding) → scraper-worker
-                        └─► leads table (unified inspection board)
-                                    │
-                                    ▼
-                    outreach-composer (edge fn, Lovable AI) ──► email_queue
-                                    │
-                                    ▼
-                    outreach-dispatcher (cron, 45–90s jitter) ──► Gmail API (user OAuth token)
-                                    │
-                                    ▼
-                    inbox-watcher (cron) ──► detects replies/bounces → freeze / mark invalid
-```
+Main `/app/settings` becomes a directory of 9 categories (icon, name, one-line description), each opening its own page with the page name in the top-left header:
 
-## Phase 1 — Data model (migration)
+- **Appearance** — theme (System / Light / Dark, actually applied), a small set of accessible accent colors, font size.
+- **Language** — interface language; only English listed until translations exist (others shown as "coming soon" is avoided — just English + note).
+- **AI Preferences** — default mode (Default / Deep Thinking / Research / Coding), response length & tone, custom instructions (length-limited, sent to the AI), web search preference (Auto / Always / Off, with an "unavailable" notice when no source works), coding preferences (comments, explanation level).
+- **Chat & History** — clear all chats, delete incognito-free history, export chats; confirmation dialogs; ownership enforced on the server.
+- **Privacy & Data** — full data export, research documents list with delete, delete-all-data.
+- **Security** — change password (only for email/password accounts; hidden for Google/GitHub-only), reset link, 2FA: authenticator app (TOTP with QR + recovery codes) and email codes, each enabled separately; login enforces the second step.
+- **Accessibility** — reduce motion, high contrast, larger tap targets.
+- **Notifications** — browser notifications on/off and per-type toggles (only channels that really work).
+- **About VISION** — version, help/support, Terms of Service, Privacy Policy.
 
-Extend/add tables:
-- `leads` (already exists) — add columns: `source` ('youtube'|'web'), `channel_id`, `subscriber_count`, `avg_views`, `niche`, `website`, `industry`, `metadata jsonb`, `status` ('new'|'queued'|'sent'|'replied'|'bounced'|'invalid'), `last_event_at`.
-- `prospecting_jobs` — track a run: user_id, source, params (jsonb), target_count, found_count, status, error.
-- `email_queue` (exists) — ensure fields: lead_id, subject, body, scheduled_at, sent_at, status, gmail_thread_id, gmail_message_id, error.
-- `outreach_campaigns` — user_id, name, pitch_context (what the freelancer offers), tone, follow_up_enabled, throttle_min_sec (45), throttle_max_sec (90).
-- Realtime publication for `leads`, `email_queue`, `prospecting_jobs`.
+Account page keeps profile, email, connected accounts, sign out, delete account; nothing duplicated in Settings.
 
-All tables: RLS scoped to `auth.uid()`, GRANTs to `authenticated` + `service_role`.
+All preferences are saved in the existing `user_settings` table (new columns added), applied immediately for simple toggles, with Save/Cancel for forms; success shown only after the server confirms.
 
-## Phase 2 — YouTube prospector (edge function)
+## Stage 2 — Research web search (Part C)
 
-`supabase/functions/youtube-prospector/index.ts`
-- Uses `YOUTUBE_API_KEY` from user's `user_api_keys` (BYOK) — falls back to shared `GEMINI_API_KEY`-adjacent pool only if user has none.
-- Loop: `search.list` (paginated via `nextPageToken`) → `channels.list?part=statistics,snippet` → filter subs → `search.list?channelId&order=date` last 15 uploads → `videos.list?part=statistics` → compute avg views → filter → extract emails from `snippet.description` + about + recent video descriptions via regex.
-- Streams progress into `prospecting_jobs.found_count` and inserts qualifying rows into `leads`. Stops exactly at target.
+A server-side search layer with providers tried in order, results normalized, de-duplicated, cached and rate-limited:
 
-## Phase 3 — Web prospector
+1. **Wikipedia** (official API, free, no key) — background facts.
+2. **DuckDuckGo Instant Answer** (free, no key) — labelled as quick answers only, not full web search.
+3. **SearXNG** — used only if you give me an instance address you control; otherwise marked unavailable.
+4. **Reddit** — only with official API keys from you; otherwise skipped.
+5. Optional paid/free-tier general search (e.g. Brave or Tavily) — if you provide a key; this is the only way to get broad real web results reliably.
 
-`supabase/functions/web-prospector/index.ts`
-- Calls Gemini with Google Search grounding (`google/gemini-2.5-flash` via Lovable AI Gateway with `google_search` tool) → returns JSON array `{ company, domain, industry }`.
-- Enqueues each domain into `scraper-worker`.
+Research reports then cite numbered sources with links, and say clearly when live search was unavailable.
 
-`supabase/functions/scraper-worker/index.ts`
-- Deno-native fetch (no Puppeteer — edge runtime can't run headless Chromium). For each domain: fetch `/`, `/contact`, `/about`, `/team`, `/contact-us` with rotating UA and 2–4s jitter. Extract emails with the specified regex, dedupe, ignore common noreply/sentry/wixpress false positives.
-- Writes to `leads`.
-- Note: I'll flag in the UI that pure-JS SPA sites without SSR emails may return empty — this is a real edge-runtime limitation. If the user needs full JS rendering, we'd need an external browser service.
+## Technical details
 
-## Phase 4 — Inspection Board UI
-
-`src/pages/Prospecting.tsx` + sidebar link
-- Form: source selector (YouTube / Web / Both), niche, sub range, avg-view range, target count.
-- Live progress panel subscribed to `prospecting_jobs`.
-- Unified leads table (source, name, subs, avg views, emails, status) with row select, bulk delete, and a natural-language command bar → routed through a small `leads-command` edge fn (Lovable AI) that returns a SQL-like filter/action applied client-side.
-
-## Phase 5 — Hyper-personalized composer
-
-`supabase/functions/outreach-composer/index.ts`
-- Input: lead row + campaign pitch_context.
-- Prompt binds `person_name`/`company`/`niche`/`avg_views`/`industry` into subject + body.
-- YouTube pitch template references avg views + niche; web pitch references industry.
-- Outputs `{subject, body}`, inserts into `email_queue` with `scheduled_at = now() + cumulative jitter(45–90s)` per user's queue.
-
-## Phase 6 — Dispatcher + inbox watcher
-
-`supabase/functions/outreach-dispatcher/index.ts` — invoked by `pg_cron` every minute:
-- Picks `email_queue` rows where `scheduled_at <= now()` and `status='queued'`, one per user per minute, sends via Gmail API using the user's stored OAuth access token (refresh via `google_refresh_token` from `user_integrations`).
-- Records `gmail_message_id`, `gmail_thread_id`.
-
-`supabase/functions/inbox-watcher/index.ts` — cron every 2 min:
-- `users.messages.list?q=in:inbox newer_than:1d` per connected user.
-- For each message: if `In-Reply-To` matches a tracked `gmail_message_id` → mark lead `replied`, cancel any queued follow-ups for that lead.
-- If `From: mailer-daemon` or headers contain `X-Failed-Recipients` → mark matching lead `bounced` + `invalid`, purge queued sends.
-
-Cron scheduled via `pg_cron` + `pg_net` (SQL kept out of migration per instructions — I'll run it via `supabase--insert` with the anon key).
-
-## Phase 7 — Theming
-
-`src/pages/Settings.tsx`: theme selector (system/light/dark), writes to `user_settings.theme`. `index.css` already B/W minimal — I'll add explicit red (destructive) for bounced badges and a subtle green for `sent`/`replied` badges only; no palette overhaul.
-
-## Secrets needed
-
-- User provides `YOUTUBE_API_KEY` per user via Integrations → API Keys (already have BYOK infra). No new project-level secrets.
-- Uses existing `LOVABLE_API_KEY`, `GOOGLE_CLIENT_ID/SECRET`, and per-user Gmail OAuth tokens already in `user_integrations`.
-
-## Out of scope / limitations to confirm
-
-1. **Puppeteer/Playwright cannot run inside Supabase Edge Functions** (no Chromium). I'll use Deno `fetch` + HTML regex, which covers ~80% of sites. Full JS-rendered scraping would need an external browser service (Browserless, self-hosted). OK to proceed with fetch-only?
-2. Gmail API sending under a user's own OAuth requires the `gmail.send` + `gmail.readonly` scopes already configured — confirmed present in `oauth-initiate`.
-3. 300–500 sends/day per user is within Gmail's 500/day free-tier and 2000/day Workspace cap — throttle enforces this.
-
-Reply "go" to build, or tell me what to adjust (scope, phase order, scraper strategy).
+- Routes: `src/routes/app.settings.{index,appearance,language,ai-preferences,chat-history,privacy-data,security,accessibility,notifications,about}.tsx`; `app.settings.tsx` becomes an `<Outlet />` layout; views in `src/views/settings/*`.
+- Shared `SettingsRow`, `SettingsToggle`, `SettingsSelect`, `ConfirmDialog` components.
+- D1 migration: extra `user_settings` columns; `user_2fa` (encrypted TOTP secret, hashed recovery codes, email_2fa flag); `search_cache`.
+- TOTP verified server-side (RFC 6238, Web Crypto); login returns a "second step required" state with a short-lived HttpOnly challenge cookie.
+- Search in `src/lib/search/*.server.ts` with a provider interface, per-provider timeout, fallback chain, and keys stored as Cloudflare secrets.
