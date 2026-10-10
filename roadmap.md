@@ -19,3 +19,7 @@
 - [x] Audit: fixed endless-redirect loop in page navigation helper
 - [ ] Plans & Pricing shows no plans — needs real plan names/prices from user
 - [ ] Kimi K2.7 Code needs a paid Cloudflare plan (Qwen coder used meanwhile)
+- [x] Settings directory + 9 sub-pages, saved prefs applied to theme/AI
+- [x] Research web search: Wikipedia + DuckDuckGo quick answers, SearXNG when configured
+- [ ] Two-step sign-in (authenticator app / email code) — not built yet
+- [ ] Broad web search needs a SearXNG instance or a Brave/Tavily key from user

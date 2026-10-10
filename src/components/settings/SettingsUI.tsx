@@ -17,7 +17,7 @@ export function SettingsPage({ title, children, loading, backTo = "/app/settings
   );
 }
 
-export function SettingsSection({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
+export function SettingsSection({ title, description, children }: { title: string; description?: string; children?: ReactNode }) {
   return (
     <section>
       <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">{title}</h2>
