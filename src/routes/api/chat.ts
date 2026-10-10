@@ -50,7 +50,23 @@ export const Route = createFileRoute("/api/chat")({
         const { streamFromProvider } = await import("@/lib/ai/providers.server");
         const { systemPromptFor } = await import("@/lib/ai/prompts.server");
         const deep = task.executionMode !== "default";
-        const fullMessages = [{ role: "system", content: systemPromptFor(task) }, ...messages];
+        // User preferences (Settings → AI Preferences) are read server-side, never trusted from the request.
+        const { parsePrefs, promptAddendum } = await import("@/lib/settings");
+        const { d1 } = await import("@/lib/cloud/d1.server");
+        const prefRow: any = (await d1("SELECT prefs FROM user_settings WHERE user_id = ? LIMIT 1", [caller.user.id]).catch(() => []))[0];
+        const prefs = parsePrefs(prefRow?.prefs);
+        let system = `${systemPromptFor(task)}\n\n${promptAddendum(prefs)}`;
+        let searchUsed = "none";
+        const wantSearch = prefs.webSearch === "always" || (prefs.webSearch === "auto" && task.executionMode === "research");
+        if (wantSearch && lastText.trim()) {
+          const { webSearch, sourcesBlock } = await import("@/lib/search/search.server");
+          try {
+            const s = await webSearch(lastText);
+            searchUsed = s.used.join(",") || "none";
+            system += `\n\n${sourcesBlock(s.results)}`;
+          } catch (e) { console.error("[search]", e); system += "\n\nLive web search was unavailable; say so in the answer."; }
+        }
+        const fullMessages = [{ role: "system", content: system }, ...messages];
 
         let lastStatus = 502;
         for (const t of candidatesFor(task)) {
@@ -63,6 +79,7 @@ export const Route = createFileRoute("/api/chat")({
                 "X-Vision-Model": t.label,
                 "X-Vision-Execution": task.executionMode,
                 "X-Vision-Output": task.output,
+                "X-Vision-Search": searchUsed,
               },
             });
           }

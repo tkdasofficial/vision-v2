@@ -2,7 +2,10 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (@media (prefers-color-scheme: dark));
+@custom-variant dark {
+  &:where(.dark, .dark *) { @slot; }
+  @media (prefers-color-scheme: dark) { &:where(:root:not(.light) *, :root:not(.light)) { @slot; } }
+}
 
 @theme inline {
   --font-display: "Space Grotesk", sans-serif;
@@ -108,7 +111,7 @@
   }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     color-scheme: dark;
     --new-chat: oklch(0.1 0 0);
     --new-chat-foreground: oklch(0.97 0 0);
@@ -145,6 +148,53 @@
     --success-foreground: 0 0% 3.1%;
   }
 }
+:root.dark {
+    color-scheme: dark;
+    --new-chat: oklch(0.1 0 0);
+    --new-chat-foreground: oklch(0.97 0 0);
+    --background: 0 0% 3.1%; /* #080808 */
+    --foreground: 0 0% 96%; /* #F5F5F5 */
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 0 0% 3.1%;
+    --secondary: 0 0% 11%;
+    --secondary-foreground: 0 0% 85%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 58%;
+    --accent: 0 0% 13%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 0 0% 80%;
+    --radius: 1rem;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 65%;
+    --sidebar-primary: 0 0% 96%;
+    --sidebar-primary-foreground: 0 0% 3.1%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 13%;
+    --sidebar-ring: 0 0% 80%;
+    --surface-elevated: 0 0% 9%;
+    --success: 150 60% 45%;
+    --success-foreground: 0 0% 3.1%;
+  }
+
+/* User preferences (Settings) */
+:root[data-accent=blue] { --primary: 217 80% 50%; --primary-foreground: 0 0% 98%; --ring: 217 80% 50%; }
+:root[data-accent=green] { --primary: 150 60% 36%; --primary-foreground: 0 0% 98%; --ring: 150 60% 36%; }
+:root[data-accent=orange] { --primary: 24 90% 48%; --primary-foreground: 0 0% 98%; --ring: 24 90% 48%; }
+:root[data-accent=rose] { --primary: 345 75% 50%; --primary-foreground: 0 0% 98%; --ring: 345 75% 50%; }
+:root[data-font-size=sm] { font-size: 15px; }
+:root[data-font-size=lg] { font-size: 18px; }
+:root.high-contrast { --muted-foreground: var(--foreground); --border: var(--foreground); --input: var(--foreground); }
+:root.reduce-motion *, :root.reduce-motion *::before, :root.reduce-motion *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+:root.large-targets button, :root.large-targets a { min-height: 44px; }
 
 @layer base {
   * { @apply border-border; }

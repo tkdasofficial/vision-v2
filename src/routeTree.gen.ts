@@ -65,6 +65,16 @@ import { Route as VerifyConfirmPasswordRouteImport } from './routes/verify.confi
 import { Route as ApiAuthProviderRouteImport } from './routes/api/auth.$provider'
 import { Route as AppChatChatIdRouteImport } from './routes/app.chat.$chatId'
 import { Route as AppDocDocIdRouteImport } from './routes/app.doc.$docId'
+import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
+import { Route as AppSettingsAboutRouteImport } from './routes/app.settings.about'
+import { Route as AppSettingsAccessibilityRouteImport } from './routes/app.settings.accessibility'
+import { Route as AppSettingsAiPreferencesRouteImport } from './routes/app.settings.ai-preferences'
+import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
+import { Route as AppSettingsChatHistoryRouteImport } from './routes/app.settings.chat-history'
+import { Route as AppSettingsLanguageRouteImport } from './routes/app.settings.language'
+import { Route as AppSettingsNotificationsRouteImport } from './routes/app.settings.notifications'
+import { Route as AppSettingsPrivacyDataRouteImport } from './routes/app.settings.privacy-data'
+import { Route as AppSettingsSecurityRouteImport } from './routes/app.settings.security'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -347,6 +357,59 @@ const AppDocDocIdRoute = AppDocDocIdRouteImport.update({
   path: '/app/doc/$docId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsAboutRoute = AppSettingsAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsAccessibilityRoute =
+  AppSettingsAccessibilityRouteImport.update({
+    id: '/accessibility',
+    path: '/accessibility',
+    getParentRoute: () => AppSettingsRoute,
+  } as any)
+const AppSettingsAiPreferencesRoute =
+  AppSettingsAiPreferencesRouteImport.update({
+    id: '/ai-preferences',
+    path: '/ai-preferences',
+    getParentRoute: () => AppSettingsRoute,
+  } as any)
+const AppSettingsAppearanceRoute = AppSettingsAppearanceRouteImport.update({
+  id: '/appearance',
+  path: '/appearance',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsChatHistoryRoute = AppSettingsChatHistoryRouteImport.update({
+  id: '/chat-history',
+  path: '/chat-history',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsLanguageRoute = AppSettingsLanguageRouteImport.update({
+  id: '/language',
+  path: '/language',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsNotificationsRoute =
+  AppSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AppSettingsRoute,
+  } as any)
+const AppSettingsPrivacyDataRoute = AppSettingsPrivacyDataRouteImport.update({
+  id: '/privacy-data',
+  path: '/privacy-data',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsSecurityRoute = AppSettingsSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -385,7 +448,7 @@ export interface FileRoutesByFullPath {
   '/app/projects': typeof AppProjectsRoute
   '/app/prospecting': typeof AppProspectingRoute
   '/app/search': typeof AppSearchRoute
-  '/app/settings': typeof AppSettingsRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/support': typeof AppSupportRoute
   '/app/upgrade': typeof AppUpgradeRoute
   '/app/videos': typeof AppVideosRoute
@@ -405,6 +468,16 @@ export interface FileRoutesByFullPath {
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
   '/app/doc/$docId': typeof AppDocDocIdRoute
+  '/app/settings/about': typeof AppSettingsAboutRoute
+  '/app/settings/accessibility': typeof AppSettingsAccessibilityRoute
+  '/app/settings/ai-preferences': typeof AppSettingsAiPreferencesRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/chat-history': typeof AppSettingsChatHistoryRoute
+  '/app/settings/language': typeof AppSettingsLanguageRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy-data': typeof AppSettingsPrivacyDataRoute
+  '/app/settings/security': typeof AppSettingsSecurityRoute
+  '/app/settings/': typeof AppSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -442,7 +515,6 @@ export interface FileRoutesByTo {
   '/app/projects': typeof AppProjectsRoute
   '/app/prospecting': typeof AppProspectingRoute
   '/app/search': typeof AppSearchRoute
-  '/app/settings': typeof AppSettingsRoute
   '/app/support': typeof AppSupportRoute
   '/app/upgrade': typeof AppUpgradeRoute
   '/app/videos': typeof AppVideosRoute
@@ -462,6 +534,16 @@ export interface FileRoutesByTo {
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
   '/app/doc/$docId': typeof AppDocDocIdRoute
+  '/app/settings/about': typeof AppSettingsAboutRoute
+  '/app/settings/accessibility': typeof AppSettingsAccessibilityRoute
+  '/app/settings/ai-preferences': typeof AppSettingsAiPreferencesRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/chat-history': typeof AppSettingsChatHistoryRoute
+  '/app/settings/language': typeof AppSettingsLanguageRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy-data': typeof AppSettingsPrivacyDataRoute
+  '/app/settings/security': typeof AppSettingsSecurityRoute
+  '/app/settings': typeof AppSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -501,7 +583,7 @@ export interface FileRoutesById {
   '/app/projects': typeof AppProjectsRoute
   '/app/prospecting': typeof AppProspectingRoute
   '/app/search': typeof AppSearchRoute
-  '/app/settings': typeof AppSettingsRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/support': typeof AppSupportRoute
   '/app/upgrade': typeof AppUpgradeRoute
   '/app/videos': typeof AppVideosRoute
@@ -521,6 +603,16 @@ export interface FileRoutesById {
   '/api/auth/$provider': typeof ApiAuthProviderRoute
   '/app/chat/$chatId': typeof AppChatChatIdRoute
   '/app/doc/$docId': typeof AppDocDocIdRoute
+  '/app/settings/about': typeof AppSettingsAboutRoute
+  '/app/settings/accessibility': typeof AppSettingsAccessibilityRoute
+  '/app/settings/ai-preferences': typeof AppSettingsAiPreferencesRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/chat-history': typeof AppSettingsChatHistoryRoute
+  '/app/settings/language': typeof AppSettingsLanguageRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy-data': typeof AppSettingsPrivacyDataRoute
+  '/app/settings/security': typeof AppSettingsSecurityRoute
+  '/app/settings/': typeof AppSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -581,6 +673,16 @@ export interface FileRouteTypes {
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
     | '/app/doc/$docId'
+    | '/app/settings/about'
+    | '/app/settings/accessibility'
+    | '/app/settings/ai-preferences'
+    | '/app/settings/appearance'
+    | '/app/settings/chat-history'
+    | '/app/settings/language'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy-data'
+    | '/app/settings/security'
+    | '/app/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -618,7 +720,6 @@ export interface FileRouteTypes {
     | '/app/projects'
     | '/app/prospecting'
     | '/app/search'
-    | '/app/settings'
     | '/app/support'
     | '/app/upgrade'
     | '/app/videos'
@@ -638,6 +739,16 @@ export interface FileRouteTypes {
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
     | '/app/doc/$docId'
+    | '/app/settings/about'
+    | '/app/settings/accessibility'
+    | '/app/settings/ai-preferences'
+    | '/app/settings/appearance'
+    | '/app/settings/chat-history'
+    | '/app/settings/language'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy-data'
+    | '/app/settings/security'
+    | '/app/settings'
   id:
     | '__root__'
     | '/'
@@ -696,6 +807,16 @@ export interface FileRouteTypes {
     | '/api/auth/$provider'
     | '/app/chat/$chatId'
     | '/app/doc/$docId'
+    | '/app/settings/about'
+    | '/app/settings/accessibility'
+    | '/app/settings/ai-preferences'
+    | '/app/settings/appearance'
+    | '/app/settings/chat-history'
+    | '/app/settings/language'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy-data'
+    | '/app/settings/security'
+    | '/app/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -722,7 +843,7 @@ export interface RootRouteChildren {
   AppProjectsRoute: typeof AppProjectsRoute
   AppProspectingRoute: typeof AppProspectingRoute
   AppSearchRoute: typeof AppSearchRoute
-  AppSettingsRoute: typeof AppSettingsRoute
+  AppSettingsRoute: typeof AppSettingsRouteWithChildren
   AppSupportRoute: typeof AppSupportRoute
   AppUpgradeRoute: typeof AppUpgradeRoute
   AppVideosRoute: typeof AppVideosRoute
@@ -1129,6 +1250,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDocDocIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/settings/': {
+      id: '/app/settings/'
+      path: '/'
+      fullPath: '/app/settings/'
+      preLoaderRoute: typeof AppSettingsIndexRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/about': {
+      id: '/app/settings/about'
+      path: '/about'
+      fullPath: '/app/settings/about'
+      preLoaderRoute: typeof AppSettingsAboutRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/accessibility': {
+      id: '/app/settings/accessibility'
+      path: '/accessibility'
+      fullPath: '/app/settings/accessibility'
+      preLoaderRoute: typeof AppSettingsAccessibilityRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/ai-preferences': {
+      id: '/app/settings/ai-preferences'
+      path: '/ai-preferences'
+      fullPath: '/app/settings/ai-preferences'
+      preLoaderRoute: typeof AppSettingsAiPreferencesRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/appearance': {
+      id: '/app/settings/appearance'
+      path: '/appearance'
+      fullPath: '/app/settings/appearance'
+      preLoaderRoute: typeof AppSettingsAppearanceRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/chat-history': {
+      id: '/app/settings/chat-history'
+      path: '/chat-history'
+      fullPath: '/app/settings/chat-history'
+      preLoaderRoute: typeof AppSettingsChatHistoryRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/language': {
+      id: '/app/settings/language'
+      path: '/language'
+      fullPath: '/app/settings/language'
+      preLoaderRoute: typeof AppSettingsLanguageRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/notifications': {
+      id: '/app/settings/notifications'
+      path: '/notifications'
+      fullPath: '/app/settings/notifications'
+      preLoaderRoute: typeof AppSettingsNotificationsRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/privacy-data': {
+      id: '/app/settings/privacy-data'
+      path: '/privacy-data'
+      fullPath: '/app/settings/privacy-data'
+      preLoaderRoute: typeof AppSettingsPrivacyDataRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/security': {
+      id: '/app/settings/security'
+      path: '/security'
+      fullPath: '/app/settings/security'
+      preLoaderRoute: typeof AppSettingsSecurityRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
   }
 }
 
@@ -1211,6 +1402,36 @@ const VerifyRouteChildren: VerifyRouteChildren = {
 const VerifyRouteWithChildren =
   VerifyRoute._addFileChildren(VerifyRouteChildren)
 
+interface AppSettingsRouteChildren {
+  AppSettingsAboutRoute: typeof AppSettingsAboutRoute
+  AppSettingsAccessibilityRoute: typeof AppSettingsAccessibilityRoute
+  AppSettingsAiPreferencesRoute: typeof AppSettingsAiPreferencesRoute
+  AppSettingsAppearanceRoute: typeof AppSettingsAppearanceRoute
+  AppSettingsChatHistoryRoute: typeof AppSettingsChatHistoryRoute
+  AppSettingsLanguageRoute: typeof AppSettingsLanguageRoute
+  AppSettingsNotificationsRoute: typeof AppSettingsNotificationsRoute
+  AppSettingsPrivacyDataRoute: typeof AppSettingsPrivacyDataRoute
+  AppSettingsSecurityRoute: typeof AppSettingsSecurityRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+}
+
+const AppSettingsRouteChildren: AppSettingsRouteChildren = {
+  AppSettingsAboutRoute: AppSettingsAboutRoute,
+  AppSettingsAccessibilityRoute: AppSettingsAccessibilityRoute,
+  AppSettingsAiPreferencesRoute: AppSettingsAiPreferencesRoute,
+  AppSettingsAppearanceRoute: AppSettingsAppearanceRoute,
+  AppSettingsChatHistoryRoute: AppSettingsChatHistoryRoute,
+  AppSettingsLanguageRoute: AppSettingsLanguageRoute,
+  AppSettingsNotificationsRoute: AppSettingsNotificationsRoute,
+  AppSettingsPrivacyDataRoute: AppSettingsPrivacyDataRoute,
+  AppSettingsSecurityRoute: AppSettingsSecurityRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
+}
+
+const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
+  AppSettingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
@@ -1235,7 +1456,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppProjectsRoute: AppProjectsRoute,
   AppProspectingRoute: AppProspectingRoute,
   AppSearchRoute: AppSearchRoute,
-  AppSettingsRoute: AppSettingsRoute,
+  AppSettingsRoute: AppSettingsRouteWithChildren,
   AppSupportRoute: AppSupportRoute,
   AppUpgradeRoute: AppUpgradeRoute,
   AppVideosRoute: AppVideosRoute,

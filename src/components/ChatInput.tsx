@@ -7,6 +7,7 @@ import ModeSelector from "./ModeSelector";
 import type { ChatMode } from "@/lib/ai/modes";
 import type { CreationMode } from "@/lib/creation-references";
 import { appendTranscript } from "@/lib/append-transcript";
+import { readCachedPrefs } from "@/lib/settings";
 
 type Props = {
   toolName?: string;
@@ -21,6 +22,8 @@ const ChatInput = ({ toolName, onSend, onZipUpload, onFileConvert, disabled, cre
   const [value, setValue] = useState("");
   const [attachedImage, setAttachedImage] = useState<{ base64: string; mimeType: string; preview: string } | null>(null);
   const [taskMode, setTaskMode] = useState<ChatMode>("default");
+  // Start in the user's preferred default mode (Settings → AI Preferences).
+  useEffect(() => { setTaskMode(readCachedPrefs().defaultMode); }, []);
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
   const finalTranscriptRef = useRef("");

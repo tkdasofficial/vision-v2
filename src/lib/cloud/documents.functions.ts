@@ -37,3 +37,28 @@ export const getDocumentFn = createServerFn({ method: "GET" })
     if (row.user_id !== caller.user.id) return { status: "denied" };
     return { status: "ok", doc: { id: row.id, title: row.title, content: row.content, createdAt: row.created_at } };
   });
+
+export const listDocumentsFn = createServerFn({ method: "GET" }).handler(async () => {
+  const { requireCaller } = await import("./auth.server");
+  const { d1 } = await import("./d1.server");
+  const caller = await requireCaller();
+  const rows = await d1<any>("SELECT id, title, created_at FROM research_documents WHERE user_id = ? ORDER BY created_at DESC LIMIT 200", [caller.user.id]);
+  return rows.map((r) => ({ id: r.id as string, title: r.title as string, createdAt: Number(r.created_at) }));
+});
+
+/** Deletes one owned document, or all of the caller's documents when id is "all". */
+export const deleteDocumentFn = createServerFn({ method: "POST" })
+  .inputValidator((input: { id: string }) => {
+    if (!input || typeof input.id !== "string" || !(input.id === "all" || /^[0-9a-f-]{36}$/i.test(input.id))) throw new Error("Invalid document id");
+    return input;
+  })
+  .handler(async ({ data }) => {
+    const { assertSameOrigin, currentFacts } = await import("./security.server");
+    assertSameOrigin(currentFacts());
+    const { requireCaller } = await import("./auth.server");
+    const { d1 } = await import("./d1.server");
+    const caller = await requireCaller();
+    if (data.id === "all") await d1("DELETE FROM research_documents WHERE user_id = ?", [caller.user.id]);
+    else await d1("DELETE FROM research_documents WHERE id = ? AND user_id = ?", [data.id, caller.user.id]);
+    return { ok: true };
+  });

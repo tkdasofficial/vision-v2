@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS user_2fa (created_at TEXT DEFAULT (strftime('%Y-%m-%d
 CREATE INDEX IF NOT EXISTS idx_user_2fa_user_id ON user_2fa(user_id);
 CREATE TABLE IF NOT EXISTS user_roles (created_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), id TEXT PRIMARY KEY, role TEXT DEFAULT 'user', user_id TEXT);
 CREATE INDEX IF NOT EXISTS idx_user_roles_user_id ON user_roles(user_id);
-CREATE TABLE IF NOT EXISTS user_settings (created_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), default_tool TEXT DEFAULT 'chat', id TEXT PRIMARY KEY, language TEXT DEFAULT 'en', notifications_enabled INTEGER DEFAULT 1, theme TEXT DEFAULT 'system', updated_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), user_id TEXT);
+CREATE TABLE IF NOT EXISTS user_settings (created_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), default_tool TEXT DEFAULT 'chat', id TEXT PRIMARY KEY, language TEXT DEFAULT 'en', notifications_enabled INTEGER DEFAULT 1, theme TEXT DEFAULT 'system',prefs TEXT DEFAULT '{}',  updated_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), user_id TEXT);
 CREATE INDEX IF NOT EXISTS idx_user_settings_user_id ON user_settings(user_id);
 CREATE TABLE IF NOT EXISTS workspace_projects (id TEXT PRIMARY KEY, user_id TEXT, name TEXT, icon TEXT, category TEXT, session_id TEXT, created_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), updated_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')));
 CREATE INDEX IF NOT EXISTS idx_workspace_projects_user_id ON workspace_projects(user_id);
