@@ -206,16 +206,15 @@ const Settings = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
-      <header className="flex items-center justify-between px-4 py-3 bg-transparent">
-        <button onClick={() => navigate(-1)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+      <header className="px-6 pt-6">
+        <button onClick={() => navigate(-1)} aria-label="Go back" className="-ml-2 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-sm font-display font-semibold text-foreground">Settings</h1>
-        <span className="w-9" aria-hidden="true" />
       </header>
 
-      <div className="flex-1 px-4 py-6 sm:px-6 overflow-y-auto">
+      <div className="flex-1 px-6 pt-4 pb-12 overflow-y-auto">
         <div className="max-w-lg mx-auto space-y-6">
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-8">Settings</h1>
           {/* Saving indicator */}
           {saving && (
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -226,7 +225,7 @@ const Settings = () => {
 
           {/* Preferences */}
           <section>
-            <h2 className="font-display text-lg font-semibold text-foreground mb-4">Preferences</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Preferences</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
                 <div className="flex items-center gap-3">
@@ -287,9 +286,9 @@ const Settings = () => {
 
           {/* Push Notifications */}
           <section>
-            <h2 className="font-display text-lg font-semibold text-foreground mb-4">Push Notifications</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Push Notifications</h2>
             <div className="space-y-3">
-              <div className="rounded-xl border border-border bg-card p-4">
+              <div className="rounded-2xl border border-border px-5 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <BellRing className="w-4 h-4 text-muted-foreground" />
@@ -325,12 +324,12 @@ const Settings = () => {
 
           {/* Data & Privacy */}
           <section>
-            <h2 className="font-display text-lg font-semibold text-foreground mb-4">Data & Privacy</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Data & Privacy</h2>
             <div className="space-y-3">
               <button
                 onClick={handleExport}
                 disabled={exporting}
-                className="w-full flex items-center gap-3 rounded-xl border border-border bg-card p-4 hover:bg-accent transition-colors text-left disabled:opacity-50"
+                className="w-full flex items-center gap-3 rounded-2xl border border-border px-5 py-4 hover:bg-accent transition-colors text-left disabled:opacity-50"
               >
                 {exporting ? <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" /> : <Download className="w-4 h-4 text-muted-foreground" />}
                 <div>
@@ -342,7 +341,7 @@ const Settings = () => {
               <button
                 onClick={handleClearHistory}
                 disabled={clearing}
-                className="w-full flex items-center gap-3 rounded-xl border border-border bg-card p-4 hover:bg-accent transition-colors text-left disabled:opacity-50"
+                className="w-full flex items-center gap-3 rounded-2xl border border-border px-5 py-4 hover:bg-accent transition-colors text-left disabled:opacity-50"
               >
                 {clearing ? <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" /> : <Trash2 className="w-4 h-4 text-muted-foreground" />}
                 <div>

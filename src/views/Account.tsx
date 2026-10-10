@@ -141,19 +141,18 @@ const Account = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
-      <header className="flex items-center justify-between px-4 py-3 bg-transparent">
-        <button onClick={() => navigate(-1)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+      <header className="px-6 pt-6">
+        <button onClick={() => navigate(-1)} aria-label="Go back" className="-ml-2 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-sm font-display font-semibold text-foreground">Account</h1>
-        <span className="w-9" aria-hidden="true" />
       </header>
 
-      <div className="flex-1 px-4 py-6 sm:px-6 overflow-y-auto">
+      <div className="flex-1 px-6 pt-4 pb-12 overflow-y-auto">
         <div className="max-w-lg mx-auto space-y-6">
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-8">Account</h1>
           {/* Profile */}
           <section>
-            <h2 className="font-display text-lg font-semibold text-foreground mb-4">Profile</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Profile</h2>
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-foreground/10 flex items-center justify-center overflow-hidden">
@@ -170,23 +169,23 @@ const Account = () => {
               </div>
 
               <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Name</label>
+                <label className="text-sm font-medium text-foreground mb-1.5 block">Name</label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground outline-none focus:border-foreground/20 transition-colors"
+                  className="w-full border border-border text-sm text-foreground outline-none px-4 py-3 rounded-full bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Email</label>
+                <label className="text-sm font-medium text-foreground mb-1.5 block">Email</label>
                 <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5">
                   <Mail className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm text-foreground">{profile?.email || user?.email || ""}</span>
                 </div>
               </div>
 
-              <button onClick={saveName} className="w-full py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
+              <button onClick={saveName} className="w-full py-3.5 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
                 Save changes
               </button>
             </div>
@@ -194,7 +193,7 @@ const Account = () => {
 
           {/* Security */}
           <section>
-            <h2 className="font-display text-lg font-semibold text-foreground mb-4">Security</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Security</h2>
             <div className="space-y-4">
               {/* Reset password */}
               <button

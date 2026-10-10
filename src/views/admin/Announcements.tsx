@@ -64,7 +64,7 @@ const AdminAnnouncements = () => {
           <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} className="bg-background border border-border rounded-full px-4 py-2.5 text-sm">
             {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
           </select>
-          <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="Body" rows={3} className="bg-background border border-border rounded-2xl px-4 py-3 text-sm sm:col-span-2 resize-none" />
+          <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="Body" rows={3} className="border border-border text-sm sm:col-span-2 resize-none px-4 py-3 rounded-2xl bg-transparent placeholder:text-muted-foreground focus:border-foreground/30 transition-colors" />
           <input type="datetime-local" value={form.ends_at} onChange={(e) => setForm({ ...form, ends_at: e.target.value })} className="bg-background border border-border rounded-full px-4 py-2.5 text-sm" />
           <button onClick={create} disabled={saving} className="bg-primary text-primary-foreground rounded-full px-3 py-2 text-sm font-medium flex items-center justify-center gap-1.5 disabled:opacity-60">
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Publish
