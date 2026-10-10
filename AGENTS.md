@@ -9,7 +9,7 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Page UIs live in `src/views/`; each `src/routes/*` file only wraps a view (and `<Protected>` for signed-in pages). Why: keeps ported screens separate from routing.
+- Page UIs live in `src/views/`; route files only wrap a view. Page access is decided in `src/lib/route-access.ts` and enforced once by `RouteGuard` in `__root.tsx`; a failed session check means retry, never signed out. Why: one rule set, no flashes or false logouts.
 - Views navigate via `@/lib/router-compat` (thin adapter over TanStack Router). Why: lets ported code keep simple `navigate(path)` calls; never reintroduce react-router-dom.
 - Backend is Cloudflare D1 reached from server code only (`src/lib/cloud/*.server.ts`); the browser `supabase`-shaped client in `src/lib/cloud/client.ts` sends every query to one server function that enforces per-table access rules. Why: user chose Cloudflare; keeps view query code unchanged while all permission checks run server-side.
 - Sign-in uses PBKDF2 password hashes and hashed session tokens in D1 with an HttpOnly cookie; Google/GitHub OAuth callbacks live at /google/callback and /github/callback. Auth pages live under /auth/* (login, signup, forget-password, verify); password reset is two steps: /auth/verify consumes the code and issues a 10-minute single-use HttpOnly reset ticket (hashed in D1 password_reset_tickets), then /verify/confirm-password spends it. Why: no third-party auth service; tokens never reach browser scripts.
