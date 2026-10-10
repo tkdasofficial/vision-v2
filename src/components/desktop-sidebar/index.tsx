@@ -40,7 +40,7 @@ const DesktopSidebar = ({ onNewChat, onSelectChat, isMainChat, activeChatId, cha
     <aside className="hidden lg:flex flex-col w-[260px] bg-sidebar border-r border-sidebar-border h-full min-h-0 shrink-0">
       <div className="flex shrink-0 items-center gap-2.5 px-4 py-4">
         <span className="flex-1 font-display font-semibold text-foreground text-xl tracking-tight">Vision</span>
-        <Button variant="secondary" size="icon" className="shrink-0 rounded-full" aria-label="Open search" title="Search" onClick={() => navigate("/app/search")}><Search /></Button>
+        <Button variant="secondary" size="icon" className="shrink-0 rounded-full" aria-label="Open search" title="Search" onClick={() => navigate("/search")}><Search /></Button>
       </div>
 
       <SidebarFeatures />

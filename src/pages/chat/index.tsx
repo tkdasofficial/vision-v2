@@ -38,7 +38,7 @@ const Index = ({ isIncognito = false, creationMode }: { isIncognito?: boolean; c
     setActiveChatId(undefined);
     setLoadedMessages(undefined);
     setChatKey((k) => k + 1);
-    navigate("/app/new");
+    navigate("/chat");
   };
 
   const handleIncognitoChat = () => {
@@ -46,7 +46,7 @@ const Index = ({ isIncognito = false, creationMode }: { isIncognito?: boolean; c
     setActiveChatId(undefined);
     setLoadedMessages(undefined);
     setChatKey((k) => k + 1);
-    navigate(isIncognito ? "/app/new" : "/app/incognito");
+    navigate(isIncognito ? "/chat" : "/chat/incognito");
   };
 
   const handleSelectChat = useCallback(async (id: string) => {
@@ -54,12 +54,12 @@ const Index = ({ isIncognito = false, creationMode }: { isIncognito?: boolean; c
     const msgs = await loadChatMessages(id);
     setLoadedMessages(msgs);
     setChatKey((k) => k + 1);
-    navigate(`/app/chat/${id}`);
+    navigate(`/chat/${id}`);
   }, [loadChatMessages, navigate]);
 
   const handleChatCreated = useCallback((id: string) => {
     setActiveChatId(id);
-    navigate(`/app/chat/${id}`, { replace: true });
+    navigate(`/chat/${id}`, { replace: true });
   }, [navigate]);
 
   const activeChat = activeChatId ? getChatById(activeChatId) : undefined;

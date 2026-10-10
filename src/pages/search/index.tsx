@@ -64,13 +64,13 @@ export default function Search({ library = false }: { library?: boolean }) {
   const libraryItems = useMemo(() => items.filter((item) => item.category !== "chats"), [items]);
   const availableTypes = assetTypes.filter((type) => libraryItems.some((item) => (item.assetType || "other") === type.value));
   const results = useMemo(() => filterSearchItems(library ? libraryItems.filter((item) => assetType === "all" || (item.assetType || "other") === assetType) : items, query, category), [items, libraryItems, query, category, library, assetType]);
-  const sidebarProps = { onNewChat: () => navigate("/app/new"), onSelectChat: (id: string) => navigate(`/app/chat/${id}`), isMainChat: false, chatHistory: history };
+  const sidebarProps = { onNewChat: () => navigate("/chat"), onSelectChat: (id: string) => navigate(`/chat/${id}`), isMainChat: false, chatHistory: history };
 
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-background">
       <DesktopSidebar {...sidebarProps} />
       <main className="flex min-w-0 flex-1 flex-col">
-        <PageHeader title={library ? "Library" : "Search"} backTo="/app/new" className="sm:px-8" />
+        <PageHeader title={library ? "Library" : "Search"} backTo="/chat" className="sm:px-8" />
         <div className="flex shrink-0 items-center px-4 pb-3 sm:px-8">
             <div className="relative min-w-0 flex-1">
               <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -95,7 +95,7 @@ export default function Search({ library = false }: { library?: boolean }) {
                 <h2 className="mb-3 text-sm font-semibold text-muted-foreground">{entry.label} <span className="ml-2">{group.length}</span></h2>
                 <div className="divide-y divide-border">{group.map((item) => {
                   const content = <><entry.icon className="h-5 w-5 shrink-0 text-muted-foreground" /><div className="min-w-0 flex-1"><p className="truncate font-medium">{item.title}</p><p className="truncate text-sm text-muted-foreground">{item.detail}</p></div>{item.sessionId && <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />}</>;
-                  return item.sessionId ? <Link key={item.id} to="/app/chat/$chatId" params={{ chatId: item.sessionId }} className="flex items-center gap-4 rounded-lg px-3 py-4 transition-colors hover:bg-accent">{content}</Link> : <div key={item.id} className="flex items-center gap-4 px-3 py-4">{content}</div>;
+                  return item.sessionId ? <Link key={item.id} to="/chat/$chatId" params={{ chatId: item.sessionId }} className="flex items-center gap-4 rounded-lg px-3 py-4 transition-colors hover:bg-accent">{content}</Link> : <div key={item.id} className="flex items-center gap-4 px-3 py-4">{content}</div>;
                 })}</div>
               </section>;
             })}

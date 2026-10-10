@@ -20,7 +20,7 @@ export default function DocumentPreview() {
     getDocumentFn({ data: { id: docId } }).then(setResult).catch(() => setResult({ status: "missing" }));
   }, [docId]);
 
-  const back = () => (window.history.length > 1 ? window.history.back() : navigate("/app/new"));
+  const back = () => (window.history.length > 1 ? window.history.back() : navigate("/chat"));
   const doc = result?.status === "ok" ? result.doc : null;
 
   const makePdf = async () => {

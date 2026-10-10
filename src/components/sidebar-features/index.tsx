@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const features = [
-  { label: "Images", to: "/app/images", icon: Image },
-  { label: "Videos", to: "/app/videos", icon: Film },
-  { label: "Library", to: "/app/library", icon: Library },
-  { label: "Projects", to: "/app/projects", icon: FolderOpen },
-  { label: "Integrations", to: "/app/integrations", icon: Plug },
+  { label: "Images", to: "/studio/images", icon: Image },
+  { label: "Videos", to: "/studio/videos", icon: Film },
+  { label: "Library", to: "/library", icon: Library },
+  { label: "Projects", to: "/projects", icon: FolderOpen },
+  { label: "Integrations", to: "/integrations", icon: Plug },
 ] as const;
 
 export default function SidebarFeatures({ onNavigate }: { onNavigate?: () => void }) {

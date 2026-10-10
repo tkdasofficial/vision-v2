@@ -90,7 +90,7 @@ export async function finishOAuth(req: Request, p: Provider) {
       await S.grantWelcomeCredits(userId!, prof.email, S.factsFrom(req.headers, S.ensureDeviceId()));
     }
     await startSession(userId!);
-    return back(req, "/app/new");
+    return back(req, "/chat");
   } catch (e) {
     console.error("[oauth]", p, (e as Error).message);
     return back(req, "/auth/login?error=" + encodeURIComponent("Sign-in failed. Please try again."));

@@ -40,19 +40,19 @@ const ProfileMenu = () => {
             <DropdownMenuSeparator />
           </>
         )}
-        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/app/account")}>
+        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/account")}>
           <User className="w-4 h-4" />
           <span>Account</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/app/settings")}>
+        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/settings")}>
           <Settings className="w-4 h-4" />
           <span>Settings</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/app/inbox")}>
+        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/inbox")}>
           <Inbox className="w-4 h-4" />
           <span>Inbox</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="gap-2.5 cursor-pointer text-primary" onClick={() => navigate("/app/upgrade")}>
+        <DropdownMenuItem className="gap-2.5 cursor-pointer text-primary" onClick={() => navigate("/billing/plans")}>
           <Crown className="w-4 h-4" />
           <span>Upgrade Plan</span>
         </DropdownMenuItem>
@@ -66,15 +66,15 @@ const ProfileMenu = () => {
           </>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/docs/terms-conditions")}>
+        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/legal/terms")}>
           <FileText className="w-4 h-4" />
           <span>Terms of Service</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/docs/privacy-policy")}>
+        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/legal/privacy")}>
           <Shield className="w-4 h-4" />
           <span>Privacy Policy</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/app/support")}>
+        <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/support")}>
           <HelpCircle className="w-4 h-4" />
           <span>Support</span>
         </DropdownMenuItem>

@@ -4,7 +4,7 @@ import PageHeader from "@/components/page-header";
 import { cn } from "@/lib/utils";
 
 /** Page frame for every Settings sub-page. */
-export function SettingsPage({ title, children, loading, backTo = "/app/settings" }: { title: string; children: ReactNode; loading?: boolean; backTo?: string }) {
+export function SettingsPage({ title, children, loading, backTo = "/settings" }: { title: string; children: ReactNode; loading?: boolean; backTo?: string }) {
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
       <PageHeader title={title} backTo={backTo} />

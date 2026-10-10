@@ -45,7 +45,7 @@ export default function PrivacyData() {
           {busy === "export" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-muted-foreground" />}
           <div><p className="text-sm font-medium">Download all my data</p></div>
         </button>
-        <p className="text-xs text-muted-foreground px-1">To delete your whole account, go to <Link to="/app/account" className="underline">Account</Link>.</p>
+        <p className="text-xs text-muted-foreground px-1">To delete your whole account, go to <Link to="/account" className="underline">Account</Link>.</p>
       </SettingsSection>
       <SettingsSection title="Research documents" description="Reports from Research mode. Only you can open them.">
         {docs === null ? <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" /> : docs.length === 0 ? (
@@ -55,7 +55,7 @@ export default function PrivacyData() {
             {docs.map((d) => (
               <div key={d.id} className="flex items-center gap-3 rounded-full border border-border px-5 py-3">
                 <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
-                <Link to="/app/doc/$docId" params={{ docId: d.id }} className="min-w-0 flex-1">
+                <Link to="/documents/$docId" params={{ docId: d.id }} className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{d.title}</p>
                   <p className="text-xs text-muted-foreground">{new Date(d.createdAt).toLocaleDateString()}</p>
                 </Link>

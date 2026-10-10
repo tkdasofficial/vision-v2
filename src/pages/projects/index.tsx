@@ -44,7 +44,7 @@ export default function Projects() {
     if (result.error) toast.error(result.error.message); else void load();
   };
   const active = projects.find((project) => project.id === selected);
-  return <WorkspaceShell title="Projects" backTo="/app/new" actions={<Button onClick={() => navigate("/app/project-create")}><Plus />Create</Button>}>
+  return <WorkspaceShell title="Projects" backTo="/chat" actions={<Button onClick={() => navigate("/projects/new")}><Plus />Create</Button>}>
     {editing && <form className="mb-8 flex flex-wrap gap-2" onSubmit={(event) => { event.preventDefault(); void save(); }}>
       <Input value={name} onChange={(event) => setName(event.target.value)} placeholder="Project name" aria-label="Project name" maxLength={100} />
       <Button type="submit" disabled={!name.trim()}>Save</Button>
@@ -58,7 +58,7 @@ export default function Projects() {
       </div>; })}
     </div>}
     {active && <section className="mt-8 border-t border-border pt-6"><h2 className="mb-4 font-display text-lg font-semibold text-foreground">{active.name}</h2>
-      {active.session_id && <Button variant="outline" onClick={() => navigate(`/app/chat/${active.session_id}`)}>Open linked chat</Button>}
+      {active.session_id && <Button variant="outline" onClick={() => navigate(`/chat/${active.session_id}`)}>Open linked chat</Button>}
       <h3 className="my-4 text-sm text-muted-foreground">Link a chat</h3>
       {history.length === 0 ? <p className="text-sm text-muted-foreground">No saved chats yet</p> : history.map((chat) => <Button key={chat.id} variant="ghost" className="mb-1 w-full justify-start" onClick={() => void attach(chat.id)}>{chat.title}</Button>)}
     </section>}

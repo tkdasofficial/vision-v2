@@ -23,11 +23,11 @@ export default function ProjectCreate() {
     try {
       const result = await supabase.from("workspace_projects").insert({ name: name.trim(), icon, category, user_id: user.id });
       if (result.error) { toast.error(result.error.message); return; }
-      navigate("/app/projects");
+      navigate("/projects");
     } catch { toast.error("Project couldn’t be created. Please try again."); }
     finally { setSaving(false); }
   };
-  return <WorkspaceShell title="Create project" backTo="/app/projects">
+  return <WorkspaceShell title="Create project" backTo="/projects">
     <form className="mx-auto max-w-lg space-y-7" onSubmit={(event) => { event.preventDefault(); void create(); }}>
       <fieldset>
         <legend className="mb-3 text-sm font-medium">Project icon <span className="font-normal text-muted-foreground">(optional)</span></legend>
@@ -37,7 +37,7 @@ export default function ProjectCreate() {
       </fieldset>
       <div className="space-y-2"><label htmlFor="project-name" className="text-sm font-medium">Project name</label><Input id="project-name" autoFocus value={name} onChange={(event) => setName(event.target.value)} placeholder="Project name" maxLength={100} required disabled={saving} /></div>
       <div className="space-y-2"><label id="project-category-label" className="text-sm font-medium">Category</label><Select value={category} onValueChange={setCategory} disabled={saving} required><SelectTrigger aria-labelledby="project-category-label"><SelectValue placeholder="Select category" /></SelectTrigger><SelectContent>{projectCategories.map((entry) => <SelectItem key={entry} value={entry}>{entry}</SelectItem>)}</SelectContent></Select></div>
-      <div className="flex justify-end gap-2 border-t border-border pt-5"><Button type="button" variant="ghost" disabled={saving} onClick={() => navigate("/app/projects")}>Cancel</Button><Button type="submit" disabled={!name.trim() || !category || saving}><Plus />{saving ? "Creating…" : "Create"}</Button></div>
+      <div className="flex justify-end gap-2 border-t border-border pt-5"><Button type="button" variant="ghost" disabled={saving} onClick={() => navigate("/projects")}>Cancel</Button><Button type="submit" disabled={!name.trim() || !category || saving}><Plus />{saving ? "Creating…" : "Create"}</Button></div>
     </form>
   </WorkspaceShell>;
 }

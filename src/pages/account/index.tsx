@@ -190,7 +190,7 @@ const Account = () => {
           {/* Security lives in Settings → Security */}
           <section>
             <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Security</h2>
-            <button onClick={() => navigate("/app/settings/security")} className="w-full flex items-center gap-3 rounded-2xl border border-border px-5 py-4 hover:bg-accent transition-colors text-left">
+            <button onClick={() => navigate("/settings/security")} className="w-full flex items-center gap-3 rounded-2xl border border-border px-5 py-4 hover:bg-accent transition-colors text-left">
               <ShieldCheck className="w-5 h-5 text-muted-foreground shrink-0" />
               <div className="flex-1">
                 <p className="text-sm font-medium text-foreground">Password & sign-in security</p>

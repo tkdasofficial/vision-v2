@@ -3,21 +3,21 @@ import { Palette, Languages, Sparkles, MessagesSquare, Database, ShieldCheck, Ac
 import PageHeader from "@/components/page-header";
 
 export const SETTINGS_CATEGORIES = [
-  { to: "/app/settings/appearance", icon: Palette, title: "Appearance", desc: "Theme, accent colour and text size" },
-  { to: "/app/settings/language", icon: Languages, title: "Language", desc: "Interface language" },
-  { to: "/app/settings/ai-preferences", icon: Sparkles, title: "AI Preferences", desc: "Default mode, answer style, custom instructions" },
-  { to: "/app/settings/chat-history", icon: MessagesSquare, title: "Chat & History", desc: "Export or clear conversations" },
-  { to: "/app/settings/privacy-data", icon: Database, title: "Privacy & Data", desc: "Your data, research documents and deletion" },
-  { to: "/app/settings/security", icon: ShieldCheck, title: "Security", desc: "Password and two-step sign-in" },
-  { to: "/app/settings/accessibility", icon: Accessibility, title: "Accessibility", desc: "Motion, contrast and tap size" },
-  { to: "/app/settings/notifications", icon: Bell, title: "Notifications", desc: "Browser alerts" },
-  { to: "/app/settings/about", icon: Info, title: "About VISION", desc: "Version, help and legal" },
+  { to: "/settings/appearance", icon: Palette, title: "Appearance", desc: "Theme, accent colour and text size" },
+  { to: "/settings/language", icon: Languages, title: "Language", desc: "Interface language" },
+  { to: "/settings/ai", icon: Sparkles, title: "AI Preferences", desc: "Default mode, answer style, custom instructions" },
+  { to: "/settings/chat", icon: MessagesSquare, title: "Chat & History", desc: "Export or clear conversations" },
+  { to: "/settings/privacy", icon: Database, title: "Privacy & Data", desc: "Your data, research documents and deletion" },
+  { to: "/settings/security", icon: ShieldCheck, title: "Security", desc: "Password and two-step sign-in" },
+  { to: "/settings/accessibility", icon: Accessibility, title: "Accessibility", desc: "Motion, contrast and tap size" },
+  { to: "/settings/notifications", icon: Bell, title: "Notifications", desc: "Browser alerts" },
+  { to: "/settings/about", icon: Info, title: "About VISION", desc: "Version, help and legal" },
 ] as const;
 
 export default function SettingsDirectory() {
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
-      <PageHeader title="Settings" backTo="/app/new" />
+      <PageHeader title="Settings" backTo="/chat" />
       <div className="flex-1 px-4 pt-2 pb-12 overflow-y-auto">
         <nav aria-label="Settings categories" className="max-w-lg mx-auto space-y-2">
           {SETTINGS_CATEGORIES.map(({ to, icon: Icon, title }) => (

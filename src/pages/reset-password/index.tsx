@@ -37,7 +37,7 @@ const ResetPassword = () => {
         throw error;
       }
       toast({ title: "Password updated", description: "You're signed in." });
-      navigate("/app/new");
+      navigate("/chat");
     } catch (e: any) {
       toast({ title: "Couldn't update password", description: e.message, variant: "destructive" });
     } finally {
@@ -67,7 +67,7 @@ const ResetPassword = () => {
 
         {status === "expired" && (
           <button
-            onClick={() => navigate("/auth/forget-password")}
+            onClick={() => navigate("/auth/forgot-password")}
             className="w-full py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-opacity"
           >
             Request a new code

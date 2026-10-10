@@ -46,7 +46,7 @@ const GettingStarted = () => {
     const { error } = await supabase.auth.updateUser({ data: { ...f, onboarded: "true" } });
     setSaving(false);
     if (error) return toast({ title: "Couldn't save", description: error.message, variant: "destructive" });
-    navigate("/app/new");
+    navigate("/chat");
   };
 
   return (

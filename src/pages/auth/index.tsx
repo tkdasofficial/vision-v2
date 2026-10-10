@@ -13,7 +13,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { pathname } = useLocation();
-  const [mode, setMode] = useState<Mode>(pathname === "/auth/signup" ? "signup" : pathname === "/auth/forget-password" ? "forgot" : "login");
+  const [mode, setMode] = useState<Mode>(pathname === "/auth/register" ? "signup" : pathname === "/auth/forgot-password" ? "forgot" : "login");
   // Two-step email auth: "email" first (validated server-side), then "password".
   const [step, setStep] = useState<"email" | "password">("email");
   const [email, setEmail] = useState("");
@@ -345,7 +345,7 @@ const Auth = () => {
                 <label htmlFor="auth-password" className="text-sm font-medium text-foreground">Password</label>
                 {mode === "login" && (
                   <button
-                    onClick={() => { setMode("forgot"); navigate("/auth/forget-password"); }}
+                    onClick={() => { setMode("forgot"); navigate("/auth/forgot-password"); }}
                     className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Forgot password?
@@ -394,7 +394,7 @@ const Auth = () => {
           {mode === "login" ? (
             <>
               Don't have an account?{" "}
-              <button onClick={() => { setMode("signup"); setStep("email"); setPassword(""); navigate("/auth/signup"); }} className="text-foreground font-medium underline underline-offset-4 hover:opacity-80">
+              <button onClick={() => { setMode("signup"); setStep("email"); setPassword(""); navigate("/auth/register"); }} className="text-foreground font-medium underline underline-offset-4 hover:opacity-80">
                 Create your account
               </button>
             </>

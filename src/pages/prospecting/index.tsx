@@ -151,7 +151,7 @@ export default function Prospecting() {
     <div className="min-h-[100dvh] bg-background text-foreground">
       <header className="border-b border-border">
         <div className="max-w-7xl mx-auto pr-4 flex items-center justify-between">
-          <PageHeader title="Client Prospecting" backTo="/app/new" />
+          <PageHeader title="Client Prospecting" backTo="/chat" />
           {activeJob && (
             <div className="flex items-center gap-2 text-sm px-3 py-1.5 rounded-lg border border-border bg-card">
               <Loader2 className="w-4 h-4 animate-spin" />

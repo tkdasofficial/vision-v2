@@ -1,8 +1,7 @@
-import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { legacyRedirect } from "@/lib/legacy-routes";
 
+// Old address kept working: forwards to its new path, keeping parameters and query string.
 export const Route = createFileRoute("/verify")({
-  beforeLoad: ({ location }) => {
-    if (location.pathname === "/verify" || location.pathname === "/verify/") throw redirect({ to: "/auth/login" });
-  },
-  component: Outlet,
+  beforeLoad: ({ location }) => legacyRedirect(location),
 });

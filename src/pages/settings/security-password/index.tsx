@@ -55,7 +55,7 @@ export default function ResetPasswordCode() {
       const r = await completePasswordResetFn({ data: { password: pw } });
       if (r.error) { toast.error(r.error); setBusy(false); return; }
       toast.success("Password changed.");
-      navigate("/app/new");
+      navigate("/chat");
     } catch { toast.error("Couldn't change the password."); setBusy(false); }
   };
 
@@ -68,7 +68,7 @@ export default function ResetPasswordCode() {
 
   return (
     <div className="relative min-h-[100dvh] bg-background flex flex-col">
-      <PageHeader title="" backTo="/app/new" />
+      <PageHeader title="" backTo="/chat" />
 
       <div className="w-full max-w-sm mx-auto flex flex-col gap-7 px-6 pt-4 pb-10">
         <div className="space-y-2">

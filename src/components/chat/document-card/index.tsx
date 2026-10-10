@@ -5,7 +5,7 @@ import { useNavigate } from "@/lib/router-compat";
 export default function DocumentCard({ id, title }: { id: string; title: string }) {
   const navigate = useNavigate();
   return (
-    <button type="button" onClick={() => navigate(`/app/doc/${id}`)}
+    <button type="button" onClick={() => navigate(`/documents/${id}`)}
       className="flex h-[72px] w-full items-center gap-3 rounded-2xl border border-border bg-card px-4 text-left transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring">
       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent"><FileText className="size-5" /></span>
       <span className="min-w-0 flex-1">

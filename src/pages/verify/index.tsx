@@ -24,7 +24,7 @@ const VerifyEmail = () => {
       if (isReset) {
         const { error } = await supabase.auth.verifyResetCode(email, code);
         if (error) throw error;
-        navigate("/verify/confirm-password");
+        navigate("/auth/reset-password");
         return;
       }
       const { error } = await supabase.auth.verifyEmailCode(email, code);

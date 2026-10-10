@@ -42,8 +42,8 @@ const EnterpriseGettingStarted = () => {
 
   useEffect(() => {
     enterpriseProfileFn().then((r) => {
-      if (!r.data) return navigate("/app/new"); // not an enterprise account
-      if (r.data.onboarded) return navigate("/app/new");
+      if (!r.data) return navigate("/chat"); // not an enterprise account
+      if (r.data.onboarded) return navigate("/chat");
       setProfile(r.data);
     });
   }, []);

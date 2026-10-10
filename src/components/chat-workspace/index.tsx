@@ -818,7 +818,7 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
         >
           <Menu className="w-5 h-5" />
         </Button>
-        <Button variant="secondary" className="rounded-full px-3" aria-label="Upgrade Plan" title="Upgrade Plan" onClick={() => navigate("/app/upgrade")}>
+        <Button variant="secondary" className="rounded-full px-3" aria-label="Upgrade Plan" title="Upgrade Plan" onClick={() => navigate("/billing/plans")}>
           <Crown /><span>Upgrade Plan</span>
         </Button>
         <Button variant={isIncognito ? "default" : "secondary"} size="icon" className="ml-auto shrink-0 rounded-full transition-colors" aria-label={isIncognito ? "Turn off incognito" : "Turn on incognito"} title={isIncognito ? "Incognito on — tap to turn off" : "Incognito off — tap to turn on"} aria-pressed={isIncognito} onClick={onIncognitoChat}>

@@ -4,13 +4,13 @@
 
 export type Access = "public" | "guest" | "protected" | "recovery";
 
-export const HOME_PATH = "/app/new";
+export const HOME_PATH = "/chat";
 export const LOGIN_PATH = "/auth/login";
 
 /** Sign-in pages: signed-in users are sent to the main screen. */
-const GUEST = ["/auth/login", "/auth/signup", "/auth/forget-password"];
+const GUEST = ["/auth/login", "/auth/register", "/auth/forgot-password"];
 /** Recovery flows keyed by their own short-lived ticket, open with or without a session. */
-const RECOVERY = ["/verify/confirm-password"];
+const RECOVERY = ["/auth/reset-password"];
 /** Signed-in-only areas (prefix match). */
 const PROTECTED = ["/app", "/admin", "/getting-started", "/enterprise/getting-started"];
 

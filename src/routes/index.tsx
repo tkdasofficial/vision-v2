@@ -8,5 +8,5 @@ export const Route = createFileRoute("/")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  beforeLoad: () => { throw redirect({ to: "/app/new" }); },
+  beforeLoad: () => { throw redirect({ to: "/chat" }); },
 });

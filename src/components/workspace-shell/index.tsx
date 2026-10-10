@@ -10,7 +10,7 @@ export default function WorkspaceShell({ title, children, actions, backTo }: { t
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { history } = useChatHistory();
-  const props = { onNewChat: () => navigate("/app/new"), onSelectChat: (id: string) => navigate(`/app/chat/${id}`), chatHistory: history, isMainChat: false };
+  const props = { onNewChat: () => navigate("/chat"), onSelectChat: (id: string) => navigate(`/chat/${id}`), chatHistory: history, isMainChat: false };
   return <div className="flex h-[100dvh] overflow-hidden bg-background">
     <DesktopSidebar {...props} /><MobileSidebar {...props} open={open} onClose={() => setOpen(false)} />
     <main className="flex min-w-0 flex-1 flex-col">

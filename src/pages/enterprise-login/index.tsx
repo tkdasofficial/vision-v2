@@ -12,7 +12,7 @@ import { emitAuthRefresh } from "@/lib/cloud/client";
 type Page = "identity" | "email" | "verify";
 type State = { step: "identity" | "domain" | "email" | "otp"; enterpriseName?: string; domain?: string; txtName?: string; txtValue?: string; email?: string };
 
-const PATH: Record<State["step"], string> = { identity: "/enterprise", domain: "/enterprise", email: "/enterprise/email", otp: "/enterprise/verify" };
+const PATH: Record<State["step"], string> = { identity: "/enterprise", domain: "/enterprise", email: "/enterprise/login", otp: "/enterprise/verify" };
 const field = "w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-foreground/20 transition-colors";
 const primary = "w-full py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2";
 
