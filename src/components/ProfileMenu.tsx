@@ -68,7 +68,7 @@ const ProfileMenu = () => {
         <DropdownMenuSeparator />
         <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/docs/terms-conditions")}>
           <FileText className="w-4 h-4" />
-          <span>Terms & Conditions</span>
+          <span>Terms of Service</span>
         </DropdownMenuItem>
         <DropdownMenuItem className="gap-2.5 cursor-pointer" onClick={() => navigate("/docs/privacy-policy")}>
           <Shield className="w-4 h-4" />
