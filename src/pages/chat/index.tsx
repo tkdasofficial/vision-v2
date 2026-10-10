@@ -8,7 +8,9 @@ import MobileSidebar from "@/components/mobile-sidebar";
 import ChatWorkspace from "@/components/chat-workspace";
 
 const Index = ({ isIncognito = false, creationMode }: { isIncognito?: boolean; creationMode?: CreationMode }) => {
-  const { chatId: urlChatId } = useParams<{ chatId: string }>();
+  const params = useParams<{ chatId: string; imageChatId: string; videoChatId: string }>();
+  const urlChatId = params.chatId ?? params.imageChatId ?? params.videoChatId;
+  const base = creationMode === "images" ? "/images" : creationMode === "videos" ? "/videos" : "/chat";
   const navigate = useNavigate();
   const { getChatById, history, loadChatMessages } = useChatHistory();
 
@@ -38,7 +40,7 @@ const Index = ({ isIncognito = false, creationMode }: { isIncognito?: boolean; c
     setActiveChatId(undefined);
     setLoadedMessages(undefined);
     setChatKey((k) => k + 1);
-    navigate("/chat");
+    navigate(base);
   };
 
   const handleIncognitoChat = () => {
@@ -54,13 +56,13 @@ const Index = ({ isIncognito = false, creationMode }: { isIncognito?: boolean; c
     const msgs = await loadChatMessages(id);
     setLoadedMessages(msgs);
     setChatKey((k) => k + 1);
-    navigate(`/chat/${id}`);
-  }, [loadChatMessages, navigate]);
+    navigate(`${base}/${id}`);
+  }, [loadChatMessages, navigate, base]);
 
   const handleChatCreated = useCallback((id: string) => {
     setActiveChatId(id);
-    navigate(`/chat/${id}`, { replace: true });
-  }, [navigate]);
+    navigate(`${base}/${id}`, { replace: true });
+  }, [navigate, base]);
 
   const activeChat = activeChatId ? getChatById(activeChatId) : undefined;
   const initialMessages = loadedMessages || activeChat?.messages;

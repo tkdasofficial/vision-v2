@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const features = [
-  { label: "Images", to: "/studio/images", icon: Image },
-  { label: "Videos", to: "/studio/videos", icon: Film },
+  { label: "Images", to: "/images", icon: Image },
+  { label: "Videos", to: "/videos", icon: Film },
   { label: "Library", to: "/library", icon: Library },
   { label: "Projects", to: "/projects", icon: FolderOpen },
   { label: "Integrations", to: "/integrations", icon: Plug },
