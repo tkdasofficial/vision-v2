@@ -6,9 +6,9 @@ import { d1 } from "./d1.server";
 async function senderAddress(): Promise<string> {
   const cached = await d1<{ value: string }>("SELECT value FROM app_config WHERE key = 'smtp_from'");
   if (cached[0]?.value) return cached[0].value;
-  const id = process.env.GOOGLE_CLIENT_ID;
-  const secret = process.env.GOOGLE_CLIENT_SECRET;
-  const refresh = process.env.GOOGLE_REFRESH_TOKEN;
+  const id = process.env["GOOGLE_CLIENT_ID"];
+  const secret = process.env["GOOGLE_CLIENT_SECRET"];
+  const refresh = process.env["GOOGLE_REFRESH_TOKEN"];
   if (!id || !secret || !refresh) throw new Error("Email is not configured");
   const t: any = await (await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
@@ -72,7 +72,7 @@ async function openSmtpSocket(): Promise<SmtpSocket> {
 
 /** Minimal SMTP client over a TLS socket. */
 export async function sendMail(to: string, subject: string, text: string) {
-  const password = process.env.GOOGLE_APP_PASSWORD;
+  const password = process.env["GOOGLE_APP_PASSWORD"];
   if (!password) throw new Error("Email is not configured");
   const from = await senderAddress();
 
