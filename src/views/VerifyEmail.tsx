@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
 import { supabase } from "@/lib/cloud/client";
-import { Mail, ArrowLeft, ShieldCheck, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, ArrowLeft, ShieldCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import logo from "@/assets/logo.svg";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
@@ -13,11 +13,7 @@ const VerifyEmail = () => {
   const email = params.get("email") ?? "";
   const [code, setCode] = useState("");
   const isReset = params.get("mode") === "reset";
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [show, setShow] = useState(false);
-  const mismatch = isReset && confirm.length > 0 && password !== confirm;
-  const canSubmit = code.length === 8 && (!isReset || (password.length >= 8 && password === confirm));
+  const canSubmit = code.length === 8;
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
 
@@ -26,10 +22,9 @@ const VerifyEmail = () => {
     setLoading(true);
     try {
       if (isReset) {
-        const { error } = await supabase.auth.resetPasswordWithCode(email, code, password);
+        const { error } = await supabase.auth.verifyResetCode(email, code);
         if (error) throw error;
-        toast({ title: "Password updated", description: "You're signed in." });
-        navigate("/app/new");
+        navigate("/verify/confirm-password");
         return;
       }
       const { error } = await supabase.auth.verifyEmailCode(email, code);
@@ -81,44 +76,13 @@ const VerifyEmail = () => {
             </InputOTP>
           </div>
 
-          {isReset && (
-            <div className="space-y-3">
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input
-                  type={show ? "text" : "password"}
-                  placeholder="New password (min 8 characters)"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-11 py-3 rounded-full border border-border bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-foreground/30 transition-colors"
-                />
-                <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? "Hide password" : "Show password"} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                  {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input
-                  type={show ? "text" : "password"}
-                  placeholder="Confirm new password"
-                  autoComplete="new-password"
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-full border border-border bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-foreground/30 transition-colors"
-                />
-              </div>
-              {mismatch && <p className="text-xs text-destructive">Passwords don't match.</p>}
-            </div>
-          )}
-
           <button
             onClick={handleVerify}
             disabled={loading || !canSubmit}
             className="w-full py-3 rounded-full bg-foreground text-background text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50 hover:opacity-90 transition-opacity"
           >
             <ShieldCheck className="h-4 w-4" />
-            {loading ? (isReset ? "Updating…" : "Verifying…") : isReset ? "Reset password & sign in" : "Verify email"}
+            {loading ? "Verifying…" : isReset ? "Verify code" : "Verify email"}
           </button>
 
           <div className="flex items-center justify-between text-sm">
