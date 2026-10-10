@@ -79,6 +79,7 @@ export const Route = createFileRoute("/api/chat")({
                 "X-Vision-Model": t.label,
                 "X-Vision-Execution": task.executionMode,
                 "X-Vision-Output": task.output,
+                "X-Vision-Search": searchUsed,
               },
             });
           }
