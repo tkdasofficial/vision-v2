@@ -11,6 +11,9 @@ const PLAN: Record<string, Target[]> = {
 };
 
 const SYSTEM = "You are Vision, a helpful, concise AI assistant. Format answers in Markdown.";
+// Deep tasks: think it through, then check the answer before replying.
+const DEEP_SYSTEM = `${SYSTEM}
+For this question, reason carefully before answering. Then verify your work independently: re-check calculations, test the answer against every condition in the question, and look for contradictions or missed cases. If you find an error, correct it before replying. Only present the final, checked answer; mention briefly how you verified it.`;
 
 function pickTask(text: string, hasMedia: boolean, toolId?: string) {
   if (hasMedia) return "media";
@@ -74,7 +77,13 @@ export const Route = createFileRoute("/api/chat")({
           const upstream = await fetch(url, {
             method: "POST",
             headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-            body: JSON.stringify({ model: t.model, messages: [{ role: "system", content: SYSTEM }, ...messages], stream: true, max_tokens: 4096 }),
+            body: JSON.stringify({
+              model: t.model,
+              messages: [{ role: "system", content: task === "deep" ? DEEP_SYSTEM : SYSTEM }, ...messages],
+              stream: true,
+              max_tokens: task === "deep" ? 8192 : 4096,
+              ...(task === "deep" && t.provider === "groq" ? { reasoning_effort: "high" } : {}),
+            }),
             signal: request.signal,
           }).catch((e) => { console.error("[chat]", t.provider, e?.message); return null; });
           if (upstream?.ok && upstream.body) {
