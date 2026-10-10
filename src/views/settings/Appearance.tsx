@@ -25,7 +25,7 @@ export default function Appearance() {
           {ACCENTS.map((a) => (
             <button key={a.value} type="button" role="radio" aria-checked={prefs.accent === a.value} onClick={() => update({ accent: a.value })}
               aria-label={a.label} title={a.label} className="shrink-0 p-1">
-              <span className={cn("w-9 h-9 rounded-full ring-offset-2 ring-offset-background", a.swatch, prefs.accent === a.value && "ring-2 ring-foreground")} />
+              <span className={cn("block w-7 h-7 rounded-full ring-offset-2 ring-offset-background", a.swatch, prefs.accent === a.value && "ring-2 ring-foreground")} />
             </button>
           ))}
         </div></div>
