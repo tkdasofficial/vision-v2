@@ -20,6 +20,7 @@ export function useNavigate() {
       if (to < 0) router.history.go(to);
       return;
     }
+    if (to === "/app/new") console.log("NAVNEW", new Error().stack?.split("\n").slice(2,6).join(" | "));
     if (/[?#]/.test(to)) void navigate({ href: to, replace: opts?.replace } as never);
     else void navigate({ to: to as never, replace: opts?.replace });
   }, [navigate, router]);
