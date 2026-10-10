@@ -118,9 +118,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        {/* Applies saved appearance settings before first paint to avoid a theme flash. */}
+        <script dangerouslySetInnerHTML={{ __html: `try{var p=JSON.parse(localStorage.getItem("vision_prefs")||"{}"),e=document.documentElement;if(p.theme==="dark"||p.theme==="light")e.classList.add(p.theme);if(p.accent)e.dataset.accent=p.accent;if(p.fontSize)e.dataset.fontSize=p.fontSize;if(p.reduceMotion)e.classList.add("reduce-motion");if(p.highContrast)e.classList.add("high-contrast");if(p.largeTargets)e.classList.add("large-targets")}catch(_){}` }} />
       </head>
       <body>
         {children}
