@@ -14,8 +14,10 @@ describe("App routing", () => {
     ["/chat", "/chat/"],
     ["/chat/abc123", "/chat/$chatId"],
     ["/chat/incognito", "/chat/incognito"],
-    ["/studio/images", "/studio/images"],
-    ["/studio/videos", "/studio/videos"],
+    ["/images", "/images/"],
+    ["/images/i1", "/images/$imageChatId"],
+    ["/videos", "/videos/"],
+    ["/videos/v1", "/videos/$videoChatId"],
     ["/library", "/library"],
     ["/projects", "/projects/"],
     ["/projects/new", "/projects/new"],
@@ -53,6 +55,8 @@ describe("App routing", () => {
 describe("legacy addresses", () => {
   it.each([
     ["/app/new", "/chat"],
+    ["/studio/images", "/images"],
+    ["/studio/videos", "/videos"],
     ["/app/chat/abc", "/chat/abc"],
     ["/app/doc/d1", "/documents/d1"],
     ["/app/incognito", "/chat/incognito"],
