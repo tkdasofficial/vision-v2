@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Page from "@/views/Auth";
+import { GuestOnly } from "@/components/GuestOnly";
 
 export const Route = createFileRoute("/auth/signup")({
   head: () => ({
@@ -16,5 +17,5 @@ export const Route = createFileRoute("/auth/signup")({
 });
 
 function RouteComponent() {
-  return <Page />;
+  return <GuestOnly><Page /></GuestOnly>;
 }
