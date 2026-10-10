@@ -3,12 +3,12 @@
 // gateway's PUBLIC key and verifies the signed assertion it returns.
 import type { OAuthProvider } from "./oauth-urls";
 
-export const AUTH_GATEWAY_URL = "https://vision-auth.tusharkantidasofficial.workers.dev";
+export const AUTH_GATEWAY_URL = "https://vision.tusharkantidasofficial.workers.dev";
 export const AUTH_GATEWAY_PUBLIC_JWK = {
   kty: "OKP",
   crv: "Ed25519",
-  x: "3c8G8OA_82WEEgNn-geDtpyTi1bWk03SgKE1A7gr4eQ",
-  kid: "vision-auth-1",
+  x: "7COTPYRjMyIwCwXedj9GbAleU1xW6CvuG7QqtT-MH-U",
+  kid: "vision-auth-2",
 } as const;
 
 export const gatewayStartUrl = (gateway: string, p: OAuthProvider, returnTo: string, nonce: string) => {
