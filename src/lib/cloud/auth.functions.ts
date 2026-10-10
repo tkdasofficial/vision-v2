@@ -243,7 +243,7 @@ export const verifyResetCodeFn = createServerFn({ method: "POST" })
     // One open ticket per account; the raw token only ever lives in the HttpOnly cookie.
     await d1("DELETE FROM password_reset_tickets WHERE user_id = ? OR expires_at < ?", [row.id, now]);
     await d1("INSERT INTO password_reset_tickets (token_hash, user_id, expires_at) VALUES (?, ?, ?)", [await a.sha256(ticket), row.id, now + RESET_TTL]);
-    setCookie(RESET_COOKIE, ticket, { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: RESET_TTL });
+    setCookie(RESET_COOKIE, ticket, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: RESET_TTL });
     await S.audit(S.d1Store, { type: "password.reset_code_verified", decision: "ALLOW", subject: row.id });
     return { ok: true, error: null };
   });
