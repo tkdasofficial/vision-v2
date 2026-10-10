@@ -147,6 +147,10 @@ export default function ResetPasswordCode() {
             The code expires in 10 minutes and works once. After the change, you stay signed in here and your other devices are signed out.
           </p>
         </div>
+
+        <button onClick={() => navigate("/app/new")} className="mx-auto flex items-center gap-1 text-sm font-medium text-foreground hover:underline underline-offset-4">
+          <ArrowLeft className="w-4 h-4" />Back to chat
+        </button>
       </div>
     </div>
   );
