@@ -15,7 +15,6 @@ const Terms = () => {
       <div className="flex-1 px-6 pt-4 pb-12 overflow-y-auto">
         <div className="max-w-lg mx-auto prose-sm">
           <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-8">Terms & Conditions</h1>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-foreground mb-4">Terms of Service</h2>
           <p className="text-sm text-muted-foreground mb-4">Last updated: March 6, 2026</p>
 
           {[
