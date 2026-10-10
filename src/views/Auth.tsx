@@ -57,7 +57,7 @@ const Auth = () => {
     try {
       if (mode === "forgot") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/reset-password`,
+          redirectTo: `${window.location.origin}/auth/verify`,
         });
         if (error) throw error;
         toast({ title: "Check your email", description: "If an account exists, we sent an 8-digit reset code." });
