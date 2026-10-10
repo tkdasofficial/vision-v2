@@ -92,7 +92,7 @@ export async function finishOAuth(req: Request, p: Provider) {
     await startSession(userId!);
     return back(req, "/app/new");
   } catch (e) {
-    console.error("[oauth]", p, e);
+    console.error("[oauth]", p, (e as Error).message);
     return back(req, "/login?error=" + encodeURIComponent("Sign-in failed. Please try again."));
   }
 }
