@@ -46,7 +46,7 @@ const Index = ({ isIncognito = false, creationMode }: { isIncognito?: boolean; c
     setActiveChatId(undefined);
     setLoadedMessages(undefined);
     setChatKey((k) => k + 1);
-    navigate("/app/incognito");
+    navigate(isIncognito ? "/app/new" : "/app/incognito");
   };
 
   const handleSelectChat = useCallback(async (id: string) => {
