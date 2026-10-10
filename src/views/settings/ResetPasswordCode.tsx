@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Mail, ShieldCheck, Eye, EyeOff, Check, Loader2 } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
+import { Mail, Eye, EyeOff, Check, Loader2 } from "lucide-react";
 import { useNavigate } from "@/lib/router-compat";
 import { securityStatusFn } from "@/lib/cloud/account-security.functions";
 import { requestPasswordResetFn, verifyResetCodeFn, completePasswordResetFn } from "@/lib/cloud/auth.functions";
@@ -66,11 +67,10 @@ export default function ResetPasswordCode() {
     : "Choose a strong password you don't use anywhere else.";
 
   return (
-    <div className="relative min-h-[100dvh] bg-background flex flex-col px-6 py-6">
-      <button onClick={() => navigate("/app/new")}
-        className="self-start flex items-center gap-2 h-11 pl-3 pr-5 rounded-full bg-secondary text-sm font-medium text-foreground hover:opacity-80"><ArrowLeft className="w-5 h-5" />Back to chat</button>
+    <div className="relative min-h-[100dvh] bg-background flex flex-col">
+      <PageHeader title="" backTo="/app/new" />
 
-      <div className="w-full max-w-sm mx-auto flex-1 flex flex-col justify-center gap-8 py-8">
+      <div className="w-full max-w-sm mx-auto flex-1 flex flex-col justify-center gap-8 px-6 pb-10">
         <div className="space-y-2">
           <img src={logo} alt="Vision" className="w-12 h-12 rounded-2xl" />
           <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground pt-4">{title}</h1>
@@ -140,13 +140,6 @@ export default function ResetPasswordCode() {
             )}
           </>
         )}
-
-        <div className="flex items-start gap-3 rounded-[1.75rem] border border-border px-5 py-4">
-          <ShieldCheck className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            The code expires in 10 minutes and works once. After the change, you stay signed in here and your other devices are signed out.
-          </p>
-        </div>
       </div>
     </div>
   );
