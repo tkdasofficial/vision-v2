@@ -71,6 +71,44 @@
 }
 
 :root {
+    color-scheme: light;
+    --new-chat: oklch(1 0 0);
+    --new-chat-foreground: oklch(0.1 0 0);
+    --background: 0 0% 96%; /* #F5F5F5 */
+    --foreground: 0 0% 3.1%; /* #080808 */
+    --card: 0 0% 98.5%;
+    --card-foreground: 0 0% 3.1%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 3.1%;
+    --primary: 0 0% 3.1%;
+    --primary-foreground: 0 0% 96%;
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 15%;
+    --muted: 0 0% 91%;
+    --muted-foreground: 0 0% 42%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 3.1%;
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 86%;
+    --input: 0 0% 86%;
+    --ring: 0 0% 20%;
+    --radius: 1rem;
+    --sidebar-background: 0 0% 94%;
+    --sidebar-foreground: 0 0% 35%;
+    --sidebar-primary: 0 0% 3.1%;
+    --sidebar-primary-foreground: 0 0% 96%;
+    --sidebar-accent: 0 0% 90%;
+    --sidebar-accent-foreground: 0 0% 3.1%;
+    --sidebar-border: 0 0% 87%;
+    --sidebar-ring: 0 0% 20%;
+    --surface-elevated: 0 0% 98%;
+    --success: 150 60% 38%;
+    --success-foreground: 0 0% 100%;
+  }
+
+@media (prefers-color-scheme: dark) {
+  :root {
     color-scheme: dark;
     --new-chat: oklch(0.1 0 0);
     --new-chat-foreground: oklch(0.97 0 0);
@@ -106,6 +144,7 @@
     --success: 150 60% 45%;
     --success-foreground: 0 0% 3.1%;
   }
+}
 
 @layer base {
   * { @apply border-border; }
