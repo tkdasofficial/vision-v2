@@ -44,6 +44,15 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
+    // Old page files after a new version went live: reload once to get the new ones.
+    if (/Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(String((error as any)?.message))) {
+      const last = Number(sessionStorage.getItem("vision_chunk_reload_at") || 0);
+      if (Date.now() - last > 10_000) {
+        sessionStorage.setItem("vision_chunk_reload_at", String(Date.now()));
+        window.location.reload();
+        return;
+      }
+    }
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
