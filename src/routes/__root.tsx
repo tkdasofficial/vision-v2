@@ -14,6 +14,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/context/AuthContext";
+import { RouteGuard } from "@/components/RouteGuard";
 import { ChatHistoryProvider } from "@/context/ChatHistoryContext";
 import appCss from "../styles.css?url";
 import { CHUNK_ERROR_RE, recoverFromChunkError } from "@/lib/chunk-recovery";
@@ -137,7 +138,9 @@ function RootComponent() {
           <ChatHistoryProvider>
             <Toaster />
             <Sonner />
-            <Outlet />
+            <RouteGuard>
+              <Outlet />
+            </RouteGuard>
           </ChatHistoryProvider>
         </AuthProvider>
       </TooltipProvider>

@@ -16,7 +16,7 @@ const ProfileMenu = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/auth/login");
+    navigate("/auth/login", { replace: true });
   };
 
   return (

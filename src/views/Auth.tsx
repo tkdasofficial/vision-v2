@@ -1,3 +1,4 @@
+import { postLoginPath } from "@/lib/route-access";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "@/lib/router-compat";
 import { supabase } from "@/lib/cloud/client";
@@ -80,7 +81,7 @@ const Auth = () => {
           return;
         }
         toast({ title: "Account created", description: "Welcome to Vision!" });
-        navigate("/app/new");
+        navigate(postLoginPath(), { replace: true });
       } else {
         // Login flow
         const { data: signInData, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -103,7 +104,7 @@ const Auth = () => {
             toast({ title: "2FA Required", description: "Enter the code from your authenticator app." });
           } else {
             // Factor not found, proceed normally
-            navigate("/app/new");
+            navigate(postLoginPath(), { replace: true });
           }
         } else if (twoFAMethod === "email") {
           await supabase.auth.signOut();
@@ -112,7 +113,7 @@ const Auth = () => {
           setMode("otp-email");
           toast({ title: "2FA Required", description: "We sent a verification code to your email." });
         } else {
-          navigate("/app/new");
+          navigate(postLoginPath(), { replace: true });
         }
       }
     } catch (e: any) {
@@ -132,7 +133,7 @@ const Auth = () => {
         type: "email",
       });
       if (error) throw error;
-      navigate("/app/new");
+      navigate(postLoginPath(), { replace: true });
     } catch (e: any) {
       toast({ title: "Invalid code", description: e.message, variant: "destructive" });
     } finally {
@@ -157,7 +158,7 @@ const Auth = () => {
         code: otpCode,
       });
       if (vErr) throw vErr;
-      navigate("/app/new");
+      navigate(postLoginPath(), { replace: true });
     } catch (e: any) {
       toast({ title: "Invalid code", description: e.message, variant: "destructive" });
     } finally {
