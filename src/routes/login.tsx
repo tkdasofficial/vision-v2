@@ -1,20 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import Page from "@/views/Auth";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// Old address kept working: forwards to /auth/login with the same query string.
 export const Route = createFileRoute("/login")({
-  head: () => ({
-    meta: [
-      { title: "Log in — Vision" },
-      { name: "description", content: "Log in in Vision, your all-in-one AI workspace." },
-      { property: "og:title", content: "Log in — Vision" },
-      { property: "og:description", content: "Log in in Vision, your all-in-one AI workspace." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: RouteComponent,
+  beforeLoad: ({ search }) => {
+    throw redirect({ to: "/auth/login", search: search as never, replace: true });
+  },
 });
-
-function RouteComponent() {
-  return <Page />;
-}
