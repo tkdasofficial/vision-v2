@@ -1,88 +1,60 @@
-// Google and GitHub sign-in (server-only).
-// Callback paths: /google/callback, /github/callback.
-// All callback URLs derive from AUTH_ORIGIN when set, so a domain change only
-// needs one update here — provider dashboards keep the same stable origin.
+// Google and GitHub sign-in (server-only) via the Vision auth gateway Worker.
+// The Worker holds the provider credentials and runs the OAuth exchange; the app
+// sends the browser there with a nonce (also kept in an HttpOnly cookie) and,
+// on return to /<provider>/callback, verifies the Worker's Ed25519-signed
+// assertion: signature, issuer, audience (this origin), nonce, expiry, single use.
 import { getCookie, setCookie, deleteCookie } from "@tanstack/react-start/server";
 import { d1 } from "./d1.server";
 import { createUser, randomToken, startSession } from "./auth.server";
 import { oauthLinkMustResetPassword } from "../../../security";
 import { providerCallbackUrl, type OAuthProvider } from "./oauth-urls";
+import { AUTH_GATEWAY_URL, gatewayStartUrl, verifyGatewayAssertion } from "./auth-gateway";
 
 export type Provider = OAuthProvider;
 const STATE_COOKIE = "vision_oauth_state";
 
-type Creds = { id: string; secret: string };
+const gateway = () => (process.env["AUTH_GATEWAY_URL"] || AUTH_GATEWAY_URL).replace(/\/+$/, "");
+const appOrigin = (req: Request) => new URL(req.url).origin;
 
-const envCreds = (p: Provider): Creds | null => {
-  const env: Record<Provider, [string | undefined, string | undefined]> = {
-    google: [process.env["GOOGLE_CLIENT_ID"], process.env["GOOGLE_CLIENT_SECRET"]],
-    github: [process.env["GITHUB_CLIENT_ID"], process.env["GITHUB_CLIENT_SECRET"]],
-  };
-  const [id, secret] = env[p];
-  return id && secret ? { id, secret } : null;
-};
-
-const label = (p: Provider) => (p === "google" ? "Google" : "GitHub");
-
-const redirectUri = (req: Request, p: Provider) =>
-  providerCallbackUrl(process.env["AUTH_ORIGIN"] || new URL(req.url).origin, p);
 // Response.redirect() has immutable headers, which breaks the dev server's
 // header merging ("TypeError: immutable") — build redirects manually instead.
-const redirectTo = (url: string) => new Response(null, { status: 302, headers: { Location: url } });
+const redirectTo = (url: string) =>
+  new Response(null, { status: 302, headers: { Location: url, "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" } });
 const back = (req: Request, path: string) => redirectTo(new URL(path, req.url).toString());
 
-export async function startOAuth(req: Request, p: Provider) {
-  const c = envCreds(p);
-  if (!c) return back(req, `/login?error=${encodeURIComponent(`${label(p)} sign-in isn't set up yet.`)}`);
-  const state = randomToken(16);
-  setCookie(STATE_COOKIE, `${p}:${state}`, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 600 });
-  const url = p === "google"
-    ? new URL("https://accounts.google.com/o/oauth2/v2/auth")
-    : new URL("https://github.com/login/oauth/authorize");
-  url.searchParams.set("client_id", c.id);
-  url.searchParams.set("redirect_uri", redirectUri(req, p));
-  url.searchParams.set("state", state);
-  if (p === "google") { url.searchParams.set("response_type", "code"); url.searchParams.set("scope", "openid email profile"); url.searchParams.set("prompt", "select_account"); }
-  else url.searchParams.set("scope", "read:user user:email");
-  return redirectTo(url.toString());
-}
+const GATEWAY_ERRORS: Record<string, string> = {
+  access_denied: "Sign-in was cancelled.",
+  provider_not_configured: "This sign-in option isn't set up yet.",
+  email_unverified: "Your account needs a verified email address.",
+  state_mismatch: "Sign-in expired. Please try again.",
+};
 
-async function profileFor(p: Provider, code: string, req: Request, c: Creds) {
-  if (p === "google") {
-    const t: any = await (await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ code, client_id: c.id, client_secret: c.secret, redirect_uri: redirectUri(req, p), grant_type: "authorization_code" }),
-    })).json();
-    if (!t.access_token) throw new Error("token");
-    const u: any = await (await fetch("https://openidconnect.googleapis.com/v1/userinfo", { headers: { Authorization: `Bearer ${t.access_token}` } })).json();
-    if (!u.sub || !u.email || !u.email_verified) throw new Error("email");
-    return { id: String(u.sub), email: String(u.email).toLowerCase(), name: u.name ?? null, avatar: u.picture ?? null };
-  }
-  const t: any = await (await fetch("https://github.com/login/oauth/access_token", {
-    method: "POST",
-    headers: { Accept: "application/json", "Content-Type": "application/json" },
-    body: JSON.stringify({ client_id: c.id, client_secret: c.secret, code, redirect_uri: redirectUri(req, p) }),
-  })).json();
-  if (!t.access_token) throw new Error("token");
-  const h = { Authorization: `Bearer ${t.access_token}`, "User-Agent": "Vision", Accept: "application/vnd.github+json" };
-  const u: any = await (await fetch("https://api.github.com/user", { headers: h })).json();
-  const emails: any[] = await (await fetch("https://api.github.com/user/emails", { headers: h })).json();
-  const primary = Array.isArray(emails) ? emails.find((e) => e.primary && e.verified) : null;
-  if (!u.id || !primary?.email) throw new Error("email");
-  return { id: String(u.id), email: String(primary.email).toLowerCase(), name: u.name ?? u.login ?? null, avatar: u.avatar_url ?? null };
+export async function startOAuth(req: Request, p: Provider) {
+  const nonce = randomToken(24);
+  setCookie(STATE_COOKIE, `${p}:${nonce}`, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 600 });
+  return redirectTo(gatewayStartUrl(gateway(), p, providerCallbackUrl(appOrigin(req), p), nonce));
 }
 
 export async function finishOAuth(req: Request, p: Provider) {
-  const c = envCreds(p);
   const url = new URL(req.url);
   const saved = getCookie(STATE_COOKIE);
   deleteCookie(STATE_COOKIE, { path: "/" });
-  const code = url.searchParams.get("code");
-  if (!c || !code || !saved || saved !== `${p}:${url.searchParams.get("state")}`)
+  const err = url.searchParams.get("error");
+  if (err) return back(req, "/login?error=" + encodeURIComponent(GATEWAY_ERRORS[err] ?? "Sign-in failed. Please try again."));
+  const assertion = url.searchParams.get("assertion");
+  const [savedP, nonce] = (saved ?? "").split(":");
+  if (!assertion || savedP !== p || !nonce)
     return back(req, "/login?error=" + encodeURIComponent("Sign-in was cancelled or expired. Please try again."));
   try {
-    const prof = await profileFor(p, code, req, c);
+    const claims = await verifyGatewayAssertion(assertion, { issuer: gateway(), audience: appOrigin(req), provider: p, nonce });
+    // Single use: a replayed assertion is rejected.
+    const used = await d1<{ jti: string }>(
+      "INSERT INTO oauth_assertions_used (jti, expires_at) VALUES (?, ?) ON CONFLICT(jti) DO NOTHING RETURNING jti",
+      [claims.jti, claims.exp],
+    );
+    if (!used.length) throw new Error("replay");
+    await d1("DELETE FROM oauth_assertions_used WHERE expires_at < ?", [Math.floor(Date.now() / 1000) - 3600]);
+    const prof = { id: claims.provider_user_id, email: claims.email.toLowerCase(), name: claims.name, avatar: claims.picture };
     let newAccount = false;
     let userId = (await d1<{ user_id: string }>("SELECT user_id FROM auth_identities WHERE provider = ? AND provider_user_id = ?", [p, prof.id]))[0]?.user_id;
     if (!userId) {
