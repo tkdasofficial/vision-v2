@@ -23,7 +23,7 @@ const AdminAuditLog = () => {
   return (
     <div className="p-4 lg:p-6 max-w-5xl mx-auto">
       <div className="mb-5">
-        <h1 className="text-xl font-display font-bold text-foreground flex items-center gap-2"><ScrollText className="w-5 h-5" /> Audit log</h1>
+        <h1 className="text-xl font-display font-semibold tracking-tight text-foreground flex items-center gap-2"><ScrollText className="w-5 h-5" /> Audit log</h1>
         <p className="text-xs text-muted-foreground mt-0.5">Last 200 admin actions.</p>
       </div>
       {loading ? <div className="py-10 flex justify-center"><Loader2 className="w-5 h-5 animate-spin text-muted-foreground" /></div> : items.length === 0 ? (

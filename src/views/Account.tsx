@@ -186,7 +186,7 @@ const Account = () => {
                 </div>
               </div>
 
-              <button onClick={saveName} className="w-full py-2.5 rounded-xl bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
+              <button onClick={saveName} className="w-full py-2.5 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
                 Save changes
               </button>
             </div>
@@ -307,14 +307,14 @@ const Account = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => { setTotpSetup(null); setTotpCode(""); }}
-                          className="flex-1 py-2 rounded-xl border border-border text-sm text-foreground hover:bg-accent transition-colors"
+                          className="flex-1 py-2 rounded-full border border-border text-sm text-foreground hover:bg-accent transition-colors"
                         >
                           Cancel
                         </button>
                         <button
                           onClick={handleVerifyTOTP}
                           disabled={totpVerifying || totpCode.length < 6}
-                          className="flex-1 py-2 rounded-xl bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                          className="flex-1 py-2 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                         >
                           {totpVerifying ? "Verifying..." : "Verify & Enable"}
                         </button>

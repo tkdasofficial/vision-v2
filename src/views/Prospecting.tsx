@@ -188,7 +188,7 @@ export default function Prospecting() {
               <Field label="Target count" type="number" value={target} onChange={(v: any) => setTarget(Number(v))} />
               <div className="md:col-span-6 flex items-center justify-between pt-1">
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5"><Filter className="w-3.5 h-3.5" />Needs your YouTube API key — add it under Integrations → API Keys (provider: youtube).</p>
-                <button onClick={startYouTube} disabled={running} className="px-4 py-2 rounded-lg bg-foreground text-background text-sm font-medium flex items-center gap-2 disabled:opacity-50">
+                <button onClick={startYouTube} disabled={running} className="px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium flex items-center gap-2 disabled:opacity-50">
                   <Play className="w-4 h-4" />Run YouTube prospecting
                 </button>
               </div>
@@ -198,7 +198,7 @@ export default function Prospecting() {
               <Field className="md:col-span-2" label="Industry / niche" value={webNiche} onChange={setWebNiche} placeholder="e.g. food companies in Mumbai" />
               <Field label="Target count" type="number" value={webTarget} onChange={(v: any) => setWebTarget(Number(v))} />
               <div className="flex items-end">
-                <button onClick={startWeb} disabled={running} className="w-full px-4 py-2 rounded-lg bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50">
+                <button onClick={startWeb} disabled={running} className="w-full px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50">
                   <Play className="w-4 h-4" />Discover companies
                 </button>
               </div>
@@ -218,7 +218,7 @@ export default function Prospecting() {
               <button onClick={deleteSelected} disabled={selected.size === 0} className="px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-accent disabled:opacity-40 flex items-center gap-1.5">
                 <Trash2 className="w-3.5 h-3.5" />Delete
               </button>
-              <button onClick={queueOutreach} disabled={selected.size === 0} className="px-3 py-1.5 text-xs rounded-lg bg-foreground text-background hover:opacity-90 disabled:opacity-40 flex items-center gap-1.5">
+              <button onClick={queueOutreach} disabled={selected.size === 0} className="px-3 py-1.5 text-xs rounded-full bg-foreground text-background hover:opacity-90 disabled:opacity-40 flex items-center gap-1.5">
                 <Send className="w-3.5 h-3.5" />Queue outreach ({selected.size})
               </button>
             </div>
@@ -278,7 +278,7 @@ export default function Prospecting() {
                 placeholder="jane@acme.com, ops@studio.io" />
             </div>
             <div className="flex items-end">
-              <button onClick={addManualLeads} className="w-full px-4 py-2 rounded-lg bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2">
+              <button onClick={addManualLeads} className="w-full px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium flex items-center justify-center gap-2">
                 <UserPlus className="w-4 h-4" />Add to board
               </button>
             </div>
@@ -302,7 +302,7 @@ export default function Prospecting() {
             </div>
             <Field label="New campaign name" value={newCampaignName} onChange={setNewCampaignName} placeholder="Q1 outbound" />
             <div className="md:col-span-1 flex items-end">
-              <button onClick={createCampaign} className="w-full px-4 py-2 rounded-lg border border-border text-sm hover:bg-accent">Create campaign</button>
+              <button onClick={createCampaign} className="w-full px-4 py-2 rounded-full border border-border text-sm hover:bg-accent">Create campaign</button>
             </div>
             <div className="md:col-span-3">
               <label className="text-xs text-muted-foreground">Pitch context (what you're offering, why it fits them)</label>

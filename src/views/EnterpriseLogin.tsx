@@ -59,7 +59,7 @@ const EnterpriseLogin = ({ page }: { page: Page }) => {
   );
 
   const verified = state && state.step !== "identity" && state.step !== "domain" && (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border bg-card text-sm">
+    <div className="flex items-center gap-2 px-3 py-2 rounded-full border border-border bg-card text-sm">
       <BadgeCheck className="w-4 h-4 text-primary shrink-0" />
       <span className="text-foreground font-medium truncate">{state.enterpriseName}</span>
       <span className="text-muted-foreground truncate">· {state.domain}</span>

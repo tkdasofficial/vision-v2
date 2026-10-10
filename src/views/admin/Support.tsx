@@ -60,7 +60,7 @@ const AdminSupport = () => {
     <div className="p-4 lg:p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-display font-bold text-foreground flex items-center gap-2"><LifeBuoy className="w-5 h-5" /> Support inbox</h1>
+          <h1 className="text-xl font-display font-semibold tracking-tight text-foreground flex items-center gap-2"><LifeBuoy className="w-5 h-5" /> Support inbox</h1>
           <p className="text-xs text-muted-foreground mt-0.5">Reply to user tickets and feedback.</p>
         </div>
         <div className="flex gap-1 p-1 bg-accent rounded-lg">
@@ -89,7 +89,7 @@ const AdminSupport = () => {
                   {t.admin_reply && <p className="text-sm text-foreground mt-2 p-2 bg-accent rounded-md border-l-2 border-primary"><span className="text-[10px] uppercase text-muted-foreground">Admin reply</span><br />{t.admin_reply}</p>}
                 </div>
                 {t.status === "open" && (
-                  <button onClick={() => setSelected(t)} className="shrink-0 px-3 py-1.5 text-xs bg-foreground text-background rounded-lg font-medium hover:opacity-90">Reply</button>
+                  <button onClick={() => setSelected(t)} className="shrink-0 px-3 py-1.5 text-xs bg-foreground text-background rounded-full font-medium hover:opacity-90">Reply</button>
                 )}
               </div>
               <p className="text-[10px] text-muted-foreground mt-2">{new Date(t.created_at).toLocaleString()}</p>
@@ -107,7 +107,7 @@ const AdminSupport = () => {
             <textarea value={reply} onChange={(e) => setReply(e.target.value)} placeholder="Type your reply..." rows={5} className="w-full bg-background border border-border rounded-lg p-3 text-sm text-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/30" />
             <div className="flex justify-end gap-2 mt-3">
               <button onClick={() => setSelected(null)} className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">Cancel</button>
-              <button onClick={sendReply} disabled={saving || !reply.trim()} className="px-3 py-2 text-sm bg-primary text-primary-foreground rounded-lg font-medium disabled:opacity-60 flex items-center gap-1.5">
+              <button onClick={sendReply} disabled={saving || !reply.trim()} className="px-3 py-2 text-sm bg-primary text-primary-foreground rounded-full font-medium disabled:opacity-60 flex items-center gap-1.5">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-3.5 h-3.5" />} Send & resolve
               </button>
             </div>

@@ -53,20 +53,20 @@ const AdminAnnouncements = () => {
   return (
     <div className="p-4 lg:p-6 max-w-5xl mx-auto">
       <div className="mb-5">
-        <h1 className="text-xl font-display font-bold text-foreground flex items-center gap-2"><Megaphone className="w-5 h-5" /> Announcements</h1>
+        <h1 className="text-xl font-display font-semibold tracking-tight text-foreground flex items-center gap-2"><Megaphone className="w-5 h-5" /> Announcements</h1>
         <p className="text-xs text-muted-foreground mt-0.5">Broadcast banners shown to users across the app.</p>
       </div>
 
       <div className="rounded-xl border border-border bg-card p-4 mb-5">
         <h2 className="text-sm font-semibold text-foreground mb-3">New announcement</h2>
         <div className="grid sm:grid-cols-2 gap-3">
-          <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Title" className="bg-background border border-border rounded-lg px-3 py-2 text-sm" />
-          <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} className="bg-background border border-border rounded-lg px-3 py-2 text-sm">
+          <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Title" className="bg-background border border-border rounded-full px-4 py-2.5 text-sm" />
+          <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} className="bg-background border border-border rounded-full px-4 py-2.5 text-sm">
             {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
           </select>
-          <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="Body" rows={3} className="bg-background border border-border rounded-lg px-3 py-2 text-sm sm:col-span-2 resize-none" />
-          <input type="datetime-local" value={form.ends_at} onChange={(e) => setForm({ ...form, ends_at: e.target.value })} className="bg-background border border-border rounded-lg px-3 py-2 text-sm" />
-          <button onClick={create} disabled={saving} className="bg-primary text-primary-foreground rounded-lg px-3 py-2 text-sm font-medium flex items-center justify-center gap-1.5 disabled:opacity-60">
+          <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="Body" rows={3} className="bg-background border border-border rounded-2xl px-4 py-3 text-sm sm:col-span-2 resize-none" />
+          <input type="datetime-local" value={form.ends_at} onChange={(e) => setForm({ ...form, ends_at: e.target.value })} className="bg-background border border-border rounded-full px-4 py-2.5 text-sm" />
+          <button onClick={create} disabled={saving} className="bg-primary text-primary-foreground rounded-full px-3 py-2 text-sm font-medium flex items-center justify-center gap-1.5 disabled:opacity-60">
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Publish
           </button>
         </div>

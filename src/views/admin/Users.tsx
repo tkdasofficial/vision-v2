@@ -148,15 +148,15 @@ const AdminUsers = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search users..."
-              className="pl-9 pr-3 py-2 rounded-xl border border-border bg-background text-sm text-foreground outline-none focus:border-primary/40 transition-colors w-48"
+              className="pl-9 pr-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none focus:border-primary/40 transition-colors w-48"
             />
           </div>
-          <select value={filterPlan} onChange={(e) => setFilterPlan(e.target.value)} className="px-3 py-2 rounded-xl border border-border bg-background text-sm text-foreground outline-none">
+          <select value={filterPlan} onChange={(e) => setFilterPlan(e.target.value)} className="px-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none">
             <option value="all">All Plans</option>
             {PLAN_OPTIONS.map((p) => <option key={p} value={p}>{p}</option>)}
           </select>
 
-          <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)} className="px-3 py-2 rounded-xl border border-border bg-background text-sm text-foreground outline-none">
+          <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)} className="px-3 py-2 rounded-full border border-border bg-background text-sm text-foreground outline-none">
             <option value="all">All Roles</option>
             <option value="admin">Admins</option>
             <option value="user">Users</option>

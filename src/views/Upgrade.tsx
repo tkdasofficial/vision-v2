@@ -81,7 +81,7 @@ const Upgrade = () => {
             <Sparkles className="w-3.5 h-3.5" />
             5 tiers · BYOK on every paid plan
           </div>
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground tracking-tight">Pick the plan that scales with you</h2>
+          <h2 className="text-3xl md:text-4xl font-display font-semibold text-foreground tracking-tight">Pick the plan that scales with you</h2>
           <p className="text-sm md:text-base text-muted-foreground mt-3 max-w-xl mx-auto">
             Chat, images, video, TTS — all from one workspace. Bring your own API keys on any paid plan to remove every limit.
           </p>
