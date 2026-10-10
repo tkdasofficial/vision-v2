@@ -8,8 +8,8 @@ export function SettingsPage({ title, children, loading, backTo = "/app/settings
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col">
       <PageHeader title={title} backTo={backTo} />
-      <div className="flex-1 px-6 pt-2 pb-12 overflow-y-auto">
-        <div className="max-w-lg mx-auto space-y-8">
+      <div className="flex-1 px-4 pt-2 pb-12 overflow-y-auto">
+        <div className="max-w-lg mx-auto space-y-6">
           {loading ? <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div> : children}
         </div>
       </div>
@@ -20,9 +20,9 @@ export function SettingsPage({ title, children, loading, backTo = "/app/settings
 export function SettingsSection({ title, description, children }: { title: string; description?: string; children?: ReactNode }) {
   return (
     <section>
-      <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
-      <div className="mt-4 space-y-3">{children}</div>
+      <h2 className="px-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">{title}</h2>
+      {description && !children && <p className="mt-2 px-1 text-sm text-muted-foreground">{description}</p>}
+      {children && <div className="mt-2 space-y-2">{children}</div>}
     </section>
   );
 }
@@ -30,10 +30,7 @@ export function SettingsSection({ title, description, children }: { title: strin
 export function SettingsRow({ label, hint, children, className }: { label: string; hint?: string; children?: ReactNode; className?: string }) {
   return (
     <div className={cn("flex items-center justify-between gap-4 rounded-2xl border border-border px-5 py-4", className)}>
-      <div className="min-w-0">
-        <p className="text-sm font-medium text-foreground">{label}</p>
-        {hint && <p className="text-xs text-muted-foreground mt-0.5">{hint}</p>}
-      </div>
+      <p className="min-w-0 text-sm font-medium text-foreground">{label}</p>
       {children}
     </div>
   );
@@ -60,7 +57,7 @@ export function SettingsChoice<T extends string>({ label, hint, value, options, 
   return (
     <div className="rounded-2xl border border-border px-5 py-4">
       <p className="text-sm font-medium text-foreground">{label}</p>
-      {hint && <p className="text-xs text-muted-foreground mt-0.5">{hint}</p>}
+      
       <div role="radiogroup" aria-label={label} className="mt-3 flex flex-wrap gap-2">
         {options.map((o) => (
           <button

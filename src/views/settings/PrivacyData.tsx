@@ -43,7 +43,7 @@ export default function PrivacyData() {
       <SettingsSection title="Your data">
         <button onClick={exportAll} disabled={!!busy} className="w-full flex items-center gap-3 rounded-2xl border border-border px-5 py-4 hover:bg-accent text-left disabled:opacity-50">
           {busy === "export" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-muted-foreground" />}
-          <div><p className="text-sm font-medium">Download all my data</p><p className="text-xs text-muted-foreground">Profile, settings, chats and documents</p></div>
+          <div><p className="text-sm font-medium">Download all my data</p></div>
         </button>
         <p className="text-xs text-muted-foreground px-1">To delete your whole account, go to <Link to="/app/account" className="underline">Account</Link>.</p>
       </SettingsSection>

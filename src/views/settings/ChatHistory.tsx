@@ -41,11 +41,11 @@ export default function ChatHistory() {
       <SettingsSection title="Conversations" description="Incognito chats are never saved.">
         <button onClick={onExport} disabled={!!busy} className="w-full flex items-center gap-3 rounded-2xl border border-border px-5 py-4 hover:bg-accent text-left disabled:opacity-50">
           {busy === "export" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-muted-foreground" />}
-          <div><p className="text-sm font-medium">Export chats</p><p className="text-xs text-muted-foreground">Download all conversations as a file</p></div>
+          <div><p className="text-sm font-medium">Export chats</p></div>
         </button>
         <button onClick={() => setConfirm(true)} disabled={!!busy} className="w-full flex items-center gap-3 rounded-2xl border border-destructive/30 px-5 py-4 hover:bg-destructive/5 text-left disabled:opacity-50">
           <Trash2 className="w-4 h-4 text-destructive" />
-          <div><p className="text-sm font-medium text-destructive">Clear all chats</p><p className="text-xs text-muted-foreground">Delete every saved conversation</p></div>
+          <div><p className="text-sm font-medium text-destructive">Clear all chats</p></div>
         </button>
         {confirm && <ConfirmBox text="Delete all your chats? This can't be undone." confirmLabel="Delete all" busy={busy === "clear"} onCancel={() => setConfirm(false)} onConfirm={onClear} />}
       </SettingsSection>
