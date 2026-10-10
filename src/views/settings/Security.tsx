@@ -37,7 +37,7 @@ export default function Security() {
           </SettingsSection>
           {status.hasPassword ? (
             <SettingsSection title="Password">
-              <button onClick={() => navigate(`/auth/forget-password?email=${encodeURIComponent(status.email)}`)}
+              <button onClick={() => navigate("/app/settings/reset-password")}
                 className="flex h-14 w-full items-center gap-3 rounded-full border border-border px-5 text-left text-sm font-medium hover:bg-accent">
                 <KeyRound className="w-4 h-4 text-muted-foreground" /><span className="flex-1">Reset password with email code</span><ChevronRight className="w-4 h-4 text-muted-foreground" />
               </button>
