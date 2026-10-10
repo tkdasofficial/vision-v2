@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Crown, Eye, EyeOff, Menu } from "lucide-react";
+import { Crown, Menu } from "lucide-react";
+import { IncognitoIcon } from "@/components/icons/IncognitoIcon";
 import { useNavigate } from "@/lib/router-compat";
 import AnnouncementBanner from "./AnnouncementBanner";
 
@@ -810,14 +811,14 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
           <Crown /><span>Upgrade Plan</span>
         </Button>
         <Button variant={isIncognito ? "default" : "secondary"} size="icon" className="ml-auto shrink-0 rounded-full transition-colors" aria-label={isIncognito ? "Turn off incognito" : "Turn on incognito"} title={isIncognito ? "Incognito on — tap to turn off" : "Incognito off — tap to turn on"} aria-pressed={isIncognito} onClick={onIncognitoChat}>
-          {isIncognito ? <EyeOff /> : <Eye />}
+          <IncognitoIcon />
         </Button>
       </header>
 
       <AnnouncementBanner />
       {isIncognito && (
         <p className="flex items-center justify-center gap-1.5 px-4 py-2 text-center text-xs font-medium text-muted-foreground">
-          <EyeOff className="h-3.5 w-3.5" /> Incognito on — this chat won't be saved
+          <IncognitoIcon className="h-3.5 w-3.5" /> Incognito on — this chat won't be saved
         </p>
       )}
 
