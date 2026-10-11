@@ -16,7 +16,8 @@ export default function ProjectCreate() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setChatProject } = useChatHistory();
-  const chatId = new URLSearchParams(location.search).get("chat");
+  const rawChat = (location.search as Record<string, unknown>).chat;
+  const chatId = typeof rawChat === "string" && rawChat ? rawChat : null;
   const [name, setName] = useState("");
   const [icon, setIcon] = useState<string | null>(null);
   const [category, setCategory] = useState("");
