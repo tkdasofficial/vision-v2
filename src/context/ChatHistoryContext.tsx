@@ -11,6 +11,8 @@ export type ChatHistoryItem = {
   date: string;
   createdAt: number;
   messages: ChatMessage[];
+  projectId?: string | null;
+  pinned?: boolean;
 };
 
 type ChatHistoryContextType = {
@@ -23,6 +25,8 @@ type ChatHistoryContextType = {
   updateChatMessages: (id: string, messages: ChatMessage[]) => void;
   getChatById: (id: string) => ChatHistoryItem | undefined;
   loadChatMessages: (id: string) => Promise<ChatMessage[]>;
+  setChatProject: (id: string, projectId: string | null) => Promise<boolean>;
+  togglePin: (id: string) => void;
 };
 
 // Keep one context instance across hot reloads so the provider and consumers always match.
@@ -153,6 +157,8 @@ export const ChatHistoryProvider = ({ children }: { children: ReactNode }) => {
         date: getDateLabel(new Date(s.created_at).getTime()),
         createdAt: new Date(s.created_at).getTime(),
         messages: [],
+        projectId: s.project_id || null,
+        pinned: !!s.pinned,
       }));
 
       setHistory(items);
@@ -266,6 +272,21 @@ export const ChatHistoryProvider = ({ children }: { children: ReactNode }) => {
       .then(({ error }) => {
         if (error) console.error("Failed to delete chat:", error);
       });
+  }, []);
+
+  const setChatProject = useCallback(async (id: string, projectId: string | null) => {
+    const { error } = await supabase.from("chat_sessions").update({ project_id: projectId, updated_at: new Date().toISOString() }).eq("id", id);
+    if (error) { console.error("Failed to move chat:", error); return false; }
+    setHistory((prev) => prev.map((c) => (c.id === id ? { ...c, projectId } : c)));
+    return true;
+  }, []);
+
+  const togglePin = useCallback((id: string) => {
+    let next = false;
+    setHistory((prev) => prev.map((c) => (c.id === id ? { ...c, pinned: (next = !c.pinned) } : c)));
+    setTimeout(() => {
+      supabase.from("chat_sessions").update({ pinned: next }).eq("id", id).then(({ error }) => { if (error) console.error("Failed to pin chat:", error); });
+    }, 0);
   }, []);
 
   const searchHistory = useCallback(
