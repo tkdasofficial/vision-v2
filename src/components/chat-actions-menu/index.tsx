@@ -46,11 +46,12 @@ export default function ChatActionsMenu({ chatId, onNewChat }: { chatId: string;
     navigate("/chat");
   };
 
-  return <div className="ml-auto flex items-center gap-1 rounded-full bg-secondary p-0.5">
-    <Button variant="ghost" size="icon" className="rounded-full" aria-label="New chat" title="New chat" onClick={onNewChat}><PenSquare /></Button>
+  return <div className="ml-auto flex h-10 items-center rounded-full border border-border bg-secondary">
+    <Button variant="ghost" size="icon" className="h-10 w-11 rounded-l-full rounded-r-none hover:bg-accent [&_svg]:size-5" aria-label="New chat" title="New chat" onClick={onNewChat}><PenSquare /></Button>
+    <span className="h-5 w-px bg-border" aria-hidden />
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full" aria-label="Chat options" title="Chat options"><MoreVertical /></Button>
+        <Button variant="ghost" size="icon" className="h-10 w-11 rounded-l-none rounded-r-full hover:bg-accent [&_svg]:size-5" aria-label="Chat options" title="Chat options"><MoreVertical /></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52 rounded-2xl p-1.5">
         <DropdownMenuItem className="rounded-full" onSelect={() => void share()}><Share2 />Share</DropdownMenuItem>

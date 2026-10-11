@@ -19,7 +19,7 @@ export default function PageHeader({
   const navigate = useNavigate();
   const back = onBack ?? (backTo ? () => navigate(backTo) : onMenu ? undefined : () => navigate(-1));
   return (
-    <header className={cn("flex shrink-0 items-center gap-3 bg-transparent px-4 py-3", className)}>
+    <header className={cn("flex shrink-0 items-center gap-3 bg-transparent px-4 py-3 [&_button_svg]:size-5", className)}>
       {back ? (
         <Button variant="secondary" size="icon" className="shrink-0 rounded-full" aria-label="Go back" title="Go back" onClick={back}><ArrowLeft /></Button>
       ) : (
