@@ -53,7 +53,7 @@ const MobileSidebar = ({ open, onClose, onNewChat, onSelectChat, isMainChat, act
           <div className="flex items-center gap-2.5">
             <span className="font-display font-semibold text-foreground text-xl tracking-tight">Vision</span>
           </div>
-          <Button variant="secondary" size="icon" className="shrink-0 rounded-full" aria-label="Open search" title="Search" onClick={() => { navigate("/search"); onClose(); }}>
+          <Button variant="secondary" size="icon" className="shrink-0 rounded-full [&_svg]:size-5" aria-label="Open search" title="Search" onClick={() => { navigate("/search"); onClose(); }}>
             <Search />
           </Button>
         </div>
