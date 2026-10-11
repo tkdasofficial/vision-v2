@@ -8,7 +8,7 @@ const features = [
   { label: "Videos", to: "/videos", icon: Film },
   { label: "Library", to: "/library", icon: Library },
   { label: "Projects", to: "/projects", icon: FolderOpen },
-  { label: "Integrations", to: "/integrations", icon: Plug },
+  { label: "Plugins", to: "/integrations", icon: Plug },
 ] as const;
 
 export default function SidebarFeatures({ onNavigate }: { onNavigate?: () => void }) {

@@ -5,10 +5,10 @@ import { Protected } from "@/components/protected";
 export const Route = createFileRoute("/integrations")({
   head: () => ({
     meta: [
-      { title: "Integrations — Vision" },
-      { name: "description", content: "Integrations in Vision, your all-in-one AI workspace." },
-      { property: "og:title", content: "Integrations — Vision" },
-      { property: "og:description", content: "Integrations in Vision, your all-in-one AI workspace." },
+      { title: "Plugins — Vision" },
+      { name: "description", content: "Plugins in Vision, your all-in-one AI workspace." },
+      { property: "og:title", content: "Plugins — Vision" },
+      { property: "og:description", content: "Plugins in Vision, your all-in-one AI workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
