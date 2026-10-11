@@ -819,13 +819,13 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
         >
           <Menu className="w-5 h-5" />
         </Button>
-        <Button variant="secondary" className="rounded-full px-3" aria-label="Upgrade Plan" title="Upgrade Plan" onClick={() => navigate("/billing/plans")}>
-          <Crown /><span>Upgrade Plan</span>
+        <Button variant="secondary" size="icon" className="rounded-full [&_svg]:size-5" aria-label="Upgrade Plan" title="Upgrade Plan" onClick={() => navigate("/billing/plans")}>
+          <Crown />
         </Button>
         {!isIncognito && chatId && messages.length > 0 ? (
           <ChatActionsMenu chatId={chatId} onNewChat={() => navigate(creationMode === "images" ? "/images" : creationMode === "videos" ? "/videos" : "/chat")} />
         ) : (
-        <Button variant={isIncognito ? "default" : "secondary"} size="icon" className="ml-auto shrink-0 rounded-full transition-colors" aria-label={isIncognito ? "Turn off incognito" : "Turn on incognito"} title={isIncognito ? "Incognito on — tap to turn off" : "Incognito off — tap to turn on"} aria-pressed={isIncognito} onClick={onIncognitoChat}>
+        <Button variant={isIncognito ? "default" : "secondary"} size="icon" className="ml-auto shrink-0 rounded-full transition-colors [&_svg]:size-5" aria-label={isIncognito ? "Turn off incognito" : "Turn on incognito"} title={isIncognito ? "Incognito on — tap to turn off" : "Incognito off — tap to turn on"} aria-pressed={isIncognito} onClick={onIncognitoChat}>
           <IncognitoIcon />
         </Button>
         )}
