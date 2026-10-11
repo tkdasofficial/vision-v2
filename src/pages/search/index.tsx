@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import PageHeader from "@/components/page-header";
-import { ArrowLeft, ArrowUpRight, FileText, MessageSquare, Search as SearchIcon, Sparkles, X } from "lucide-react";
+import { ArrowUpRight, FileText, MessageSquare, Search as SearchIcon, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/context/AuthContext";
 import { useChatHistory } from "@/context/ChatHistoryContext";
 import { supabase } from "@/lib/cloud/client";
 import { assetTypes, collectSearchItems, filterSearchItems, type AssetType, type SearchCategory, type SearchItem } from "@/lib/workspace-search";
+import BottomSearch from "@/components/bottom-search";
 import DesktopSidebar from "@/components/desktop-sidebar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const categories = [
@@ -71,26 +71,24 @@ export default function Search({ library = false }: { library?: boolean }) {
       <DesktopSidebar {...sidebarProps} />
       <main className="flex min-w-0 flex-1 flex-col">
         <PageHeader title={library ? "Library" : "Search"} backTo="/chat" className="sm:px-8" />
-        <div className="flex shrink-0 items-center px-4 pb-3 sm:px-8">
-            <div className="relative min-w-0 flex-1">
-              <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input autoFocus={!library} value={query} onChange={(event) => setQuery(event.target.value)} aria-label={library ? "Search library" : "Search chats, files, and generated items"} placeholder={library ? "Search library" : "Search anything"} className="h-10 rounded-full pl-9 pr-10" />
-              {query && <Button variant="ghost" size="icon" aria-label="Clear search" title="Clear search" className="absolute right-1 top-1 size-8 rounded-full" onClick={() => setQuery("")}><X /></Button>}
-            </div>
-        </div>
         <div className="shrink-0 overflow-x-auto px-4 pb-3 sm:px-8">
             <Tabs value={library ? assetType : category} onValueChange={(value) => library ? setAssetType(value as AssetType | "all") : setCategory(value as SearchCategory | "all")}>
               <TabsList aria-label={library ? "Library file types" : "Search categories"} className="flex h-auto w-max flex-nowrap justify-start gap-2 bg-transparent p-0">
-                <TabsTrigger className="h-9 flex-none rounded-full border border-border px-4 data-[state=active]:bg-foreground data-[state=active]:text-background" value="all">All</TabsTrigger>
-                {(library ? availableTypes : categories).map((entry) => <TabsTrigger className="h-9 flex-none rounded-full border border-border px-4 data-[state=active]:bg-foreground data-[state=active]:text-background" key={entry.value} value={entry.value}>{entry.label}</TabsTrigger>)}
+                <TabsTrigger className="h-10 flex-none rounded-full border-0 bg-transparent px-5 text-base font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:shadow-none" value="all">All</TabsTrigger>
+                {(library ? availableTypes : categories).map((entry) => <TabsTrigger className="h-10 flex-none rounded-full border-0 bg-transparent px-5 text-base font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:shadow-none" key={entry.value} value={entry.value}>{entry.label}</TabsTrigger>)}
               </TabsList>
             </Tabs>
         </div>
-        <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-8">
+        <div className="flex-1 overflow-y-auto px-4 pb-6 pt-2 sm:px-8">
           <div className="mx-auto max-w-3xl">
             {loading ? <p role="status" className="py-12 text-center text-muted-foreground">Loading…</p> : error ? <p role="alert" className="py-12 text-center text-destructive">Search couldn’t load. Please try refreshing.</p> : results.length === 0 ? <div className="py-16 text-center text-muted-foreground"><SearchIcon className="mx-auto mb-4 h-8 w-8" /><p>{query ? "No results found" : "No items yet"}</p></div> : categories.filter((entry) => category === "all" || category === entry.value).map((entry) => {
               const group = results.filter((item) => item.category === entry.value);
               if (!group.length) return null;
+              if (library) return <div key={entry.value} className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3">{group.map((item) => {
+                const card = <><p className="line-clamp-2 break-all text-base font-medium text-foreground">{item.title}</p><entry.icon className="size-6 text-primary" /></>;
+                const cls = "flex aspect-square flex-col justify-between rounded-[1.75rem] border border-border bg-secondary p-4 text-left transition-colors hover:bg-accent";
+                return item.sessionId ? <Link key={item.id} to="/chat/$chatId" params={{ chatId: item.sessionId }} className={cls}>{card}</Link> : <div key={item.id} className={cls}>{card}</div>;
+              })}</div>;
               return <section key={entry.value} className="mb-8">
                 <h2 className="mb-3 text-sm font-semibold text-muted-foreground">{entry.label} <span className="ml-2">{group.length}</span></h2>
                 <div className="divide-y divide-border">{group.map((item) => {
@@ -101,6 +99,7 @@ export default function Search({ library = false }: { library?: boolean }) {
             })}
           </div>
         </div>
+        <BottomSearch value={query} onChange={setQuery} placeholder={library ? "Search library" : "Search anything"} />
       </main>
     </div>
   );
