@@ -23,7 +23,7 @@ export default function PageHeader({
       {back ? (
         <Button variant="secondary" size="icon" className="shrink-0 rounded-full" aria-label="Go back" title="Go back" onClick={back}><ArrowLeft /></Button>
       ) : (
-        <Button variant="secondary" size="icon" className={cn("shrink-0 rounded-full", menuClassName)} aria-label="Open menu" title="Open menu" onClick={onMenu}><Menu /></Button>
+        <Button variant="secondary" size="icon" className={cn("shrink-0 rounded-full [&_svg]:size-5", menuClassName)} aria-label="Open menu" title="Open menu" onClick={onMenu}><Menu /></Button>
       )}
       <h1 className="min-w-0 truncate font-display text-lg font-semibold tracking-tight text-foreground">{title}</h1>
       {actions && <div className="ml-auto flex shrink-0 items-center gap-2">{actions}</div>}

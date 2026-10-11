@@ -817,7 +817,7 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
           onClick={onMenuClick}
           className="rounded-full text-foreground lg:hidden"
         >
-          <Menu className="w-5 h-5" />
+          <Menu className="w-[22px] h-[22px]" />
         </Button>
         <Button variant="secondary" size="icon" className="rounded-full [&_svg]:size-5" aria-label="Upgrade Plan" title="Upgrade Plan" onClick={() => navigate("/billing/plans")}>
           <Crown />
