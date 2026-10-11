@@ -370,6 +370,8 @@ const FALLBACK_HISTORY: ChatHistoryContextType = {
   updateChatMessages: () => {},
   getChatById: () => undefined,
   loadChatMessages: async () => [],
+  setChatProject: async () => false,
+  togglePin: () => {},
 };
 
 export const useChatHistory = () => {
