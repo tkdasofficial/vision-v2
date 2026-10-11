@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Crown, Menu } from "lucide-react";
 import { IncognitoIcon } from "@/components/icons/incognito-icon";
 import { useNavigate } from "@/lib/router-compat";
+import ChatActionsMenu from "@/components/chat-actions-menu";
 import AnnouncementBanner from "@/components/announcement-banner";
 
 import type { AITool, ChatMessage as ChatMessageType } from "@/lib/types";
@@ -821,9 +822,13 @@ const ChatWorkspace = ({ tool, onMenuClick, initialMessages, chatId: externalCha
         <Button variant="secondary" className="rounded-full px-3" aria-label="Upgrade Plan" title="Upgrade Plan" onClick={() => navigate("/billing/plans")}>
           <Crown /><span>Upgrade Plan</span>
         </Button>
+        {!isIncognito && chatId && messages.length > 0 ? (
+          <ChatActionsMenu chatId={chatId} onNewChat={() => navigate(creationMode === "images" ? "/images" : creationMode === "videos" ? "/videos" : "/chat")} />
+        ) : (
         <Button variant={isIncognito ? "default" : "secondary"} size="icon" className="ml-auto shrink-0 rounded-full transition-colors" aria-label={isIncognito ? "Turn off incognito" : "Turn on incognito"} title={isIncognito ? "Incognito on — tap to turn off" : "Incognito off — tap to turn on"} aria-pressed={isIncognito} onClick={onIncognitoChat}>
           <IncognitoIcon />
         </Button>
+        )}
       </header>
 
       <AnnouncementBanner />

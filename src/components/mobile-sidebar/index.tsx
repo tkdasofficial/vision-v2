@@ -1,3 +1,4 @@
+import { recentChats } from "@/lib/recent-chats";
 import { cn } from "@/lib/utils";
 import { X, Search, Pencil, Trash2, Check } from "lucide-react";
 import { useNavigate } from "@/lib/router-compat";
@@ -14,10 +15,11 @@ type Props = {
   onSelectChat: (id: string) => void;
   isMainChat: boolean;
   activeChatId?: string;
-  chatHistory: { id: string; title: string; toolId?: string }[];
+  chatHistory: { id: string; title: string; toolId?: string; projectId?: string | null; pinned?: boolean }[];
 };
 
-const MobileSidebar = ({ open, onClose, onNewChat, onSelectChat, isMainChat, activeChatId, chatHistory }: Props) => {
+const MobileSidebar = ({ open, onClose, onNewChat, onSelectChat, isMainChat, activeChatId, chatHistory: allChats }: Props) => {
+  const chatHistory = recentChats(allChats);
   const navigate = useNavigate();
   const { renameChat, deleteChat } = useChatHistory();
   const [editingId, setEditingId] = useState<string | null>(null);

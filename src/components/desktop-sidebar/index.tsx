@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Search, Pencil, Trash2, Check, X } from "lucide-react";
+import { recentChats } from "@/lib/recent-chats";
+import { Search, Pencil, Trash2, Check, X, Pin } from "lucide-react";
 import { useNavigate } from "@/lib/router-compat";
 import { useState } from "react";
 import { useChatHistory } from "@/context/ChatHistoryContext";
@@ -12,7 +13,7 @@ type Props = {
   onSelectChat: (id: string) => void;
   isMainChat: boolean;
   activeChatId?: string;
-  chatHistory: { id: string; title: string; toolId?: string; preview: string; date: string; createdAt: number }[];
+  chatHistory: { id: string; title: string; toolId?: string; preview: string; date: string; createdAt: number; projectId?: string | null; pinned?: boolean }[];
 };
 
 const DesktopSidebar = ({ onNewChat, onSelectChat, isMainChat, activeChatId, chatHistory }: Props) => {
@@ -22,7 +23,7 @@ const DesktopSidebar = ({ onNewChat, onSelectChat, isMainChat, activeChatId, cha
   const [editValue, setEditValue] = useState("");
   
 
-  const displayHistory = chatHistory;
+  const displayHistory = recentChats(chatHistory);
 
   const startRename = (chat: { id: string; title: string }) => {
     setEditingId(chat.id);
@@ -86,7 +87,7 @@ const DesktopSidebar = ({ onNewChat, onSelectChat, isMainChat, activeChatId, cha
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                         </span>
                       )}
-                      <span className="truncate">{chat.title}</span>
+                      <span className="truncate">{chat.title}</span>{chat.pinned && <Pin className="ml-auto size-3 shrink-0 text-muted-foreground" />}
                     </button>
                     <div className="hidden group-hover:flex items-center gap-0.5 pr-1">
                       <button onClick={() => startRename(chat)} className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-sidebar-accent">

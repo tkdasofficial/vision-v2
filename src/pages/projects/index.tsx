@@ -13,7 +13,7 @@ import { projectIcons } from "@/lib/project-options";
 type Project = { id: string; name: string; icon?: string; category?: string; session_id?: string };
 export default function Projects() {
   const { user } = useAuth();
-  const { history } = useChatHistory();
+  const { history, setChatProject } = useChatHistory();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [name, setName] = useState("");
@@ -39,9 +39,8 @@ export default function Projects() {
     if (result.error) toast.error(result.error.message); else { setSelected(null); void load(); }
   };
   const attach = async (sessionId: string) => {
-    if (!user || !selected) return;
-    const result = await supabase.from("workspace_projects").update({ session_id: sessionId }).eq("id", selected).eq("user_id", user.id);
-    if (result.error) toast.error(result.error.message); else void load();
+    if (!selected) return;
+    if (!(await setChatProject(sessionId, selected))) toast.error("Couldn't add the chat. Please try again.");
   };
   const active = projects.find((project) => project.id === selected);
   return <WorkspaceShell title="Projects" backTo="/chat" actions={<Button onClick={() => navigate("/projects/new")}><Plus />Create</Button>}>
@@ -58,9 +57,9 @@ export default function Projects() {
       </div>; })}
     </div>}
     {active && <section className="mt-8 border-t border-border pt-6"><h2 className="mb-4 font-display text-lg font-semibold text-foreground">{active.name}</h2>
-      {active.session_id && <Button variant="outline" onClick={() => navigate(`/chat/${active.session_id}`)}>Open linked chat</Button>}
-      <h3 className="my-4 text-sm text-muted-foreground">Link a chat</h3>
-      {history.length === 0 ? <p className="text-sm text-muted-foreground">No saved chats yet</p> : history.map((chat) => <Button key={chat.id} variant="ghost" className="mb-1 w-full justify-start" onClick={() => void attach(chat.id)}>{chat.title}</Button>)}
+      {history.filter((chat) => chat.projectId === active.id).length === 0 ? <p className="mb-4 text-sm text-muted-foreground">No chats in this project yet</p> : history.filter((chat) => chat.projectId === active.id).map((chat) => <Button key={chat.id} variant="outline" className="mb-2 w-full justify-start" onClick={() => navigate(`/chat/${chat.id}`)}>{chat.title}</Button>)}
+      <h3 className="my-4 text-sm text-muted-foreground">Add a chat</h3>
+      {history.filter((chat) => !chat.projectId).length === 0 ? <p className="text-sm text-muted-foreground">No other chats</p> : history.filter((chat) => !chat.projectId).map((chat) => <Button key={chat.id} variant="ghost" className="mb-1 w-full justify-start" onClick={() => void attach(chat.id)}>{chat.title}</Button>)}
     </section>}
   </WorkspaceShell>;
 }
