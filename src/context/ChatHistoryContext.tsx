@@ -351,6 +351,8 @@ export const ChatHistoryProvider = ({ children }: { children: ReactNode }) => {
         updateChatMessages,
         getChatById,
         loadChatMessages,
+        setChatProject,
+        togglePin,
       }}
     >
       {children}
