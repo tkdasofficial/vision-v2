@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import PageHeader from "@/components/page-header";
-import { ArrowLeft, ArrowUpRight, FileText, MessageSquare, Search as SearchIcon, Sparkles, X } from "lucide-react";
+import { ArrowUpRight, FileText, MessageSquare, Search as SearchIcon, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/context/AuthContext";
@@ -10,7 +10,6 @@ import { assetTypes, collectSearchItems, filterSearchItems, type AssetType, type
 import BottomSearch from "@/components/bottom-search";
 import DesktopSidebar from "@/components/desktop-sidebar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const categories = [
